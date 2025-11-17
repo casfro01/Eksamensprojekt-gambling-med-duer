@@ -133,6 +133,36 @@
           }
         }
       }
+    },
+    "/api/board/GetBoard": {
+      "get": {
+        "tags": [
+          "Board"
+        ],
+        "operationId": "Board_GetBoard",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseBoardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -180,7 +210,7 @@
           "password": {
             "type": "string"
           },
-          "name": {
+          "fullName": {
             "type": "string"
           }
         }
