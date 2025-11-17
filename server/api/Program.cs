@@ -15,7 +15,7 @@ using service.Security;
 namespace api;
 public class Program
 {
-    public static void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(IServiceCollection services, WebApplicationBuilder builder)
     {
         services.AddSingleton<AppOptions>(provider =>
         {
@@ -38,7 +38,8 @@ public class Program
         
         services.AddDbContext<MyDbContext>((services, options) =>
         {
-            options.UseNpgsql(services.GetRequiredService<AppOptions>().DbConnectionString);
+            options.UseNpgsql(services.GetRequiredService<AppOptions>().DbConnectionString)
+                /*.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)*/;
         });
         
         
@@ -51,9 +52,9 @@ public class Program
             })
             .AddJwtBearer(options =>
             {
-                //options.TokenValidationParameters = JwtService.ValidationParameters(
-                 //   builder.Configuration
-                //);
+                options.TokenValidationParameters = JwtService.ValidationParameters(
+                    builder.Configuration
+                );
                 // Add this for debugging
                 options.Events = new JwtBearerEvents
                 {
@@ -92,7 +93,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        ConfigureServices(builder.Services);
+        ConfigureServices(builder.Services, builder);
         
         var app = builder.Build();
         

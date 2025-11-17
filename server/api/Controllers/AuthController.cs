@@ -18,8 +18,15 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
     public async Task<LoginResponse> Login([FromBody]LoginRequest request)
     {
         var userInfo = service.Authenticate(request);
-        var token = tokenService.CreateToken(userInfo);
-        return new LoginResponse(token);
+        try
+        {
+            var token = tokenService.CreateToken(userInfo);
+            return new LoginResponse(token);
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     [HttpPost]

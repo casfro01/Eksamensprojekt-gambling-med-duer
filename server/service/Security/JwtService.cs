@@ -18,6 +18,7 @@ public class JwtService(IConfiguration config) : ITokenService
 
     public string CreateToken(AuthUserInfo user)
     {
+        Console.WriteLine(Convert.FromBase64String(config.GetValue<string>(JwtKey)!));
         var key = Convert.FromBase64String(config.GetValue<string>(JwtKey)!);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
