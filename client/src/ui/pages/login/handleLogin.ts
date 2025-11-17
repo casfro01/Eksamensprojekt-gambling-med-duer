@@ -1,4 +1,6 @@
-﻿export const handleLogin = async (
+﻿import { AuthClient, type LoginRequest } from '../../../utils/ServerAPI.ts';
+
+export const handleLogin = async (
     e: React.FormEvent,
     email: string,
     password: string,
@@ -19,31 +21,26 @@
     setLoading(true);
 
     try {
-        // Kald til backend API
-        const response = await fetch('http://localhost:5000/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            }),
-        });
+        // Opret AuthClient instance
+        const authClient = new AuthClient('http://localhost:5000');
 
-        if (!response.ok) {
-            throw new Error('Forkert email eller password');
-        }
+        // Lav login request
+        const loginRequest: LoginRequest = {
+            email: email,
+            password: password
+        };
 
-        const data = await response.json();
+        // Kald login via AuthClient
+        const response = await authClient.login(loginRequest);
 
         // Gem token i localStorage
-        localStorage.setItem('token', data.jwt);
-
-        console.log('Login succesfuld!', data);
+        if (response.jwt) {
+            localStorage.setItem('token', response.jwt);
+            console.log('Login succesfuld!', response);
+        }
 
     } catch (err: any) {
-        setError(err.message || 'Der skete en fejl. Prøv igen.');
+        setError(err.message || 'Forkert email eller password');
     } finally {
         setLoading(false);
     }

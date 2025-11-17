@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import './login.css';
-import { useLogin } from './useLogin';
-import { handleLogin } from './handleLogin';
+import { useLogin } from './useLogin.ts';
+import { handleLogin } from './handleLogin.ts';
 
 export default function Login(){
     // Hent state fra useLogin hook
