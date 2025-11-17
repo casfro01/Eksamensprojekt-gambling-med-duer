@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using dataaccess;
 using DataAccess.Entities;
+using Microsoft.AspNetCore.Components.Sections;
 using Microsoft.AspNetCore.Identity;
 using service.Abstractions;
 using service.Models.Request;
@@ -9,7 +10,7 @@ using service.Models.Responses;
 
 namespace service;
 
-public class AuthService(MyDbContext dbContext, PasswordHasher<User> passwordHasher) : IAuthService
+public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHasher) : IAuthService
 {
     public AuthUserInfo Authenticate(LoginRequest request)
     {
@@ -22,13 +23,13 @@ public class AuthService(MyDbContext dbContext, PasswordHasher<User> passwordHas
         var user = new User(
             id: Guid.NewGuid().ToString(),
             email: request.Email,
-            emailVerified: false,
-            created:  DateTime.UtcNow,
-            username: request.UserName,
+            emailConfirmed: false,
+            userName: request.UserName,
             passwordHash: "",
             role: "bruger"
             );
-        user.PasswordHash = passwordHasher.HashPassword(user, request.Password);
+        user.PasswordHash = passwordHasher.HashPassword(user, request.Password); // her?
+        user.Created = DateTime.UtcNow;
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
         return new AuthUserInfo(user.Id, user.UserName,  user.Role);

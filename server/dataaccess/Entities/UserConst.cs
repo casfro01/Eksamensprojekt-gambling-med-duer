@@ -2,14 +2,13 @@
 
 public partial class User
 {
-    public User(string id, string username, string email, bool emailVerified, string passwordHash, string role, DateTime created)
+    public User(string id, string userName, string email, bool emailConfirmed, string passwordHash, string role)
     {
         Id = id;
-        UserName  = username;
+        UserName  = userName;
         Email = email;
-        EmailConfirmed = emailVerified;
+        EmailConfirmed = emailConfirmed;
         PasswordHash = passwordHash;
         Role = role;
-        Created = created;
     }
 }
