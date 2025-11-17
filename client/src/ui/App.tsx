@@ -1,5 +1,5 @@
 import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
-import Login from "./pages/login/Login.tsx";
+import Login from "./pages/login/login.tsx";
 import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
 

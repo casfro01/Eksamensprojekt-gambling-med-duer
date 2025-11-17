@@ -14,7 +14,12 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
 {
     public AuthUserInfo Authenticate(LoginRequest request)
     {
-        throw new NotImplementedException();
+        var getUser = dbContext.Users.First(u => u.Email == request.Email);
+        var result = passwordHasher.VerifyHashedPassword(getUser, getUser.PasswordHash, request.Password);
+
+        var passwordResult = result == PasswordVerificationResult.Success;
+
+        return passwordResult ? new AuthUserInfo(getUser.Id, getUser.Email, getUser.Role) : throw new Exception("Invalid credentials");
     }
 
     public async Task<AuthUserInfo> Register(RegisterRequest request)
