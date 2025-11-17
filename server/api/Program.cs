@@ -100,9 +100,11 @@ public class Program
             db.Database.EnsureCreated();
         }
         
-        app.MapControllers();
         app.UseOpenApi();
         app.UseSwaggerUi();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapControllers();
         
         app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(x => true));
 
