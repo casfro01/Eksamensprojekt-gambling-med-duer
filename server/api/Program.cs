@@ -1,9 +1,11 @@
 using System.Text.Json.Serialization;
+using dataaccess;
 using DataAccess.Entities;
 using DefaultNamespace;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using service;
 using service.Abstractions;
 using service.Security;
@@ -31,12 +33,12 @@ public class Program
         services.AddScoped<IPasswordHasher<User>, NSecArgon2IdPasswordHasher>();
         
         services.AddProblemDetails();
-        /*
+        
         services.AddDbContext<MyDbContext>((services, options) =>
         {
             options.UseNpgsql(services.GetRequiredService<AppOptions>().DbConnectionString);
         });
-        */
+        
         
         services.AddAuthentication(options =>
             {
@@ -91,6 +93,13 @@ public class Program
         ConfigureServices(builder.Services);
         
         var app = builder.Build();
+        
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<MyDbContext>();
+            db.Database.EnsureCreated();
+        }
+        
         app.MapControllers();
         app.UseOpenApi();
         app.UseSwaggerUi();
@@ -98,7 +107,7 @@ public class Program
         app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(x => true));
 
         // config færdig her
-        app.GenerateApiClientsFromOpenApi("/../../client/src/TemplateAPI.ts").GetAwaiter().GetResult();
+        app.GenerateApiClientsFromOpenApi("/../../client/src/ServerAPI.ts").GetAwaiter().GetResult();
         
         app.Run();
         

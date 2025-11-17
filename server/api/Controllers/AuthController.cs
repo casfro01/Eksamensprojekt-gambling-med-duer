@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.Data;
+﻿
+using Microsoft.AspNetCore.Authorization;
+using service.Models.Request;
+using service.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 using service.Abstractions;
-using service.Models.Responses;
 using service.Security;
 
 namespace api.Controllers;
@@ -14,7 +15,7 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
     [HttpPost]
     [Route("login")]
     [AllowAnonymous]
-    public async Task<LoginResponse> Login([FromBody] LoginRequest request)
+    public async Task<LoginResponse> Login([FromBody]LoginRequest request)
     {
         var userInfo = service.Authenticate(request);
         var token = tokenService.CreateToken(userInfo);
