@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace dataaccess;
 
@@ -8,5 +9,7 @@ public class MyDbContext : DbContext
         : base(options)
     {
     }
+    
+    public virtual DbSet<User> Users { get; set; }
     
 }

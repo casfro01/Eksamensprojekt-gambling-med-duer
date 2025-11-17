@@ -4,7 +4,7 @@ using service.Models.Responses;
 
 namespace service.Abstractions;
 
-public class IAuthService
+public interface IAuthService
 {
     AuthUserInfo Authenticate(LoginRequest request);
     Task<AuthUserInfo> Register(RegisterRequest request);
