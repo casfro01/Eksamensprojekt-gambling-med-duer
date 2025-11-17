@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using service;
 using service.Abstractions;
+using service.Models.Request;
+using service.Models.Responses;
 using service.Security;
 
 namespace api;
@@ -31,7 +33,7 @@ public class Program
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, JwtService>();
         services.AddScoped<IPasswordHasher<User>, NSecArgon2IdPasswordHasher>();
-        
+        services.AddScoped<IService<BaseBoardResponse, CreateBoardDto, UpdateBoardDto>, BoardService>();
         services.AddProblemDetails();
         
         services.AddDbContext<MyDbContext>((services, options) =>

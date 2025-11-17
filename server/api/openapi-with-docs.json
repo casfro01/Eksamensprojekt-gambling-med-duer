@@ -110,6 +110,29 @@
           }
         }
       }
+    },
+    "/api/board/GetBoards": {
+      "get": {
+        "tags": [
+          "Board"
+        ],
+        "operationId": "Board_GetBoards",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BaseBoardResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -173,6 +196,15 @@
             "type": "string"
           },
           "role": {
+            "type": "string"
+          }
+        }
+      },
+      "BaseBoardResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
             "type": "string"
           }
         }
