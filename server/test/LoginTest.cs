@@ -25,6 +25,7 @@ public class LoginTest(MyDbContext ctx, IAuthService authService, ISeeder seeder
     [Fact]
     public async Task TestLogin_InvalidLoginDetails()
     {
-        
+        LoginRequest req = new LoginRequest(Email: "This@lokks.right", Password: "Password");
+        Assert.ThrowsAny<Exception>(() => authService.Authenticate(req));
     }
 }
