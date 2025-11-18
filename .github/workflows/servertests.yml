@@ -28,4 +28,4 @@ jobs:
         # run: dotnet run --no-build --configuration Release --project ./server/api/api.csproj
 
       - name: Test
-        run: dotnet test ./server/tests/tests.csproj
+        run: dotnet test ./server/test/test.csproj
