@@ -19,12 +19,14 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
 
         var passwordResult = result == PasswordVerificationResult.Success;
 
-        return passwordResult ? new AuthUserInfo(getUser.Id, getUser.Email, getUser.Role.ToString()) : throw new Exception("Invalid credentials");
+        return passwordResult ? new AuthUserInfo(getUser.Id, getUser.FullName, getUser.Role.ToString()) : throw new Exception("Invalid credentials");
     }
 
     public async Task<AuthUserInfo> Register(RegisterRequest request)
     {
         Validator.ValidateObject(request, new ValidationContext(request), true);
+        
+        if (dbContext.Users.Any(u => u.Email == request.Email)) throw new ValidationException("Email already exists");
         
         var user = new User(
             id: Guid.NewGuid().ToString(),

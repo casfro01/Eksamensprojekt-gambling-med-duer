@@ -1,4 +1,5 @@
 ﻿using api;
+using api.Seeder;
 using dataaccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ public class Startup
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
         Program.ConfigureServices(services, WebApplication.CreateBuilder());
         services.RemoveAll(typeof(MyDbContext));
-
+        
         services.AddScoped<MyDbContext>(factory =>
         {
             var postgreSqlContainer = new PostgreSqlBuilder().Build();
@@ -29,6 +30,5 @@ public class Startup
             ctx.Database.EnsureCreated();
             return ctx;
         });
-        
     }
 }

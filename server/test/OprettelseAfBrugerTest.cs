@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using api.Seeder;
 using dataaccess;
 using DataAccess.Entities;
 using dataaccess.Enums;
@@ -9,7 +10,7 @@ using service.Models.Request;
 
 namespace test;
 
-public class OprettelseAfBrugerTest(MyDbContext ctx, IAuthService authService, ITestOutputHelper helper)
+public class OprettelseAfBrugerTest(MyDbContext ctx, IAuthService authService, ISeeder seeder)
 {
     [Theory]
     [InlineData("JohnD", "john.doe@example.com")]
@@ -28,6 +29,15 @@ public class OprettelseAfBrugerTest(MyDbContext ctx, IAuthService authService, I
         var first = ctx.Users.First(u => u.Email == email);
         Assert.NotNull(first.PasswordHash);
         Assert.NotEqual(first.PasswordHash, password);
+    }
+    
+    [Fact]
+    public async Task TestUserCreation_ErrorWithSameEmail()
+    {
+        await seeder.Seed();
+        var user = ctx.Users.First();
+        RegisterRequest req = new RegisterRequest(Email: user.Email, FullName: "JEns Jens Jens", Password: "Password");
+        await Assert.ThrowsAnyAsync<ValidationException>(async () => await authService.Register(req));
     }
     
     
