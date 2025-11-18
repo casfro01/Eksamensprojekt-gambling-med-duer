@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using dataaccess.Enums;
 
 namespace DataAccess.Entities;
 
@@ -19,7 +20,7 @@ public partial class User
     [JsonIgnore]
     public string PasswordHash { get; set; } = null!;
 
-    public string Role { get; set; } = null!;
+    public Role Role { get; set; } = Role.Bruger;
     
     public DateTime? Created { get; set; }
 }

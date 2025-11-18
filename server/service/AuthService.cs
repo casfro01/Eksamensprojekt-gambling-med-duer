@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using dataaccess;
 using DataAccess.Entities;
+using dataaccess.Enums;
 using Microsoft.AspNetCore.Components.Sections;
 using Microsoft.AspNetCore.Identity;
 using service.Abstractions;
@@ -31,7 +32,7 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
             emailConfirmed: false,
             userName: request.UserName,
             passwordHash: "",
-            role: "bruger"
+            role: Role.Bruger
             );
         user.PasswordHash = passwordHasher.HashPassword(user, request.Password); // her?
         user.Created = DateTime.UtcNow;
