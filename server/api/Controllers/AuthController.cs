@@ -35,7 +35,7 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
     public async Task<RegisterResponse> Register([FromBody] RegisterRequest request)
     {
         var userInfo = await service.Register(request);
-        return new RegisterResponse(UserName: userInfo.UserName);
+        return new RegisterResponse(FullName: userInfo.FullName);
     }
 
     [HttpPost]

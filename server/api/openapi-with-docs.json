@@ -192,7 +192,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "userName": {
+          "fullName": {
             "type": "string"
           }
         }
@@ -202,9 +202,6 @@
         "additionalProperties": false,
         "properties": {
           "email": {
-            "type": "string"
-          },
-          "userName": {
             "type": "string"
           },
           "password": {
@@ -222,7 +219,7 @@
           "id": {
             "type": "string"
           },
-          "userName": {
+          "fullName": {
             "type": "string"
           },
           "role": {
