@@ -1,9 +1,12 @@
 ﻿import './home.css';
+import {useNavigate} from 'react-router';
 
 export default function Home() {
+    const navigate = useNavigate();
     const handlePlayClick = () => {
         // Navigerer til selve spil-siden men det implementerer vi senere:D
         console.log('Gå til spil!');
+        navigate('/select');
     };
 
     return (
