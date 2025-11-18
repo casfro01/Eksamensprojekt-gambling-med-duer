@@ -12,6 +12,7 @@ export default function SelectNumbers() {
         canSubmit
     } = useSelectNumbers();
 
+    // TODO : flyt denne metode til en ts fil i egen funktion
     const handleSubmit = () => {
         if (canSubmit()) {
             console.log('Spillebræt:', {
@@ -20,6 +21,7 @@ export default function SelectNumbers() {
                 price: calculatePrice()
             });
             // Send data videre til backend (senere)!!!
+            // TODO : brug toast i stedet
             alert(`Bræt oprettet! Tal: ${selectedNumbers.sort((a, b) => a - b).join(', ')}`);
         }
     };
