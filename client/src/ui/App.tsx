@@ -2,6 +2,7 @@ import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 import Login from "./pages/login/login.tsx";
 import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
+import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
 
 export default function App() {
     return (
@@ -20,6 +21,10 @@ export default function App() {
                         {
                             path: "/",
                             element: <Home/>  // Forside = Home
+                        },
+                        {
+                            path: "/Select",
+                            element: <SelectNumbers/>  // Forside = Home
                         }
                         // Flere routes kommer her senere (dashboard, games, osv.)
                     ]
