@@ -20,7 +20,7 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
 
         var passwordResult = result == PasswordVerificationResult.Success;
 
-        return passwordResult ? new AuthUserInfo(getUser.Id, getUser.Email, getUser.Role) : throw new Exception("Invalid credentials");
+        return passwordResult ? new AuthUserInfo(getUser.Id, getUser.Email, getUser.Role.ToString()) : throw new Exception("Invalid credentials");
     }
 
     public async Task<AuthUserInfo> Register(RegisterRequest request)
@@ -38,7 +38,7 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
         user.Created = DateTime.UtcNow;
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
-        return new AuthUserInfo(user.Id, user.UserName,  user.Role);
+        return new AuthUserInfo(user.Id, user.UserName,  user.Role.ToString());
     }
 
     public AuthUserInfo? GetUserInfo(ClaimsPrincipal principal)
