@@ -1,6 +1,6 @@
 ﻿import { atom } from "jotai";
 import { atomWithStorage, createJSONStorage } from "jotai/utils";
-import { AuthClient } from "../ServerAPI.ts"
+import { authClient } from "../api-clients.ts"
 
 // Storage key for JWT
 export const TOKEN_KEY = "token";
@@ -19,6 +19,6 @@ export const userInfoAtom = atom(async (get) => {
     const token = get(tokenAtom);
     if (!token) return null;
     // Fetch user-info
-    const userInfo = await AuthClient.;
+    const userInfo = await authClient.userInfo();
     return userInfo;
 });

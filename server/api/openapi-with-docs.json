@@ -200,15 +200,23 @@
       "RegisterRequest": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "email",
+          "fullName"
+        ],
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "minLength": 1
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "minLength": 6
           },
           "fullName": {
-            "type": "string"
+            "type": "string",
+            "minLength": 5
           }
         }
       },
