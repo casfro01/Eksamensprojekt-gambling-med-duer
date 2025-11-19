@@ -1,5 +1,6 @@
 ﻿import './selectNumbers.css';
 import { useSelectNumbers } from './useSelectNumbers';
+import { handleSelectNumbers } from './handleSelectNumbers';
 
 export default function SelectNumbers() {
     const {
@@ -12,16 +13,8 @@ export default function SelectNumbers() {
         canSubmit
     } = useSelectNumbers();
 
-    const handleSubmit = () => {
-        if (canSubmit()) {
-            console.log('Spillebræt:', {
-                numbers: selectedNumbers.sort((a, b) => a - b),
-                weeks: numberOfWeeks,
-                price: calculatePrice()
-            });
-            // Send data videre til backend (senere)!!!
-            alert(`Bræt oprettet! Tal: ${selectedNumbers.sort((a, b) => a - b).join(', ')}`);
-        }
+    const handleSubmit = () => {  
+        handleSelectNumbers(selectedNumbers, numberOfWeeks, calculatePrice, canSubmit);
     };
 
     return (
