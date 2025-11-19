@@ -1,11 +1,13 @@
-﻿import { AuthClient, type LoginRequest } from '../../../utils/ServerAPI.ts';
+﻿import type {LoginRequest} from "../../../core/ServerAPI.ts";
+import {authClient} from "../../../core/api-clients.ts";
 
 export const handleLogin = async (
     e: React.FormEvent,
     email: string,
     password: string,
     setError: (error: string) => void,
-    setLoading: (loading: boolean) => void
+    setLoading: (loading: boolean) => void,
+    setJwt: (token: string) => void,
 ) => {
     e.preventDefault();
 
@@ -22,7 +24,6 @@ export const handleLogin = async (
 
     try {
         // Opret AuthClient instance
-        const authClient = new AuthClient('http://localhost:5000');
 
         // Lav login request
         const loginRequest: LoginRequest = {
@@ -35,7 +36,8 @@ export const handleLogin = async (
 
         // Gem token i localStorage
         if (response.jwt) {
-            localStorage.setItem('token', response.jwt);
+            setJwt(response.jwt);
+            //localStorage.setItem('token', response.jwt);
             console.log('Login succesfuld!', response);
         }
 

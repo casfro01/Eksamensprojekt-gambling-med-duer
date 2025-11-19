@@ -13,11 +13,12 @@ export default function Login(){
         error,
         setError,
         loading,
-        setLoading
+        setLoading,
+        setJwt
     } = useLogin();
 
     const onSubmit = (e: React.FormEvent) => {
-        handleLogin(e, email, password, setError, setLoading);
+        handleLogin(e, email, password, setError, setLoading, setJwt);
     };
     
     return (
@@ -25,7 +26,7 @@ export default function Login(){
             <div className="login-box">
                 <h1 className="login-title">Log ind</h1>
 
-                <form onSubmit={handleLogin} className="login-form">
+                <form onSubmit={onSubmit} className="login-form">
                     {/* Email input */}
                     <div className="input-group">
                         <label htmlFor="email">Email</label>

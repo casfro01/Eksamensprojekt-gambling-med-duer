@@ -1,6 +1,11 @@
 ﻿{
   "extends": "../../tsconfig.settings.json",
   "include": ["**/*.ts", "**/*.tsx", "../vite-env.d.ts"],
+  /**tilføjet*/
+  "compilerOptions": {
+    "outDir": "../../dist/utils",
+    "tsBuildInfoFile": "../../dist/utils/.tsbuildinfo"
+  },
   "references": [{
     "path": "../core"
   }]
