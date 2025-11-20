@@ -20,4 +20,6 @@ public class TransactionController(IService<BaseTransactionResponse, CreateTrans
     {
         return await service.Create(dto);
     }
+    
+    // ved køb af en plade, så skal nummrene bare sendes til serversiden og derefter opdateres deres balance - kan evt. refreshe client siden og hente balancen igen
 }

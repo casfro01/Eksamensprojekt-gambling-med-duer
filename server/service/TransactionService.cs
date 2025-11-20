@@ -29,7 +29,7 @@ public class TransactionService(MyDbContext ctx) : IService<BaseTransactionRespo
         Transaction trans = new Transaction
         {
             Id = Guid.NewGuid().ToString(),
-            Created = DateTime.Now,
+            Created = DateTime.UtcNow,
             User = user,
             Amount = request.Amount,
             MobilePayId = request.MobilePayId,
