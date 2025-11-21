@@ -7,6 +7,7 @@ namespace DataAccess.Entities;
 public class Transaction
 {
     [Key]
+    [Sieve(CanSort = true)]
     public string Id { get; set; } = null!;
 
     [Required]

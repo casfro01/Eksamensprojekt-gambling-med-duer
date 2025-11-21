@@ -47,7 +47,7 @@ public class TransactionService(MyDbContext ctx, ISieveProcessor processor) : IS
     {
         Validator.ValidateObject(request, new ValidationContext(request), true);
         
-        Transaction trans = ctx.Transactions.First(t => t.Id == request.Id);
+        Transaction trans = ctx.Transactions.Include(t => t.User).First(t => t.Id == request.Id);
         trans.Status = request.PaymentStatus; 
         await ctx.SaveChangesAsync(); 
         return new BaseTransactionResponse(trans);
