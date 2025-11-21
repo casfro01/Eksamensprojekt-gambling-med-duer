@@ -85,9 +85,10 @@ public class Program
         services.AddControllers()
         .AddJsonOptions(options =>
         {
+            options.JsonSerializerOptions.WriteIndented = true;
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
-
+        
         services.AddCors();
     }
     public static void Main(string[] args)

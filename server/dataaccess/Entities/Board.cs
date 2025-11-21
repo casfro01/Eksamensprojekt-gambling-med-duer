@@ -8,7 +8,7 @@ public class Board
     
     public User User { get; set; } = null!;
     
-    public virtual List<Game> Games  { get; set; } = new List<Game>();
+    public virtual ICollection<Game> Games  { get; set; } = new List<Game>();
     
     public List<int> PlayedNumbers { get; set; } = new List<int>();
 
