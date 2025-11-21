@@ -163,6 +163,105 @@
           }
         }
       }
+    },
+    "/api/Transaction/CreatePendingTransactions": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_CreatePendingTransactions",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransactionDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseTransactionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Transaction/UpdatePaymentStatus": {
+      "put": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_UpdatePaymentStatus",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTransactionDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseTransactionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Transaction/GetTransactions": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_GetTransactions",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SieveModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BaseTransactionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -272,6 +371,148 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "BaseTransactionResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "mobilePayId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PaymentStatus"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PaymentStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enum-names": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ],
+        "x-enum-varnames": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ],
+        "x-enumNames": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ],
+        "x-enum-descriptions": [
+          null,
+          null,
+          null
+        ],
+        "x-enumDescriptions": [
+          null,
+          null,
+          null
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "CreateTransactionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mobilePayId",
+          "amount",
+          "email"
+        ],
+        "properties": {
+          "mobilePayId": {
+            "type": "string",
+            "minLength": 4
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1
+          }
+        }
+      },
+      "UpdateTransactionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "paymentStatus"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "paymentStatus": {
+            "$ref": "#/components/schemas/PaymentStatus"
+          }
+        }
+      },
+      "SieveModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SieveModelOfFilterTermAndSortTerm"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "SieveModelOfFilterTermAndSortTerm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "filters": {
+            "type": "string",
+            "nullable": true
+          },
+          "sorts": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "nullable": true
           }
         }
       }

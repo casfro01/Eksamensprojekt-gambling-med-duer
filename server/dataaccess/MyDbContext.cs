@@ -14,4 +14,6 @@ public class MyDbContext : DbContext
     public virtual DbSet<Board> Boards { get; set; }
     
     public virtual DbSet<Game> Games { get; set; }
+    
+    public virtual DbSet<Transaction> Transactions { get; set; }
 }

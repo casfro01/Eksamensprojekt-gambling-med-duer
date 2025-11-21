@@ -1,8 +1,10 @@
-﻿using Bogus;
+﻿using System.Transactions;
+using Bogus;
 using dataaccess;
 using DataAccess.Entities;
 using dataaccess.Enums;
 using Microsoft.AspNetCore.Identity;
+using Transaction = DataAccess.Entities.Transaction;
 
 namespace api.Seeder;
 
@@ -49,6 +51,18 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
             ]);
         var boards = boardFaker.Generate(25);
         context.Boards.AddRange(boards);
+        await context.SaveChangesAsync();
+
+
+        var transactionFaker = new Faker<Transaction>()
+            .RuleFor(t => t.Id, f => Guid.NewGuid().ToString())
+            .RuleFor(t => t.User, f => f.PickRandom(users))
+            .RuleFor(t => t.Amount, f => f.PickRandom(nums))
+            .RuleFor(t => t.Created, DateTime.UtcNow)
+            .RuleFor(t => t.MobilePayId, f => Guid.NewGuid().ToString())
+            .RuleFor(t => t.Status, f => f.PickRandom<PaymentStatus>());
+        var transactions = transactionFaker.Generate(500);
+        context.Transactions.AddRange(transactions);
         await context.SaveChangesAsync();
         
         context.ChangeTracker.Clear();
