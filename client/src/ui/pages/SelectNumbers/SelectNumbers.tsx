@@ -1,5 +1,6 @@
 ﻿import './selectNumbers.css';
 import { useSelectNumbers } from './useSelectNumbers';
+import ProfileButton from '../../components/ProfileButton';
 
 
 export default function SelectNumbers() {
@@ -29,6 +30,7 @@ export default function SelectNumbers() {
 
     return (
         <div className="selectnumbers-container">
+            <ProfileButton />
             <div className="selectnumbers-content">
                 {/* Header */}
                 <header className="selectnumbers-header">
