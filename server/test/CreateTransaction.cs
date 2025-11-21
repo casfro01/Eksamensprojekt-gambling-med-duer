@@ -8,7 +8,7 @@ using service.Models.Responses;
 
 namespace test;
 
-public class CreateTransaction(MyDbContext ctx, IService<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto> service, ISeeder seeder)
+public class CreateTransaction(MyDbContext ctx, IServiceWithSieve<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto> service, ISeeder seeder)
 {
     [Theory]
     [InlineData("MP01", 50)]
@@ -20,6 +20,7 @@ public class CreateTransaction(MyDbContext ctx, IService<BaseTransactionResponse
     {
         await seeder.Seed();
         var user = ctx.Users.First();
+        await ctx.Transactions.ExecuteDeleteAsync(cancellationToken: TestContext.Current.CancellationToken);
         var dto = new CreateTransactionDto
         {
             Amount = amount,
