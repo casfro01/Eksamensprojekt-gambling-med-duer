@@ -15,9 +15,10 @@ public class TransactionService(MyDbContext ctx, ISieveProcessor processor) : IS
 {
     public async Task<List<BaseTransactionResponse>> Get(SieveModel model)
     {
-        IQueryable<Transaction> query = ctx.Transactions;
+        IQueryable<Transaction> query = ctx.Transactions.Include(t => t.User);
         query = processor.Apply(model, query);
-        return (from transaction in await query.ToListAsync() select new BaseTransactionResponse(transaction)).ToList();
+        var res = await query.ToListAsync();
+        return (from transaction in res select new BaseTransactionResponse(transaction)).ToList();
     }
 
     public async Task<BaseTransactionResponse> Create(CreateTransactionDto request)

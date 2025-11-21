@@ -164,28 +164,39 @@
         }
       }
     },
-    "/api/Transaction/GetPendingTransactions": {
-      "get": {
+    "/api/Transaction/CreatePendingTransactions": {
+      "post": {
         "tags": [
           "Transaction"
         ],
-        "operationId": "Transaction_GetPendingTransactions",
+        "operationId": "Transaction_CreatePendingTransactions",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransactionDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BaseTransactionResponse"
-                  }
+                  "$ref": "#/components/schemas/BaseTransactionResponse"
                 }
               }
             }
           }
         }
-      },
+      }
+    },
+    "/api/Transaction/UpdatePaymentStatus": {
       "put": {
         "tags": [
           "Transaction"
@@ -215,7 +226,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/Transaction/GetTransactions": {
       "post": {
         "tags": [
           "Transaction"
@@ -243,38 +256,6 @@
                   "items": {
                     "$ref": "#/components/schemas/BaseTransactionResponse"
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Transaction/CreatePendingTransactions": {
-      "post": {
-        "tags": [
-          "Transaction"
-        ],
-        "operationId": "Transaction_CreatePendingTransactions",
-        "requestBody": {
-          "x-name": "dto",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTransactionDto"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseTransactionResponse"
                 }
               }
             }
