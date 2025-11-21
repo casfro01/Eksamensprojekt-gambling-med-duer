@@ -1,7 +1,6 @@
 ﻿import './selectNumbers.css';
 import { useSelectNumbers } from './useSelectNumbers';
 import ProfileButton from '../../components/ProfileButton';
-import { handleSelectNumbers } from './handleSelectNumbers';
 
 export default function SelectNumbers() {
     const {
