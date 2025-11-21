@@ -8,7 +8,7 @@ using service.Models.Responses;
 
 namespace test;
 
-public class CreateTransaction(MyDbContext ctx, IService<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDTO> service, ISeeder seeder)
+public class CreateTransaction(MyDbContext ctx, IService<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto> service, ISeeder seeder)
 {
     [Theory]
     [InlineData("MP01", 50)]

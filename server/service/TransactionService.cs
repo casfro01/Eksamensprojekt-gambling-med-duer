@@ -2,22 +2,22 @@
 using dataaccess;
 using DataAccess.Entities;
 using dataaccess.Enums;
+using Microsoft.EntityFrameworkCore;
 using service.Abstractions;
 using service.Models.Request;
 using service.Models.Responses;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace service;
 
-public class TransactionService(MyDbContext ctx) : IService<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDTO>
+public class TransactionService(MyDbContext ctx, ISieveProcessor processor) : IServiceWithSieve<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto>
 {
-    public Task<List<BaseTransactionResponse>> Get()
+    public async Task<List<BaseTransactionResponse>> Get(SieveModel model)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<BaseTransactionResponse> Get(string id)
-    {
-        throw new NotImplementedException();
+        IQueryable<Transaction> query = ctx.Transactions;
+        query = processor.Apply(model, query);
+        return (from transaction in await query.ToListAsync() select new BaseTransactionResponse(transaction)).ToList();
     }
 
     public async Task<BaseTransactionResponse> Create(CreateTransactionDto request)
@@ -42,9 +42,14 @@ public class TransactionService(MyDbContext ctx) : IService<BaseTransactionRespo
         return new BaseTransactionResponse(trans);
     }
 
-    public Task<BaseTransactionResponse> Update(UpdateTransactionDTO request)
+    public async Task<BaseTransactionResponse> Update(UpdateTransactionDto request)
     {
-        throw new NotImplementedException();
+        Validator.ValidateObject(request, new ValidationContext(request), true);
+        
+        Transaction trans = ctx.Transactions.First(t => t.Id == request.Id);
+        trans.Status = request.PaymentStatus; 
+        await ctx.SaveChangesAsync(); 
+        return new BaseTransactionResponse(trans);
     }
 
     public Task<BaseTransactionResponse> Delete(string id)

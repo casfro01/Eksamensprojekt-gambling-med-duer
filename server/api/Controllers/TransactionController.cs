@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using service.Abstractions;
 using service.Models.Request;
 using service.Models.Responses;
+using Sieve.Models;
 
 namespace api.Controllers;
 
 [ApiController]
 [Route("api/[Controller]")]
-public class TransactionController(IService<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDTO> service) : ControllerBase
+public class TransactionController(IServiceWithSieve<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto> service) : ControllerBase
 {
     [HttpGet(nameof(GetPendingTransactions))]
     public async Task<List<BaseTransactionResponse>> GetPendingTransactions()
@@ -16,9 +18,23 @@ public class TransactionController(IService<BaseTransactionResponse, CreateTrans
     }
     
     [HttpPost(nameof(GetPendingTransactions))]
+    [AllowAnonymous]
     public async Task<BaseTransactionResponse> CreatePendingTransactions([FromBody]CreateTransactionDto dto)
     {
         return await service.Create(dto);
+    }
+    
+    [HttpPut(nameof(GetPendingTransactions))]
+    public async Task<BaseTransactionResponse> UpdatePaymentStatus([FromBody]UpdateTransactionDto dto)
+    {
+        return await service.Update(dto);
+    }
+
+    [HttpPost(nameof(GetPendingTransactions))]
+    [AllowAnonymous]
+    public async Task<List<BaseTransactionResponse>> GetTransactions([FromBody]SieveModel model)
+    {
+        return await service.Get(model);
     }
     
     // ved køb af en plade, så skal nummrene bare sendes til serversiden og derefter opdateres deres balance - kan evt. refreshe client siden og hente balancen igen
