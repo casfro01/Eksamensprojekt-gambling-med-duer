@@ -4,6 +4,10 @@ import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
 import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import Admin from "./pages/Admin/admin";  
+import CreateUser from "./pages/admin/CreateUser";
+import ViewPlayers from "./pages/admin/ViewPlayers";  
+import ViewBoards from "./pages/admin/ViewBoards"; 
 
 export default function App() {
     return (
@@ -30,6 +34,25 @@ export default function App() {
                         {
                             path: "/profile",
                             element: <UserProfile/>
+                        },
+                        {
+                            path: "/admin",  
+                            element: <Admin/>, 
+                            children: [  
+                                {
+                                    path: "create-user",
+                                    element: <CreateUser/>
+                                },
+                                {
+                                    path: "players",
+                                    element: <ViewPlayers/>
+                                },
+                                {
+                                    path: "boards",
+                                    element: <ViewBoards/>
+                                }
+                                // Tilføj flere admin routes senere
+                            ]
                         }
                         // Flere routes kommer her senere (dashboard, games, osv.)
                     ]

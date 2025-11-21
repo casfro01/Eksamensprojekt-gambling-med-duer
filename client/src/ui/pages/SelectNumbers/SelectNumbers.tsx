@@ -13,7 +13,7 @@ export default function SelectNumbers() {
         calculateTotalPrice,
         canSubmit
     } = useSelectNumbers();
-
+        
     const handleSubmit = () => {
         if (canSubmit()) {
             const pricePerWeek = calculatePricePerWeek();

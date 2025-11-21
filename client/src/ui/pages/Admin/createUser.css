@@ -1,0 +1,133 @@
+﻿.create-user-container {
+    max-width: 600px;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.create-user-container h1 {
+    font-size: 32px;
+    color: #EB5757;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 32px;
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="password"] {
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #EB5757;
+}
+
+.password-input-group {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.password-input-group input {
+    flex: 1;
+}
+
+.toggle-password-btn {
+    background: #f0f0f0;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0 16px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    min-width: 50px;
+}
+
+.toggle-password-btn:hover {
+    background: #e0e0e0;
+    border-color: #EB5757;
+}
+
+.error-text {
+    color: #c33;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.hint {
+    font-size: 13px;
+    color: #999;
+    margin-top: 4px;
+}
+
+.info-box {
+    background: #e3f2fd;
+    border-left: 4px solid #2196F3;
+    padding: 16px;
+    border-radius: 8px;
+    color: #1565C0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.submit-btn {
+    padding: 16px;
+    background: linear-gradient(135deg, #EB5757, #d94545);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(235, 87, 87, 0.4);
+}
