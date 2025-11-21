@@ -412,11 +412,7 @@ export interface BaseTransactionResponse {
     created?: string;
 }
 
-export enum PaymentStatus {
-    Pending = 0,
-    Accepted = 1,
-    Rejected = 2,
-}
+export type PaymentStatus = 0 | 1 | 2;
 
 export interface CreateTransactionDto {
     mobilePayId: string;
