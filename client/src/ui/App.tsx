@@ -3,6 +3,7 @@ import Login from "./pages/login/login.tsx";
 import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
 import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 export default function App() {
     return (
@@ -25,6 +26,10 @@ export default function App() {
                         {
                             path: "/Select",
                             element: <SelectNumbers/>  // Forside = Home
+                        },
+                        {
+                            path: "/profile",
+                            element: <UserProfile/>
                         }
                         // Flere routes kommer her senere (dashboard, games, osv.)
                     ]
