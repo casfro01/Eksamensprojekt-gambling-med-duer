@@ -278,6 +278,7 @@ export interface BaseBoardResponse {
 
 export interface BaseGameResponse {
     id?: string;
+    startTime?: string;
     winningBoardIds?: string[];
 }
 
