@@ -1,6 +1,7 @@
 ﻿import './selectNumbers.css';
 import { useSelectNumbers } from './useSelectNumbers';
 import ProfileButton from '../../components/ProfileButton';
+import { handleSubmit } from './handleSubmit';
 
 export default function SelectNumbers() {
     const {
@@ -13,27 +14,9 @@ export default function SelectNumbers() {
         calculateTotalPrice,
         canSubmit
     } = useSelectNumbers();
-        
-    const handleSubmit = () => {
-        if (canSubmit()) {
-            const pricePerWeek = calculatePricePerWeek();
-            const totalPrice = calculateTotalPrice();
 
-            console.log('Spillebræt:', {
-                numbers: selectedNumbers.sort((a, b) => a - b),
-                weeks: numberOfWeeks,
-                pricePerWeek: pricePerWeek,
-                totalPrice: totalPrice,
-                firstPayment: pricePerWeek
-            });
-
-            // Alert besked
-            if (numberOfWeeks === 1) {
-                alert(`Bræt oprettet!\n\nTal: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\n\nDu betaler ${pricePerWeek} DKK nu.`);
-            } else {
-                alert(`Bræt oprettet!\n\nTal: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\n\nDu betaler ${pricePerWeek} DKK nu.\nDerefter ${pricePerWeek} DKK ugentligt i ${numberOfWeeks - 1} ${numberOfWeeks - 1 === 1 ? 'uge' : 'uger'} mere.\n\nSamlet: ${totalPrice} DKK`);
-            }
-        }
+    const onSubmit = () => {
+        handleSubmit(selectedNumbers, numberOfWeeks, calculatePricePerWeek, calculateTotalPrice, canSubmit);
     };
 
     return (
@@ -41,13 +24,11 @@ export default function SelectNumbers() {
             <ProfileButton />
 
             <div className="selectnumbers-content">
-                {/* Header */}
                 <header className="selectnumbers-header">
                     <h1>Vælg dine numre</h1>
                     <p>Vælg mellem 5-8 numre fra 1-16</p>
                 </header>
 
-                {/* Info bar */}
                 <div className="info-bar">
                     <div className="info-item">
                         <span className="info-label">Valgte tal:</span>
@@ -59,7 +40,6 @@ export default function SelectNumbers() {
                     </div>
                 </div>
 
-                {/* Number grid */}
                 <div className="number-grid">
                     {Array.from({ length: 16 }, (_, i) => i + 1).map((num) => (
                         <button
@@ -75,7 +55,6 @@ export default function SelectNumbers() {
                     ))}
                 </div>
 
-                {/* Selected numbers display */}
                 {selectedNumbers.length > 0 && (
                     <div className="selected-display">
                         <h3>Dine valgte tal:</h3>
@@ -89,7 +68,6 @@ export default function SelectNumbers() {
                     </div>
                 )}
 
-                {/* Weeks selector */}
                 <div className="weeks-section">
                     <label htmlFor="weeks">Antal uger:</label>
                     <div className="weeks-input-group">
@@ -118,7 +96,6 @@ export default function SelectNumbers() {
                     <p className="weeks-hint">Spil de samme tal i op til 10 uger</p>
                 </div>
 
-                {/* Payment info box - NY SEKTION */}
                 {canSubmit() && numberOfWeeks > 1 && (
                     <div className="payment-info-box">
                         <div className="payment-icon">ℹ️</div>
@@ -130,7 +107,6 @@ export default function SelectNumbers() {
                     </div>
                 )}
 
-                {/* Price breakdown */}
                 {canSubmit() && (
                     <div className="price-breakdown">
                         <div className="price-row">
@@ -156,7 +132,6 @@ export default function SelectNumbers() {
                     </div>
                 )}
 
-                {/* Action buttons */}
                 <div className="action-buttons">
                     <button
                         className="clear-button"
@@ -167,14 +142,13 @@ export default function SelectNumbers() {
                     </button>
                     <button
                         className="submit-button"
-                        onClick={handleSubmit}
+                        onClick={onSubmit}
                         disabled={!canSubmit()}
                     >
                         Køb spillebræt ({calculatePricePerWeek()} DKK)
                     </button>
                 </div>
 
-                {/* Warning message */}
                 {selectedNumbers.length > 0 && selectedNumbers.length < 5 && (
                     <div className="warning-message">
                         ⚠️ Du skal vælge mindst 5 tal for at kunne spille
