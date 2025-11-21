@@ -9,6 +9,7 @@ import CreateUser from "./pages/Admin/CreateUser";
 import ViewPlayers from "./pages/Admin/ViewPlayers";  
 import ViewBoards from "./pages/Admin/ViewBoards"; 
 import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
+import GameHistory from './pages/Admin/GameHistory';
 
 export default function App() {
     return (
@@ -55,6 +56,10 @@ export default function App() {
                                 {
                                    path: "winning-numbers",
                                    element: <EnterWinningNumbers/> 
+                                },
+                                {
+                                    path: "history",
+                                    element: <GameHistory/>
                                 }
                                 // Tilføj flere admin routes senere
                             ]
