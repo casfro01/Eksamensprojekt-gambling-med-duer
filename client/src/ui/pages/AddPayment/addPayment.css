@@ -1,0 +1,217 @@
+﻿.add-payment-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #EB5757 0%, #8B2F2F 100%);
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.payment-content {
+    max-width: 600px;
+    width: 100%;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.back-btn {
+    background: rgba(235, 87, 87, 0.1);
+    border: none;
+    color: #EB5757;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-bottom: 24px;
+}
+
+.back-btn:hover {
+    background: rgba(235, 87, 87, 0.2);
+}
+
+.payment-content h1 {
+    font-size: 32px;
+    color: #EB5757;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 32px;
+    font-size: 16px;
+}
+
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Quick amounts */
+.quick-amounts {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quick-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+}
+
+.quick-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.quick-btn {
+    padding: 12px;
+    background: #f8f8f8;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #333;
+    transition: all 0.2s ease;
+}
+
+.quick-btn:hover {
+    background: #EB5757;
+    border-color: #EB5757;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Form group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-group input {
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #EB5757;
+}
+
+.hint {
+    font-size: 13px;
+    color: #999;
+}
+
+/* Info box */
+.info-box {
+    background: #e3f2fd;
+    border-left: 4px solid #2196F3;
+    padding: 20px;
+    border-radius: 8px;
+    color: #1565C0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.info-box strong {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.info-box ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.info-box li {
+    margin-bottom: 8px;
+}
+
+/* Payment preview */
+.payment-preview {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
+}
+
+.payment-preview h3 {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.preview-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.preview-amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: #EB5757;
+}
+
+/* Submit button */
+.submit-btn {
+    padding: 18px;
+    background: linear-gradient(135deg, #EB5757, #d94545);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(235, 87, 87, 0.3);
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(235, 87, 87, 0.4);
+}
+
+.submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .payment-content {
+        padding: 24px;
+    }
+
+    .quick-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .payment-content h1 {
+        font-size: 24px;
+    }
+}

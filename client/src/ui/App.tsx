@@ -10,6 +10,7 @@ import ViewPlayers from "./pages/Admin/ViewPlayers";
 import ViewBoards from "./pages/Admin/ViewBoards"; 
 import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
+import AddPayment from '../ui/components/AddPayment';
 
 export default function App() {
     return (
@@ -36,6 +37,10 @@ export default function App() {
                         {
                             path: "/profile",
                             element: <UserProfile/>
+                        },
+                        {
+                            path: "/add-payment",
+                            element: <AddPayment/>
                         },
                         {
                             path: "/admin",  
