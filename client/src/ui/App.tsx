@@ -6,7 +6,7 @@ import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
 import Admin from "./pages/Admin/admin";  
 import CreateUser from "./pages/admin/CreateUser";
 import ViewPlayers from "./pages/admin/ViewPlayers";  
-import ViewBoards from "./pages/admin/ViewBoards";
+import ViewBoards from "./pages/admin/ViewBoards"; 
 
 export default function App() {
     return (
@@ -27,13 +27,13 @@ export default function App() {
                             element: <Login/>
                         },
                         {
-                            path: "/selectnumbers",  // <-- Ret til lowercase
+                            path: "/select",  
                             element: <SelectNumbers/>
                         },
                         {
-                            path: "/admin",  // <-- Ret til lowercase
-                            element: <Admin/>,  // <-- Ret til Admin med stort A
-                            children: [  // <-- Tilføj children routes
+                            path: "/admin",  
+                            element: <Admin/>, 
+                            children: [  
                                 {
                                     path: "create-user",
                                     element: <CreateUser/>
