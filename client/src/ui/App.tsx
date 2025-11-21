@@ -5,9 +5,10 @@ import Home from "./pages/Home/Home";
 import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
 import UserProfile from "./pages/UserProfile/UserProfile";
 import Admin from "./pages/Admin/admin";  
-import CreateUser from "./pages/admin/CreateUser";
-import ViewPlayers from "./pages/admin/ViewPlayers";  
-import ViewBoards from "./pages/admin/ViewBoards"; 
+import CreateUser from "./pages/Admin/CreateUser";
+import ViewPlayers from "./pages/Admin/ViewPlayers";  
+import ViewBoards from "./pages/Admin/ViewBoards"; 
+import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 
 export default function App() {
     return (
@@ -50,6 +51,10 @@ export default function App() {
                                 {
                                     path: "boards",
                                     element: <ViewBoards/>
+                                },
+                                {
+                                   path: "winning-numbers",
+                                   element: <EnterWinningNumbers/> 
                                 }
                                 // Tilføj flere admin routes senere
                             ]
