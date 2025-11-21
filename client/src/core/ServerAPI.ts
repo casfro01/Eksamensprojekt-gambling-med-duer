@@ -254,24 +254,31 @@ export interface LoginRequest {
 }
 
 export interface RegisterResponse {
-    userName?: string;
+    fullName?: string;
 }
 
 export interface RegisterRequest {
-    email?: string;
-    userName?: string;
+    email: string;
     password?: string;
-    fullName?: string;
+    fullName: string;
 }
 
 export interface AuthUserInfo {
     id?: string;
-    userName?: string;
+    fullName?: string;
     role?: string;
 }
 
 export interface BaseBoardResponse {
     id?: string;
+    user?: AuthUserInfo;
+    games?: BaseGameResponse[];
+    playedNumbers?: number[];
+}
+
+export interface BaseGameResponse {
+    id?: string;
+    winningBoardIds?: string[];
 }
 
 export interface FileResponse {

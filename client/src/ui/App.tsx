@@ -3,6 +3,7 @@ import Login from "./pages/login/login.tsx";
 import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
 import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
+import UserProfile from "./pages/UserProfile/UserProfile";
 import Admin from "./pages/Admin/admin";  
 import CreateUser from "./pages/admin/CreateUser";
 import ViewPlayers from "./pages/admin/ViewPlayers";  
@@ -19,16 +20,20 @@ export default function App() {
                     element: <Outlet></Outlet>,
                     children:[
                         {
-                            path: "/",
-                            element: <Home/>
-                        },
-                        {
                             path: "/login",
-                            element: <Login/>
+                            element: <Login/>  // Forside = Login
                         },
                         {
-                            path: "/select",  
-                            element: <SelectNumbers/>
+                            path: "/",
+                            element: <Home/>  // Forside = Home
+                        },
+                        {
+                            path: "/Select",
+                            element: <SelectNumbers/>  // Forside = Home
+                        },
+                        {
+                            path: "/profile",
+                            element: <UserProfile/>
                         },
                         {
                             path: "/admin",  
@@ -49,6 +54,7 @@ export default function App() {
                                 // Tilføj flere admin routes senere
                             ]
                         }
+                        // Flere routes kommer her senere (dashboard, games, osv.)
                     ]
                 }
             ])}

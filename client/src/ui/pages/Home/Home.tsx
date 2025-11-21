@@ -1,16 +1,17 @@
-﻿import './home.css';
+﻿import './Home.css';
 import {useNavigate} from 'react-router';
+import ProfileButton from '../../components/ProfileButton';
 
 export default function Home() {
     const navigate = useNavigate();
     const handlePlayClick = () => {
-        // Navigerer til selve spil-siden men det implementerer vi senere:D
         console.log('Gå til spil!');
         navigate('/select');
     };
 
     return (
         <div className="home-container">
+            <ProfileButton />
             <div className="home-content">
                 {/* Header */}
                 <header className="home-header">

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using service.Abstractions;
 using service.Models.Request;
 using service.Models.Responses;
@@ -6,6 +7,7 @@ using service.Models.Responses;
 namespace api.Controllers;
 
 [ApiController]
+[AllowAnonymous]
 [Route("api/board")]
 public class BoardController(IService<BaseBoardResponse, CreateBoardDto, UpdateBoardDto> boardService) : ControllerBase
 {

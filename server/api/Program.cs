@@ -89,9 +89,10 @@ public class Program
         services.AddControllers()
         .AddJsonOptions(options =>
         {
+            options.JsonSerializerOptions.WriteIndented = true;
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
-
+        
         services.AddCors();
     }
     public static void Main(string[] args)
@@ -116,7 +117,7 @@ public class Program
         app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(x => true));
 
         // config færdig her
-        app.GenerateApiClientsFromOpenApi("/../../client/src/utils/ServerAPI.ts").GetAwaiter().GetResult();
+        app.GenerateApiClientsFromOpenApi("/../../client/src/core/ServerAPI.ts").GetAwaiter().GetResult();
         // for development
         using (var scope = app.Services.CreateScope())
         {
