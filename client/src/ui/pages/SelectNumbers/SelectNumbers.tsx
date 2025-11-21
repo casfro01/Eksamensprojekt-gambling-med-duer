@@ -2,7 +2,6 @@
 import { useSelectNumbers } from './useSelectNumbers';
 import ProfileButton from '../../components/ProfileButton';
 
-
 export default function SelectNumbers() {
     const {
         selectedNumbers,
@@ -10,27 +9,37 @@ export default function SelectNumbers() {
         setNumberOfWeeks,
         toggleNumber,
         clearSelection,
-        calculatePrice,
+        calculatePricePerWeek,
+        calculateTotalPrice,
         canSubmit
     } = useSelectNumbers();
 
-    // TODO : flyt denne metode til en ts fil i egen funktion
     const handleSubmit = () => {
         if (canSubmit()) {
+            const pricePerWeek = calculatePricePerWeek();
+            const totalPrice = calculateTotalPrice();
+
             console.log('Spillebræt:', {
                 numbers: selectedNumbers.sort((a, b) => a - b),
                 weeks: numberOfWeeks,
-                price: calculatePrice()
+                pricePerWeek: pricePerWeek,
+                totalPrice: totalPrice,
+                firstPayment: pricePerWeek
             });
-            // Send data videre til backend (senere)!!!
-            // TODO : brug toast i stedet
-            alert(`Bræt oprettet! Tal: ${selectedNumbers.sort((a, b) => a - b).join(', ')}`);
+
+            // Alert besked
+            if (numberOfWeeks === 1) {
+                alert(`Bræt oprettet!\n\nTal: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\n\nDu betaler ${pricePerWeek} DKK nu.`);
+            } else {
+                alert(`Bræt oprettet!\n\nTal: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\n\nDu betaler ${pricePerWeek} DKK nu.\nDerefter ${pricePerWeek} DKK ugentligt i ${numberOfWeeks - 1} ${numberOfWeeks - 1 === 1 ? 'uge' : 'uger'} mere.\n\nSamlet: ${totalPrice} DKK`);
+            }
         }
     };
 
     return (
         <div className="selectnumbers-container">
             <ProfileButton />
+
             <div className="selectnumbers-content">
                 {/* Header */}
                 <header className="selectnumbers-header">
@@ -45,8 +54,8 @@ export default function SelectNumbers() {
                         <span className="info-value">{selectedNumbers.length}/8</span>
                     </div>
                     <div className="info-item">
-                        <span className="info-label">Pris:</span>
-                        <span className="info-value highlight">{calculatePrice()} DKK</span>
+                        <span className="info-label">Pris denne uge:</span>
+                        <span className="info-value highlight">{calculatePricePerWeek()} DKK</span>
                     </div>
                 </div>
 
@@ -73,8 +82,8 @@ export default function SelectNumbers() {
                         <div className="selected-numbers">
                             {selectedNumbers.sort((a, b) => a - b).map((num) => (
                                 <span key={num} className="selected-number">
-                  {num}
-                </span>
+                                    {num}
+                                </span>
                             ))}
                         </div>
                     </div>
@@ -109,21 +118,41 @@ export default function SelectNumbers() {
                     <p className="weeks-hint">Spil de samme tal i op til 10 uger</p>
                 </div>
 
+                {/* Payment info box - NY SEKTION */}
+                {canSubmit() && numberOfWeeks > 1 && (
+                    <div className="payment-info-box">
+                        <div className="payment-icon">ℹ️</div>
+                        <div className="payment-text">
+                            <strong>Automatisk betaling:</strong>
+                            <p>Du betaler {calculatePricePerWeek()} DKK nu. Derefter trækkes {calculatePricePerWeek()} DKK ugentligt i {numberOfWeeks - 1} {numberOfWeeks - 1 === 1 ? 'uge' : 'uger'} mere.</p>
+                            <p className="total-cost">Samlet beløb: {calculateTotalPrice()} DKK</p>
+                        </div>
+                    </div>
+                )}
+
                 {/* Price breakdown */}
                 {canSubmit() && (
                     <div className="price-breakdown">
                         <div className="price-row">
-                            <span>Pris per uge:</span>
-                            <span>{calculatePrice() / numberOfWeeks} DKK</span>
+                            <span>Betaling nu:</span>
+                            <span className="highlight-price">{calculatePricePerWeek()} DKK</span>
                         </div>
-                        <div className="price-row">
-                            <span>Antal uger:</span>
-                            <span>{numberOfWeeks}</span>
-                        </div>
-                        <div className="price-row total">
-                            <span>Total:</span>
-                            <span>{calculatePrice()} DKK</span>
-                        </div>
+                        {numberOfWeeks > 1 && (
+                            <>
+                                <div className="price-row">
+                                    <span>Ugentlig betaling:</span>
+                                    <span>{calculatePricePerWeek()} DKK</span>
+                                </div>
+                                <div className="price-row">
+                                    <span>Antal uger i alt:</span>
+                                    <span>{numberOfWeeks}</span>
+                                </div>
+                                <div className="price-row total">
+                                    <span>Samlet over {numberOfWeeks} uger:</span>
+                                    <span>{calculateTotalPrice()} DKK</span>
+                                </div>
+                            </>
+                        )}
                     </div>
                 )}
 
@@ -141,7 +170,7 @@ export default function SelectNumbers() {
                         onClick={handleSubmit}
                         disabled={!canSubmit()}
                     >
-                        Køb spillebræt
+                        Køb spillebræt ({calculatePricePerWeek()} DKK)
                     </button>
                 </div>
 
