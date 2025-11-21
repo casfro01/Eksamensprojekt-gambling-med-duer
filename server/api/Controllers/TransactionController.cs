@@ -11,26 +11,21 @@ namespace api.Controllers;
 [Route("api/[Controller]")]
 public class TransactionController(IServiceWithSieve<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto> service) : ControllerBase
 {
-    [HttpGet(nameof(GetPendingTransactions))]
-    public async Task<List<BaseTransactionResponse>> GetPendingTransactions()
-    {
-        throw new NotImplementedException();
-    }
     
-    [HttpPost(nameof(GetPendingTransactions))]
+    [HttpPost(nameof(CreatePendingTransactions))]
     [AllowAnonymous]
     public async Task<BaseTransactionResponse> CreatePendingTransactions([FromBody]CreateTransactionDto dto)
     {
         return await service.Create(dto);
     }
     
-    [HttpPut(nameof(GetPendingTransactions))]
+    [HttpPut(nameof(UpdatePaymentStatus))]
     public async Task<BaseTransactionResponse> UpdatePaymentStatus([FromBody]UpdateTransactionDto dto)
     {
         return await service.Update(dto);
     }
 
-    [HttpPost(nameof(GetPendingTransactions))]
+    [HttpPost(nameof(GetTransactions))]
     [AllowAnonymous]
     public async Task<List<BaseTransactionResponse>> GetTransactions([FromBody]SieveModel model)
     {

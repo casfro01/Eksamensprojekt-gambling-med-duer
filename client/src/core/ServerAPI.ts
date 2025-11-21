@@ -244,6 +244,161 @@ export class BoardClient {
     }
 }
 
+export class TransactionClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    getPendingTransactions(): Promise<BaseTransactionResponse[]> {
+        let url_ = this.baseUrl + "/api/Transaction/GetPendingTransactions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetPendingTransactions(_response);
+        });
+    }
+
+    protected processGetPendingTransactions(response: Response): Promise<BaseTransactionResponse[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseTransactionResponse[];
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseTransactionResponse[]>(null as any);
+    }
+
+    updatePaymentStatus(dto: UpdateTransactionDto): Promise<BaseTransactionResponse> {
+        let url_ = this.baseUrl + "/api/Transaction/GetPendingTransactions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUpdatePaymentStatus(_response);
+        });
+    }
+
+    protected processUpdatePaymentStatus(response: Response): Promise<BaseTransactionResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseTransactionResponse;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseTransactionResponse>(null as any);
+    }
+
+    getTransactions(model: SieveModel): Promise<BaseTransactionResponse[]> {
+        let url_ = this.baseUrl + "/api/Transaction/GetPendingTransactions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(model);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetTransactions(_response);
+        });
+    }
+
+    protected processGetTransactions(response: Response): Promise<BaseTransactionResponse[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseTransactionResponse[];
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseTransactionResponse[]>(null as any);
+    }
+
+    createPendingTransactions(dto: CreateTransactionDto): Promise<BaseTransactionResponse> {
+        let url_ = this.baseUrl + "/api/Transaction/CreatePendingTransactions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCreatePendingTransactions(_response);
+        });
+    }
+
+    protected processCreatePendingTransactions(response: Response): Promise<BaseTransactionResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseTransactionResponse;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseTransactionResponse>(null as any);
+    }
+}
+
 export interface LoginResponse {
     jwt?: string;
 }
@@ -271,6 +426,42 @@ export interface AuthUserInfo {
 
 export interface BaseBoardResponse {
     id?: string;
+}
+
+export interface BaseTransactionResponse {
+    id?: string;
+    mobilePayId?: string;
+    amount?: number;
+    email?: string;
+    status?: PaymentStatus;
+    created?: string;
+}
+
+export enum PaymentStatus {
+    Pending = 0,
+    Accepted = 1,
+    Rejected = 2,
+}
+
+export interface CreateTransactionDto {
+    mobilePayId: string;
+    amount: number;
+    email: string;
+}
+
+export interface UpdateTransactionDto {
+    id: string;
+    paymentStatus: PaymentStatus;
+}
+
+export interface SieveModelOfFilterTermAndSortTerm {
+    filters?: string | undefined;
+    sorts?: string | undefined;
+    page?: number | undefined;
+    pageSize?: number | undefined;
+}
+
+export interface SieveModel extends SieveModelOfFilterTermAndSortTerm {
 }
 
 export interface FileResponse {
