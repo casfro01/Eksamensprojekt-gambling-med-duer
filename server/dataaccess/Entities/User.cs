@@ -19,6 +19,8 @@ public partial class User
     public string Email { get; set; } = null!;
 
     public bool EmailConfirmed { get; set; } = true;
+    
+    public List<Board> Boards { get; set; } = new List<Board>();
 
     [JsonIgnore]
     public string PasswordHash { get; set; } = null!;

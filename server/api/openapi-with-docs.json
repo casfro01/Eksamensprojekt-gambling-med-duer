@@ -359,6 +359,37 @@
         "properties": {
           "id": {
             "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/AuthUserInfo"
+          },
+          "games": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BaseGameResponse"
+            }
+          },
+          "playedNumbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "BaseGameResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "winningBoardIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

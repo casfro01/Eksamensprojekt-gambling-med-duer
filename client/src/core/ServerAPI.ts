@@ -426,6 +426,14 @@ export interface AuthUserInfo {
 
 export interface BaseBoardResponse {
     id?: string;
+    user?: AuthUserInfo;
+    games?: BaseGameResponse[];
+    playedNumbers?: number[];
+}
+
+export interface BaseGameResponse {
+    id?: string;
+    winningBoardIds?: string[];
 }
 
 export interface BaseTransactionResponse {
