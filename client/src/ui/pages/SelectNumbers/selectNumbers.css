@@ -188,6 +188,46 @@
     color: #999;
 }
 
+/* Payment info box */
+.payment-info-box {
+    background: #e3f2fd;
+    border-left: 4px solid #2196F3;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.payment-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.payment-text {
+    flex: 1;
+}
+
+.payment-text strong {
+    color: #1565C0;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.payment-text p {
+    color: #1565C0;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 4px 0;
+}
+
+.total-cost {
+    font-weight: 700;
+    margin-top: 8px !important;
+}
+
 /* Price breakdown */
 .price-breakdown {
     background: #f8f8f8;
@@ -202,6 +242,12 @@
     padding: 8px 0;
     font-size: 16px;
     color: #666;
+}
+
+.price-row .highlight-price {
+    color: #EB5757;
+    font-weight: 700;
+    font-size: 20px;
 }
 
 .price-row.total {

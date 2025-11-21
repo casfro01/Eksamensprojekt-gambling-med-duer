@@ -1,0 +1,319 @@
+.game-history-container {
+    max-width: 1400px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+}
+
+.history-header h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 16px;
+}
+
+.stats-summary {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-item {
+    background: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: #EB5757;
+}
+
+.games-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.game-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.game-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.game-main {
+    display: grid;
+    grid-template-columns: 200px 300px 1fr auto;
+    gap: 24px;
+    padding: 24px;
+    cursor: pointer;
+    align-items: center;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.game-week {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+.game-date {
+    font-size: 14px;
+    color: #999;
+}
+
+.winning-numbers-display {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.numbers-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #666;
+    font-weight: 600;
+}
+
+.winning-numbers {
+    display: flex;
+    gap: 8px;
+}
+
+.winning-num {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #333;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.game-stats {
+    display: flex;
+    gap: 16px;
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    min-width: 120px;
+}
+
+.stat-box.winning {
+    background: #d4edda;
+}
+
+.stat-number {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+}
+
+.stat-box.winning .stat-number {
+    color: #155724;
+}
+
+.stat-text {
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.expand-btn {
+    background: #f0f0f0;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+}
+
+.expand-btn:hover {
+    background: #e0e0e0;
+}
+
+.game-details {
+    border-top: 1px solid #f0f0f0;
+    padding: 24px;
+    background: #fafafa;
+}
+
+.game-details h4 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.winning-boards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.winning-board-item {
+    display: grid;
+    grid-template-columns: 200px 1fr 120px;
+    gap: 20px;
+    align-items: center;
+    padding: 16px;
+    background: white;
+    border-radius: 12px;
+    border: 2px solid #FFD700;
+}
+
+.board-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.trophy {
+    font-size: 28px;
+}
+
+.player-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.board-numbers {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.board-num {
+    background: #EB5757;
+    color: white;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.board-num.match {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #333;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+    animation: glow 1.5s infinite;
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 12px rgba(255, 215, 0, 0.6); }
+    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); }
+}
+
+.board-price {
+    text-align: right;
+    font-weight: 600;
+    color: #666;
+}
+
+.prize-calculation {
+    margin-top: 20px;
+    padding: 16px;
+    background: #e3f2fd;
+    border-left: 4px solid #2196F3;
+    border-radius: 8px;
+}
+
+.prize-calculation strong {
+    color: #1565C0;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.prize-calculation p {
+    color: #1565C0;
+    margin: 0;
+}
+
+.no-winners {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    border: 2px dashed #e0e0e0;
+}
+
+.no-winners-icon {
+    font-size: 64px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.no-winners p {
+    color: #666;
+    margin: 8px 0;
+}
+
+.no-winners-note {
+    color: #999;
+    font-size: 14px;
+    font-style: italic;
+}
+
+@media (max-width: 1024px) {
+    .game-main {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .game-stats {
+        flex-wrap: wrap;
+    }
+
+    .winning-board-item {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
