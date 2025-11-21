@@ -9,8 +9,7 @@ const price = [20, 40, 80, 160];
 
 const getNumbers = (board: DeadPigeonBoard): string[] => {
     return board.playedNumbers!
-        .map((num) => typeof num === 'number' ? num.toString() : String(num ?? '').trim())
-        .filter(Boolean);
+        .map((num) => num.toString())
 };
 
 const getPriceLabel = (board: DeadPigeonBoard): string => {

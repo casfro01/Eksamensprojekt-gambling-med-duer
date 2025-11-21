@@ -22,4 +22,10 @@ public class BoardController(IService<BaseBoardResponse, CreateBoardDto, UpdateB
     {
         return await boardService.Get(id);
     }
+
+    [HttpPost(nameof(CreateBoard))]
+    public async Task<BaseBoardResponse> CreateBoard(CreateBoardDto dto)
+    {
+        return await boardService.Create(dto);
+    }
 }
