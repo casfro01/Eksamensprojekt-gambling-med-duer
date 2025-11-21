@@ -1,0 +1,26 @@
+﻿name: Build, test and lint
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: ["main"]
+jobs:
+  frontend_build_lint_test_job:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    name: Build and lint frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install dependencies
+        run: npm clean-install
+        working-directory: ./client
+      - name: Build
+        run: npm run build
+        working-directory: ./client
+      - name: Lint
+        run: npm run lint
+        working-directory: ./client

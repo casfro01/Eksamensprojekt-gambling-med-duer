@@ -254,19 +254,18 @@ export interface LoginRequest {
 }
 
 export interface RegisterResponse {
-    userName?: string;
+    fullName?: string;
 }
 
 export interface RegisterRequest {
-    email?: string;
-    userName?: string;
+    email: string;
     password?: string;
-    fullName?: string;
+    fullName: string;
 }
 
 export interface AuthUserInfo {
     id?: string;
-    userName?: string;
+    fullName?: string;
     role?: string;
 }
 

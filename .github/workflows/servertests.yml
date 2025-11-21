@@ -1,0 +1,31 @@
+﻿name: Server Tests
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: ["main"]
+jobs:
+  backend_build_test_job:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    name: Server Build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore server.sln
+
+      - name: Build
+        run: dotnet build ./server.sln --no-restore --configuration Release
+        
+        #- name: Run
+        # run: dotnet run --no-build --configuration Release --project ./server/api/api.csproj
+
+      - name: Test
+        run: dotnet test ./server/test/test.csproj

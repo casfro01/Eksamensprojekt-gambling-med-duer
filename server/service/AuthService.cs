@@ -3,7 +3,6 @@ using System.Security.Claims;
 using dataaccess;
 using DataAccess.Entities;
 using dataaccess.Enums;
-using Microsoft.AspNetCore.Components.Sections;
 using Microsoft.AspNetCore.Identity;
 using service.Abstractions;
 using service.Models.Request;
@@ -20,17 +19,20 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
 
         var passwordResult = result == PasswordVerificationResult.Success;
 
-        return passwordResult ? new AuthUserInfo(getUser.Id, getUser.Email, getUser.Role.ToString()) : throw new Exception("Invalid credentials");
+        return passwordResult ? new AuthUserInfo(getUser.Id, getUser.FullName, getUser.Role.ToString()) : throw new Exception("Invalid credentials");
     }
 
     public async Task<AuthUserInfo> Register(RegisterRequest request)
     {
         Validator.ValidateObject(request, new ValidationContext(request), true);
+        
+        if (dbContext.Users.Any(u => u.Email == request.Email)) throw new ValidationException("Email already exists");
+        
         var user = new User(
             id: Guid.NewGuid().ToString(),
             email: request.Email,
             emailConfirmed: false,
-            userName: request.UserName,
+            fullName: request.FullName,
             passwordHash: "",
             role: Role.Bruger
             );
@@ -38,7 +40,7 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
         user.Created = DateTime.UtcNow;
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
-        return new AuthUserInfo(user.Id, user.UserName,  user.Role.ToString());
+        return new AuthUserInfo(user.Id, user.FullName,  user.Role.ToString());
     }
 
     public AuthUserInfo? GetUserInfo(ClaimsPrincipal principal)

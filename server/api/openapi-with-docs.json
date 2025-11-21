@@ -192,7 +192,7 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "userName": {
+          "fullName": {
             "type": "string"
           }
         }
@@ -200,18 +200,23 @@
       "RegisterRequest": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "email",
+          "fullName"
+        ],
         "properties": {
           "email": {
-            "type": "string"
-          },
-          "userName": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "minLength": 1
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "minLength": 6
           },
           "fullName": {
-            "type": "string"
+            "type": "string",
+            "minLength": 5
           }
         }
       },
@@ -222,7 +227,7 @@
           "id": {
             "type": "string"
           },
-          "userName": {
+          "fullName": {
             "type": "string"
           },
           "role": {
