@@ -3,13 +3,20 @@ import {useNavigate} from 'react-router';
 import ProfileButton from '../../components/ProfileButton';
 import {Suspense} from "react";
 import {UserGreeting} from "./UserGreeting.tsx";
+import {useIsValidLogin} from "../../../utils/checkLogin.ts";
 
 export default function Home() {
     const navigate = useNavigate();
 
+    const validLogin = useIsValidLogin();
+
     const handlePlayClick = () => {
         console.log('Gå til spil!');
-        navigate('/select');
+        if (validLogin) {
+            navigate('/select');
+        } else {
+            navigate('/login');
+        }
     };
 
     return (
