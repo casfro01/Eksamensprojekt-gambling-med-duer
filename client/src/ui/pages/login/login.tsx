@@ -2,8 +2,10 @@
 import './login.css';
 import { useLogin } from './useLogin.ts';
 import { handleLogin } from './handleLogin.ts';
+import { useNavigate } from "react-router";
 
 export default function Login(){
+    const navigate = useNavigate(); // TODO : flyt?
     // Hent state fra useLogin hook
     const {
         email,
@@ -14,13 +16,19 @@ export default function Login(){
         setError,
         loading,
         setLoading,
-        setJwt
+        setJwt,
+        Jwt
     } = useLogin();
 
+    if (Jwt != null){
+        navigate('/');
+    }
     const onSubmit = (e: React.FormEvent) => {
-        handleLogin(e, email, password, setError, setLoading, setJwt);
+        handleLogin(e, email, password, setError, setLoading, setJwt)
+            .then( () =>
+                navigate("/")
+            );
     };
-    
     return (
         <div className="login-container">
             <div className="login-box">

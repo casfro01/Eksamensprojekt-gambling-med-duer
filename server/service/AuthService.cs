@@ -45,6 +45,9 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
 
     public AuthUserInfo? GetUserInfo(ClaimsPrincipal principal)
     {
-        throw new NotImplementedException();
+        //var role = principal.FindFirstValue(ClaimTypes.Role);
+        var userID = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user = dbContext.Users.First(u => u.Id == userID);
+        return new AuthUserInfo(user.Id, user.FullName, user.Role.ToString());
     }
 }
