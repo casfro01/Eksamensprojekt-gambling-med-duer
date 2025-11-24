@@ -1,4 +1,4 @@
-﻿import React, {useState} from 'react';
+import React, {useState} from 'react';
 import './userProfile.css';
 import {useNavigate} from 'react-router';
 import {useIsValidLogin} from "../../../utils/checkLogin.ts";
@@ -53,7 +53,6 @@ export function UserProfile(){
     const handleChangePassword = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validering
         if (passwordForm.newPassword.length < 6) {
             setPasswordError('Nyt password skal være mindst 6 tegn');
             return;
@@ -77,7 +76,16 @@ export function UserProfile(){
         setIsChangingPassword(false);
         setPasswordError('');
     };
+    const handleLogout = () => {
+        if (confirm('Er du sikker på at du vil logge ud?')) {
+            localStorage.removeItem('token');
+            navigate('/login');
+        }
+    };
+
+
     if (authUser == null || userData == null) return <p>Failed to load data.</p>;
+
     return (
         <div className="profile-container">
             <div className="profile-content">
@@ -101,7 +109,9 @@ export function UserProfile(){
                         <span className="balance-label">Din saldo</span>
                         <span className="balance-amount">{userData.balance} DKK</span>
                     </div>
-                    <button className="topup-btn">💰 Indbetal</button>
+                    <button className="topup-btn" onClick={() => navigate('/add-payment')}>
+                        💰 Indbetal
+                    </button>
                 </div>
 
                 {/* Profile info section */}
@@ -273,6 +283,10 @@ export function UserProfile(){
                         </form>
                     )}
                 </div>
+
+                <button className="logout-btn" onClick={handleLogout}>
+                    🚪 Log ud
+                </button>
             </div>
         </div>
     );

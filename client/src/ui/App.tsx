@@ -10,6 +10,7 @@ import ViewBoards from "./pages/Admin/ViewBoards";
 import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
 import {UserProfilePage} from "./pages/UserProfile/userProfilePage.tsx";
+import AddPayment from './pages/AddPayment/AddPayment';
 
 export default function App() {
     return (
@@ -38,7 +39,11 @@ export default function App() {
                             element: <UserProfilePage/>
                         },
                         {
-                            path: "/admin",  
+                            path: "/add-payment",
+                            element: <AddPayment/>
+                        },
+                        {
+                            path: "/admin",
                             element: <Admin/>, 
                             children: [  
                                 {

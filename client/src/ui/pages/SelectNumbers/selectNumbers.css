@@ -338,4 +338,26 @@
     .action-buttons {
         grid-template-columns: 1fr;
     }
+    .inactive-warning {
+        text-align: center;
+        padding: 16px;
+        background: #f8d7da;
+        border: 2px solid #f5c6cb;
+        border-radius: 8px;
+        color: #721c24;
+        font-weight: 600;
+        margin-bottom: 24px;
+        animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+
+    .number-button.inactive-disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 }

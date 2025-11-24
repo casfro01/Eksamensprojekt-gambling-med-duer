@@ -4,6 +4,7 @@ import ProfileButton from '../../components/ProfileButton';
 import {Suspense} from "react";
 import {UserGreeting} from "./UserGreeting.tsx";
 import {useIsValidLogin} from "../../../utils/checkLogin.ts";
+import AddPaymentButton from '../../components/AddPaymentButton';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ export default function Home() {
     return (
         <div className="home-container">
             <ProfileButton />
+            <AddPaymentButton />
             <div className="home-content">
                 {/* Header */}
                 <header className="home-header">
