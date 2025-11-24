@@ -129,7 +129,7 @@ export class AuthClient {
         return Promise.resolve<FileResponse>(null as any);
     }
 
-    userInfo(): Promise<AuthUserInfo> {
+    userInfo(): Promise<UserData> {
         let url_ = this.baseUrl + "/api/auth/userinfo";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -145,13 +145,13 @@ export class AuthClient {
         });
     }
 
-    protected processUserInfo(response: Response): Promise<AuthUserInfo> {
+    protected processUserInfo(response: Response): Promise<UserData> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthUserInfo;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserData;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -159,7 +159,7 @@ export class AuthClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthUserInfo>(null as any);
+        return Promise.resolve<UserData>(null as any);
     }
 }
 
@@ -383,12 +383,20 @@ export interface RegisterRequest {
     email: string;
     password?: string;
     fullName: string;
+    phoneNumber: string;
 }
 
 export interface AuthUserInfo {
     id?: string;
     fullName?: string;
+    email?: string;
     role?: string;
+}
+
+export interface UserData extends AuthUserInfo {
+    balance?: number;
+    phoneNumber?: string;
+    isActive?: boolean;
 }
 
 export interface BaseBoardResponse {

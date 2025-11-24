@@ -8,4 +8,4 @@ public record LoginResponse(string Jwt);
 
 public record AuthUserInfo(string Id, string FullName, string Email, string Role);
 
-public record UserData(string Id, string FullName, string Email, string Role, int Balance, string phonenumber) : AuthUserInfo(Id, FullName, Email, Role);
+public record UserData(string Id, string FullName, string Email, string Role, int Balance, string phoneNumber, bool isActive) : AuthUserInfo(Id, FullName, Email, Role);

@@ -44,11 +44,12 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
         return new AuthUserInfo(user.Id, user.FullName, user.Email, user.Role.ToString());
     }
 
-    public AuthUserInfo? GetUserInfo(ClaimsPrincipal principal)
+    public UserData? GetUserInfo(ClaimsPrincipal principal)
     {
         //var role = principal.FindFirstValue(ClaimTypes.Role);
         var userID = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var user = dbContext.Users.First(u => u.Id == userID);
-        return new AuthUserInfo(user.Id, user.FullName, user.Email, user.Role.ToString());
+        var balance = dbContext.Transactions.Where(t => t.User.Id == userID).Sum(t => t.Amount);
+        return new UserData(user.Id, user.FullName, user.Email, user.Role.ToString(), balance, user.PhoneNumber, user.isActive);
     }
 }

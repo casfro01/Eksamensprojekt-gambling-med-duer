@@ -1,52 +1,43 @@
-﻿import React, { useState } from 'react';
+﻿import React, {useState} from 'react';
 import './userProfile.css';
-import { useNavigate } from 'react-router';
-import {useGetLoggedInUser, useLoginInformation} from "../Home/useLogin.ts";
+import {useNavigate} from 'react-router';
 import {useIsValidLogin} from "../../../utils/checkLogin.ts";
+import {useEditProfile} from "./EditProfile.ts";
+import {useEditUserData} from "./EditUserData.ts";
+import {useChangePassword} from "./ChangePassword.ts";
+import {useGetLoggedInUser} from "../Home/useLogin.ts";
 
-interface UserData {
-    fullName: string;
-    email: string;
-    phone: string;
-    balance: number;
-    isActive: boolean;
-}
-
-export default function UserProfile() {
+export function UserProfile(){
     const navigate = useNavigate();
     const isValidLogin = useIsValidLogin();
-    const authUser = useGetLoggedInUser();
+
+    const {
+        authUser,
+        setUserData,
+    } = useGetLoggedInUser();
+    // rename
+    const userData = authUser;
 
     if (!isValidLogin) navigate('/login');
 
-    // Dummy data - skal hentes fra backend senere
+    const {
+        isEditingProfile,
+        isChangingPassword,
+        showPassword,
+        setIsEditingProfile,
+        setIsChangingPassword,
+        setShowPassword
+    } = useEditProfile()
 
-    const [userData, setUserData] = useState<UserData>({
-        fullName: authUser.fullName,
-        email: authUser.email,
-        phone: '12345678',
-        balance: 250,
-        isActive: true
-    });
+    const {
+        editForm,
+        setEditForm
+    } = useEditUserData(userData)
 
-    // TODO : flyt
-    const [isEditingProfile, setIsEditingProfile] = useState(false);
-    const [isChangingPassword, setIsChangingPassword] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-
-    // TODO : flyt
-    const [editForm, setEditForm] = useState({
-        fullName: userData.fullName,
-        email: userData.email,
-        phone: userData.phone
-    });
-
-    // TODO : flyt
-    const [passwordForm, setPasswordForm] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-    });
+    const {
+        passwordForm,
+        setPasswordForm,
+    } = useChangePassword()
 
     // TODO : flyt
     const [passwordError, setPasswordError] = useState('');
@@ -86,7 +77,7 @@ export default function UserProfile() {
         setIsChangingPassword(false);
         setPasswordError('');
     };
-
+    if (authUser == null || userData == null) return <p>Failed to load data.</p>;
     return (
         <div className="profile-container">
             <div className="profile-content">
@@ -120,7 +111,14 @@ export default function UserProfile() {
                         {!isEditingProfile && (
                             <button
                                 className="edit-btn"
-                                onClick={() => setIsEditingProfile(true)}
+                                onClick={() => {
+                                    setEditForm({
+                                        fullName: userData.fullName,
+                                        email: userData.email,
+                                        phone: userData.phoneNumber
+                                    });
+                                    setIsEditingProfile(true)
+                                }}
                             >
                                 ✏️ Rediger
                             </button>
@@ -160,7 +158,7 @@ export default function UserProfile() {
                                         setEditForm({
                                             fullName: userData.fullName,
                                             email: userData.email,
-                                            phone: userData.phone
+                                            phone: userData.phoneNumber
                                         });
                                         setIsEditingProfile(false);
                                     }}
@@ -184,7 +182,7 @@ export default function UserProfile() {
                             </div>
                             <div className="info-row">
                                 <span className="info-label">Telefon:</span>
-                                <span className="info-value">{userData.phone}</span>
+                                <span className="info-value">{userData.phoneNumber}</span>
                             </div>
                         </div>
                     )}
@@ -211,7 +209,10 @@ export default function UserProfile() {
                                     type="password"
                                     required
                                     value={passwordForm.currentPassword}
-                                    onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
+                                    onChange={(e) => setPasswordForm({
+                                        ...passwordForm,
+                                        currentPassword: e.target.value
+                                    })}
                                 />
                             </div>
                             <div className="form-group">
@@ -221,7 +222,10 @@ export default function UserProfile() {
                                         type={showPassword ? "text" : "password"}
                                         required
                                         value={passwordForm.newPassword}
-                                        onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                                        onChange={(e) => setPasswordForm({
+                                            ...passwordForm,
+                                            newPassword: e.target.value
+                                        })}
                                         placeholder="Mindst 6 tegn"
                                     />
                                     <button
@@ -239,7 +243,10 @@ export default function UserProfile() {
                                     type={showPassword ? "text" : "password"}
                                     required
                                     value={passwordForm.confirmPassword}
-                                    onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                                    onChange={(e) => setPasswordForm({
+                                        ...passwordForm,
+                                        confirmPassword: e.target.value
+                                    })}
                                 />
                             </div>
                             {passwordError && <span className="error-text">{passwordError}</span>}

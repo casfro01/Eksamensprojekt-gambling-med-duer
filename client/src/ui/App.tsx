@@ -3,13 +3,13 @@ import Login from "./pages/login/login.tsx";
 import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
 import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
-import UserProfile from "./pages/UserProfile/UserProfile";
 import Admin from "./pages/Admin/admin";  
 import CreateUser from "./pages/Admin/CreateUser";
 import ViewPlayers from "./pages/Admin/ViewPlayers";  
 import ViewBoards from "./pages/Admin/ViewBoards"; 
 import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
+import {UserProfilePage} from "./pages/UserProfile/userProfilePage.tsx";
 
 export default function App() {
     return (
@@ -35,7 +35,7 @@ export default function App() {
                         },
                         {
                             path: "/profile",
-                            element: <UserProfile/>
+                            element: <UserProfilePage/>
                         },
                         {
                             path: "/admin",  
