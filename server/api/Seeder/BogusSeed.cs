@@ -25,7 +25,8 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
             .RuleFor(u => u.Email, f => f.Internet.Email())
             .RuleFor(u => u.FullName, f => f.Person.FullName)
             .RuleFor(u => u.Created, f => DateTime.UtcNow)
-            .RuleFor(u => u.EmailConfirmed, false);
+            .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber("########"))
+            .RuleFor(u => u.isActive, false);
 
         var users = userFaker.Generate(25);
         foreach (User u in users)

@@ -1,6 +1,8 @@
 ﻿import React, { useState } from 'react';
 import './userProfile.css';
 import { useNavigate } from 'react-router';
+import {useGetLoggedInUser, useLoginInformation} from "../Home/useLogin.ts";
+import {useIsValidLogin} from "../../../utils/checkLogin.ts";
 
 interface UserData {
     fullName: string;
@@ -12,40 +14,51 @@ interface UserData {
 
 export default function UserProfile() {
     const navigate = useNavigate();
+    const isValidLogin = useIsValidLogin();
+    const authUser = useGetLoggedInUser();
+
+    if (!isValidLogin) navigate('/login');
 
     // Dummy data - skal hentes fra backend senere
+
     const [userData, setUserData] = useState<UserData>({
-        fullName: 'Peter Jensen',
-        email: 'peter@email.dk',
+        fullName: authUser.fullName,
+        email: authUser.email,
         phone: '12345678',
         balance: 250,
         isActive: true
     });
 
+    // TODO : flyt
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [isChangingPassword, setIsChangingPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    // TODO : flyt
     const [editForm, setEditForm] = useState({
         fullName: userData.fullName,
         email: userData.email,
         phone: userData.phone
     });
 
+    // TODO : flyt
     const [passwordForm, setPasswordForm] = useState({
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
     });
 
+    // TODO : flyt
     const [passwordError, setPasswordError] = useState('');
 
+    // TODO : flyt indholdet
     const handleSaveProfile = () => {
         setUserData({...userData, ...editForm});
         setIsEditingProfile(false);
         alert('Profil opdateret!');
     };
 
+    // TODO : flyt indholdet
     const handleChangePassword = (e: React.FormEvent) => {
         e.preventDefault();
 

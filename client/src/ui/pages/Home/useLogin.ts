@@ -1,5 +1,6 @@
 import {useAtom} from "jotai";
 import {tokenAtom, userInfoAtom} from "../../../core/atoms/token.ts";
+import type {AuthUserInfo} from "../../../core/ServerAPI.ts";
 
 export const useLoginInformation = () => {
     const [Jwt,] = useAtom(tokenAtom);
@@ -9,4 +10,9 @@ export const useLoginInformation = () => {
         Jwt,
         fullName,
     }
+}
+
+export const useGetLoggedInUser = () => {
+    const [authUser,] = useAtom(userInfoAtom);
+    return authUser as AuthUserInfo;
 }
