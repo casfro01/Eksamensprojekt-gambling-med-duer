@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import { useState } from 'react';
 import './userProfile.css';
 import { useNavigate } from 'react-router';
 
@@ -13,7 +13,6 @@ interface UserData {
 export default function UserProfile() {
     const navigate = useNavigate();
 
-    // Dummy data - skal hentes fra backend senere
     const [userData, setUserData] = useState<UserData>({
         fullName: 'Peter Jensen',
         email: 'peter@email.dk',
@@ -49,7 +48,6 @@ export default function UserProfile() {
     const handleChangePassword = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validering
         if (passwordForm.newPassword.length < 6) {
             setPasswordError('Nyt password skal være mindst 6 tegn');
             return;
@@ -59,12 +57,10 @@ export default function UserProfile() {
             setPasswordError('Passwords matcher ikke');
             return;
         }
-
-        // Send til backend senere
+        //send til backend senere
         console.log('Skift password:', passwordForm);
         alert('Password ændret!');
 
-        // Nulstil form
         setPasswordForm({
             currentPassword: '',
             newPassword: '',
@@ -74,10 +70,16 @@ export default function UserProfile() {
         setPasswordError('');
     };
 
+    const handleLogout = () => {
+        if (confirm('Er du sikker på at du vil logge ud?')) {
+            localStorage.removeItem('token');
+            navigate('/login');
+        }
+    };
+
     return (
         <div className="profile-container">
             <div className="profile-content">
-                {/* Header */}
                 <div className="profile-header">
                     <button className="back-btn" onClick={() => navigate(-1)}>
                         ← Tilbage
@@ -85,22 +87,21 @@ export default function UserProfile() {
                     <h1>Min Profil</h1>
                 </div>
 
-                {/* Status banner */}
                 <div className={`status-banner ${userData.isActive ? 'active' : 'inactive'}`}>
                     <span className="status-icon">{userData.isActive ? '✓' : '⏸'}</span>
                     <span>Din konto er {userData.isActive ? 'aktiv' : 'inaktiv'}</span>
                 </div>
 
-                {/* Balance card */}
                 <div className="balance-card">
                     <div className="balance-info">
                         <span className="balance-label">Din saldo</span>
                         <span className="balance-amount">{userData.balance} DKK</span>
                     </div>
-                    <button className="topup-btn">💰 Indbetal</button>
+                    <button className="topup-btn" onClick={() => navigate('/add-payment')}>
+                        💰 Indbetal
+                    </button>
                 </div>
 
-                {/* Profile info section */}
                 <div className="info-section">
                     <div className="section-header">
                         <h2>Personlige oplysninger</h2>
@@ -177,7 +178,6 @@ export default function UserProfile() {
                     )}
                 </div>
 
-                {/* Password section */}
                 <div className="info-section">
                     <div className="section-header">
                         <h2>Sikkerhed</h2>
@@ -253,6 +253,10 @@ export default function UserProfile() {
                         </form>
                     )}
                 </div>
+
+                <button className="logout-btn" onClick={handleLogout}>
+                    🚪 Log ud
+                </button>
             </div>
         </div>
     );
