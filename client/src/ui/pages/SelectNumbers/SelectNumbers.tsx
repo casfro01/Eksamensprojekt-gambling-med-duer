@@ -3,8 +3,11 @@ import { useSelectNumbers } from './useSelectNumbers';
 import ProfileButton from '../../components/ProfileButton';
 import { handleSubmit } from './handleSubmit';
 import AddPaymentButton from '../../components/AddPaymentButton';
+import { useState } from 'react';
 
 export default function SelectNumbers() {
+    const [isUserActive] = useState<boolean>(true);
+
     const {
         selectedNumbers,
         numberOfWeeks,
@@ -17,7 +20,39 @@ export default function SelectNumbers() {
     } = useSelectNumbers();
 
     const onSubmit = () => {
+        if (!isUserActive) {
+            alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+            return;
+        }
         handleSubmit(selectedNumbers, numberOfWeeks, calculatePricePerWeek, calculateTotalPrice, canSubmit);
+    };
+
+    const handleNumberClick = (num: number) => {
+        if (!isUserActive) {
+            alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+            return;
+        }
+        toggleNumber(num);
+    };
+
+    const handleWeekChange = (action: 'increment' | 'decrement') => {
+        if (!isUserActive) {
+            alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+            return;
+        }
+        if (action === 'increment') {
+            setNumberOfWeeks(Math.min(10, numberOfWeeks + 1));
+        } else {
+            setNumberOfWeeks(Math.max(1, numberOfWeeks - 1));
+        }
+    };
+
+    const handleClearClick = () => {
+        if (!isUserActive) {
+            alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+            return;
+        }
+        clearSelection();
     };
 
     return (
@@ -29,6 +64,12 @@ export default function SelectNumbers() {
                     <h1>Vælg dine numre</h1>
                     <p>Vælg mellem 5-8 numre fra 1-16</p>
                 </header>
+
+                {!isUserActive && (
+                    <div className="inactive-warning">
+                        ⚠️ Din konto er inaktiv. Du skal betale medlemskab for at kunne spille. Kontakt admin.
+                    </div>
+                )}
 
                 <div className="info-bar">
                     <div className="info-item">
@@ -47,9 +88,8 @@ export default function SelectNumbers() {
                             key={num}
                             className={`number-button ${selectedNumbers.includes(num) ? 'selected' : ''} ${
                                 selectedNumbers.length >= 8 && !selectedNumbers.includes(num) ? 'disabled' : ''
-                            }`}
-                            onClick={() => toggleNumber(num)}
-                            disabled={selectedNumbers.length >= 8 && !selectedNumbers.includes(num)}
+                            } ${!isUserActive ? 'inactive-disabled' : ''}`}
+                            onClick={() => handleNumberClick(num)}
                         >
                             {num}
                         </button>
@@ -74,7 +114,7 @@ export default function SelectNumbers() {
                     <div className="weeks-input-group">
                         <button
                             className="week-button"
-                            onClick={() => setNumberOfWeeks(Math.max(1, numberOfWeeks - 1))}
+                            onClick={() => handleWeekChange('decrement')}
                         >
                             -
                         </button>
@@ -84,12 +124,18 @@ export default function SelectNumbers() {
                             min="1"
                             max="10"
                             value={numberOfWeeks}
-                            onChange={(e) => setNumberOfWeeks(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
+                            onChange={(e) => {
+                                if (!isUserActive) {
+                                    alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+                                    return;
+                                }
+                                setNumberOfWeeks(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)));
+                            }}
                             className="weeks-input"
                         />
                         <button
                             className="week-button"
-                            onClick={() => setNumberOfWeeks(Math.min(10, numberOfWeeks + 1))}
+                            onClick={() => handleWeekChange('increment')}
                         >
                             +
                         </button>
@@ -136,7 +182,7 @@ export default function SelectNumbers() {
                 <div className="action-buttons">
                     <button
                         className="clear-button"
-                        onClick={clearSelection}
+                        onClick={handleClearClick}
                         disabled={selectedNumbers.length === 0}
                     >
                         Ryd valg

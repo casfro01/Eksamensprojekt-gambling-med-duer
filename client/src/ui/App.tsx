@@ -10,7 +10,7 @@ import ViewPlayers from "./pages/Admin/ViewPlayers";
 import ViewBoards from "./pages/Admin/ViewBoards"; 
 import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
-import AddPayment from '../ui/components/AddPayment';
+import AddPayment from './pages/AddPayment/AddPayment';
 
 export default function App() {
     return (

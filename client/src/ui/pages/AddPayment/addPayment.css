@@ -17,9 +17,9 @@
 }
 
 .back-btn {
-    background: rgba(235, 87, 87, 0.1);
-    border: none;
-    color: #EB5757;
+    background: #EB5757;
+    border: 2px solid #EB5757;
+    color: white;
     padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
@@ -30,7 +30,8 @@
 }
 
 .back-btn:hover {
-    background: rgba(235, 87, 87, 0.2);
+    background: #d94545;
+    border-color: #d94545;
 }
 
 .payment-content h1 {
