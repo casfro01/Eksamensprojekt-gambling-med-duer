@@ -1,6 +1,7 @@
 ﻿import './Home.css';
 import {useNavigate} from 'react-router';
 import ProfileButton from '../../components/ProfileButton';
+import AddPaymentButton from '../../components/AddPaymentButton';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function Home() {
     return (
         <div className="home-container">
             <ProfileButton />
+            <AddPaymentButton />
             <div className="home-content">
                 {/* Header */}
                 <header className="home-header">

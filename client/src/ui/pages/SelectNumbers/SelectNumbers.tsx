@@ -2,6 +2,7 @@
 import { useSelectNumbers } from './useSelectNumbers';
 import ProfileButton from '../../components/ProfileButton';
 import { handleSubmit } from './handleSubmit';
+import AddPaymentButton from '../../components/AddPaymentButton';
 
 export default function SelectNumbers() {
     const {
@@ -22,7 +23,7 @@ export default function SelectNumbers() {
     return (
         <div className="selectnumbers-container">
             <ProfileButton />
-
+            <AddPaymentButton />
             <div className="selectnumbers-content">
                 <header className="selectnumbers-header">
                     <h1>Vælg dine numre</h1>
