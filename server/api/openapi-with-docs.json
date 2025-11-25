@@ -103,7 +103,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthUserInfo"
+                  "$ref": "#/components/schemas/UserData"
                 }
               }
             }
@@ -164,18 +164,18 @@
         }
       }
     },
-    "/api/board/CreateBoard": {
+    "/api/Transaction/CreatePendingTransactions": {
       "post": {
         "tags": [
-          "Board"
+          "Transaction"
         ],
-        "operationId": "Board_CreateBoard",
+        "operationId": "Transaction_CreatePendingTransactions",
         "requestBody": {
           "x-name": "dto",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateBoardDto"
+                "$ref": "#/components/schemas/CreateTransactionDto"
               }
             }
           },
@@ -188,7 +188,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BaseBoardResponse"
+                  "$ref": "#/components/schemas/BaseTransactionResponse"
                 }
               }
             }
@@ -196,12 +196,56 @@
         }
       }
     },
-    "/api/game/GetGames": {
-      "get": {
+    "/api/Transaction/UpdatePaymentStatus": {
+      "put": {
         "tags": [
-          "Game"
+          "Transaction"
         ],
-        "operationId": "Game_GetGames",
+        "operationId": "Transaction_UpdatePaymentStatus",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTransactionDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseTransactionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Transaction/GetTransactions": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_GetTransactions",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SieveModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -210,38 +254,8 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BaseGameResponse"
+                    "$ref": "#/components/schemas/BaseTransactionResponse"
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/game/GetGame": {
-      "get": {
-        "tags": [
-          "Game"
-        ],
-        "operationId": "Game_GetGame",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseGameResponse"
                 }
               }
             }
@@ -287,7 +301,8 @@
         "additionalProperties": false,
         "required": [
           "email",
-          "fullName"
+          "fullName",
+          "phoneNumber"
         ],
         "properties": {
           "email": {
@@ -302,8 +317,37 @@
           "fullName": {
             "type": "string",
             "minLength": 5
+          },
+          "phoneNumber": {
+            "type": "string",
+            "maxLength": 8,
+            "minLength": 8,
+            "pattern": "^\\d{8}$"
           }
         }
+      },
+      "UserData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuthUserInfo"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "balance": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "phoneNumber": {
+                "type": "string"
+              },
+              "isActive": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
       },
       "AuthUserInfo": {
         "type": "object",
@@ -313,6 +357,9 @@
             "type": "string"
           },
           "fullName": {
+            "type": "string"
+          },
+          "email": {
             "type": "string"
           },
           "role": {
@@ -352,10 +399,6 @@
           "id": {
             "type": "string"
           },
-          "startTime": {
-            "type": "string",
-            "format": "date-time"
-          },
           "winningBoardIds": {
             "type": "array",
             "items": {
@@ -364,131 +407,147 @@
           }
         }
       },
-      "CreateBoardDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "userId": {
-            "type": "string"
-          },
-          "games": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Game"
-            }
-          },
-          "playedNumbers": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        }
-      },
-      "Game": {
+      "BaseTransactionResponse": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string"
           },
-          "startDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "winningBoards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Board"
-            }
-          }
-        }
-      },
-      "Board": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
+          "mobilePayId": {
             "type": "string"
           },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "games": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Game"
-            }
-          },
-          "playedNumbers": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        }
-      },
-      "User": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "fullName": {
-            "type": "string"
+          "amount": {
+            "type": "integer",
+            "format": "int32"
           },
           "email": {
             "type": "string"
           },
-          "emailConfirmed": {
-            "type": "boolean"
-          },
-          "boards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Board"
-            }
-          },
-          "role": {
-            "$ref": "#/components/schemas/Role"
+          "status": {
+            "$ref": "#/components/schemas/PaymentStatus"
           },
           "created": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
+            "format": "date-time"
           }
         }
       },
-      "Role": {
+      "PaymentStatus": {
         "type": "integer",
         "description": "",
         "x-enum-names": [
-          "Administrator",
-          "Bruger"
+          "Pending",
+          "Accepted",
+          "Rejected"
         ],
         "x-enum-varnames": [
-          "Administrator",
-          "Bruger"
+          "Pending",
+          "Accepted",
+          "Rejected"
         ],
         "x-enumNames": [
-          "Administrator",
-          "Bruger"
+          "Pending",
+          "Accepted",
+          "Rejected"
         ],
         "x-enum-descriptions": [
+          null,
           null,
           null
         ],
         "x-enumDescriptions": [
           null,
+          null,
           null
         ],
         "enum": [
           0,
-          1
+          1,
+          2
         ]
+      },
+      "CreateTransactionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mobilePayId",
+          "amount",
+          "email"
+        ],
+        "properties": {
+          "mobilePayId": {
+            "type": "string",
+            "minLength": 4
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1
+          }
+        }
+      },
+      "UpdateTransactionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "paymentStatus"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "paymentStatus": {
+            "$ref": "#/components/schemas/PaymentStatus"
+          }
+        }
+      },
+      "SieveModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SieveModelOfFilterTermAndSortTerm"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "SieveModelOfFilterTermAndSortTerm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "filters": {
+            "type": "string",
+            "nullable": true
+          },
+          "sorts": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "nullable": true
+          }
+        }
       }
     }
   }

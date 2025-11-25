@@ -1,0 +1,198 @@
+import { useState } from 'react';
+import './gameHistory.css';
+
+interface Game {
+    id: string;
+    weekNumber: string;
+    drawDate: string;
+    winningNumbers: number[];
+    totalBoards: number;
+    winningBoards: number;
+    totalRevenue: number;
+    prizePool: number;
+    status: 'completed' | 'active';
+}
+
+interface WinningBoard {
+    playerName: string;
+    numbers: number[];
+    pricePerWeek: number;
+}
+
+export default function GameHistory() {
+    // SLET LINJE 23-57 NÅR BACKEND ER CONNECTED
+    const [games] = useState<Game[]>([
+        {
+            id: '1',
+            weekNumber: 'Uge 46',
+            drawDate: '2025-11-15',
+            winningNumbers: [3, 7, 12],
+            totalBoards: 15,
+            winningBoards: 3,
+            totalRevenue: 800,
+            prizePool: 560,
+            status: 'completed'
+        },
+        {
+            id: '2',
+            weekNumber: 'Uge 45',
+            drawDate: '2025-11-08',
+            winningNumbers: [1, 9, 14],
+            totalBoards: 12,
+            winningBoards: 2,
+            totalRevenue: 640,
+            prizePool: 448,
+            status: 'completed'
+        },
+        {
+            id: '3',
+            weekNumber: 'Uge 44',
+            drawDate: '2025-11-01',
+            winningNumbers: [5, 8, 16],
+            totalBoards: 18,
+            winningBoards: 0,
+            totalRevenue: 920,
+            prizePool: 644,
+            status: 'completed'
+        }
+    ]);
+
+    const [expandedGame, setExpandedGame] = useState<string | null>(null);
+
+    // SLET LINJE 62-75 NÅR BACKEND ER CONNECTED
+    const getWinningBoards = (gameId: string): WinningBoard[] => {
+        if (gameId === '1') {
+            return [
+                { playerName: 'Peter Jensen', numbers: [3, 7, 12, 15, 16], pricePerWeek: 20 },
+                { playerName: 'Anna Nielsen', numbers: [1, 3, 7, 12, 14], pricePerWeek: 20 },
+                { playerName: 'Lars Larsen', numbers: [3, 5, 7, 11, 12, 13, 16], pricePerWeek: 80 }
+            ];
+        } else if (gameId === '2') {
+            return [
+                { playerName: 'Maria Andersen', numbers: [1, 2, 9, 14, 15], pricePerWeek: 20 },
+                { playerName: 'Jens Olsen', numbers: [1, 4, 6, 9, 10, 14], pricePerWeek: 40 }
+            ];
+        }
+        return [];
+    };
+
+    const toggleGameDetails = (gameId: string) => {
+        setExpandedGame(expandedGame === gameId ? null : gameId);
+    };
+
+    return (
+        <div className="game-history-container">
+            <div className="history-header">
+                <div>
+                    <h1>Spilhistorik</h1>
+                    <p className="subtitle">Oversigt over alle afsluttede spil</p>
+                </div>
+                <div className="stats-summary">
+                    <div className="stat-item">
+                        <span className="stat-label">Total spil</span>
+                        <span className="stat-value">{games.length}</span>
+                    </div>
+                    <div className="stat-item">
+                        <span className="stat-label">Total omsætning</span>
+                        <span className="stat-value">
+                            {games.reduce((sum, g) => sum + g.totalRevenue, 0)} DKK
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="games-list">
+                {games.map((game) => {
+                    const winningBoards = getWinningBoards(game.id);
+                    const isExpanded = expandedGame === game.id;
+
+                    return (
+                        <div key={game.id} className="game-card">
+                            <div className="game-main" onClick={() => toggleGameDetails(game.id)}>
+                                <div className="game-info">
+                                    <h3 className="game-week">{game.weekNumber}</h3>
+                                    <span className="game-date">
+                                        {new Date(game.drawDate).toLocaleDateString('da-DK', {
+                                            day: 'numeric',
+                                            month: 'long',
+                                            year: 'numeric'
+                                        })}
+                                    </span>
+                                </div>
+
+                                <div className="winning-numbers-display">
+                                    <span className="numbers-label">Vindernumre:</span>
+                                    <div className="winning-numbers">
+                                        {game.winningNumbers.map(num => (
+                                            <span key={num} className="winning-num">{num}</span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="game-stats">
+                                    <div className="stat-box">
+                                        <span className="stat-number">{game.totalBoards}</span>
+                                        <span className="stat-text">Brætter</span>
+                                    </div>
+                                    <div className="stat-box winning">
+                                        <span className="stat-number">{game.winningBoards}</span>
+                                        <span className="stat-text">Vindere</span>
+                                    </div>
+                                    <div className="stat-box">
+                                        <span className="stat-number">{game.totalRevenue} DKK</span>
+                                        <span className="stat-text">Omsætning</span>
+                                    </div>
+                                </div>
+
+                                <button className="expand-btn" type="button">
+                                    {isExpanded ? '▼' : '▶'}
+                                </button>
+                            </div>
+
+                            {isExpanded && (
+                                <div className="game-details">
+                                    <h4>Vindende spillebrætter</h4>
+                                    {winningBoards.length > 0 ? (
+                                        <div className="winning-boards-list">
+                                            {winningBoards.map((board, idx) => (
+                                                <div key={idx} className="winning-board-item">
+                                                    <div className="board-player">
+                                                        <span className="trophy">🏆</span>
+                                                        <span className="player-name">{board.playerName}</span>
+                                                    </div>
+                                                    <div className="board-numbers">
+                                                        {board.numbers.map(num => (
+                                                            <span
+                                                                key={num}
+                                                                className={`board-num ${game.winningNumbers.includes(num) ? 'match' : ''}`}
+                                                            >
+                                                                {num}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                    <div className="board-price">
+                                                        {board.pricePerWeek} DKK/uge
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <div className="prize-calculation">
+                                                <strong>Beregning:</strong>
+                                                <p>Præmiepulje: {game.prizePool} DKK ÷ {winningBoards.length} vindere = <strong>{Math.round(game.prizePool / winningBoards.length)} DKK per vinder</strong></p>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="no-winners">
+                                            <span className="no-winners-icon">🎲</span>
+                                            <p>Ingen vindere denne uge</p>
+                                            <p className="no-winners-note">Præmiepuljen på {game.prizePool} DKK overføres til næste uge</p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}

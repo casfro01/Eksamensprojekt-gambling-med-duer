@@ -2,8 +2,15 @@ import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 import Login from "./pages/login/login.tsx";
 import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
-import Boards from "./pages/boards/boards.tsx";
 import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
+import Admin from "./pages/Admin/admin";  
+import CreateUser from "./pages/Admin/CreateUser";
+import ViewPlayers from "./pages/Admin/ViewPlayers";  
+import ViewBoards from "./pages/Admin/ViewBoards"; 
+import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
+import GameHistory from './pages/Admin/GameHistory';
+import {UserProfilePage} from "./pages/UserProfile/userProfilePage.tsx";
+import AddPayment from './pages/AddPayment/AddPayment';
 
 export default function App() {
     return (
@@ -24,12 +31,43 @@ export default function App() {
                             element: <Home/>  // Forside = Home
                         },
                         {
-                            path: "/boards", //path: "/user/:userID//boards",
-                            element: <Boards/>
-                        },
-                        {
                             path: "/Select",
                             element: <SelectNumbers/>  // Forside = Home
+                        },
+                        {
+                            path: "/profile",
+                            element: <UserProfilePage/>
+                        },
+                        {
+                            path: "/add-payment",
+                            element: <AddPayment/>
+                        },
+                        {
+                            path: "/admin",
+                            element: <Admin/>, 
+                            children: [  
+                                {
+                                    path: "create-user",
+                                    element: <CreateUser/>
+                                },
+                                {
+                                    path: "players",
+                                    element: <ViewPlayers/>
+                                },
+                                {
+                                    path: "boards",
+                                    element: <ViewBoards/>
+                                },
+                                {
+                                   path: "winning-numbers",
+                                   element: <EnterWinningNumbers/> 
+                                },
+                                {
+                                    path: "history",
+                                    element: <GameHistory/>
+                                }
+                                // Tilføj flere admin routes senere
+                            ]
                         }
                         // Flere routes kommer her senere (dashboard, games, osv.)
                     ]

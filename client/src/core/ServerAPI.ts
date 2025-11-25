@@ -129,7 +129,7 @@ export class AuthClient {
         return Promise.resolve<FileResponse>(null as any);
     }
 
-    userInfo(): Promise<AuthUserInfo> {
+    userInfo(): Promise<UserData> {
         let url_ = this.baseUrl + "/api/auth/userinfo";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -145,13 +145,13 @@ export class AuthClient {
         });
     }
 
-    protected processUserInfo(response: Response): Promise<AuthUserInfo> {
+    protected processUserInfo(response: Response): Promise<UserData> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthUserInfo;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserData;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -159,7 +159,7 @@ export class AuthClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthUserInfo>(null as any);
+        return Promise.resolve<UserData>(null as any);
     }
 }
 
@@ -242,9 +242,20 @@ export class BoardClient {
         }
         return Promise.resolve<BaseBoardResponse>(null as any);
     }
+}
 
-    createBoard(dto: CreateBoardDto): Promise<BaseBoardResponse> {
-        let url_ = this.baseUrl + "/api/board/CreateBoard";
+export class TransactionClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    createPendingTransactions(dto: CreateTransactionDto): Promise<BaseTransactionResponse> {
+        let url_ = this.baseUrl + "/api/Transaction/CreatePendingTransactions";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -259,17 +270,17 @@ export class BoardClient {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processCreateBoard(_response);
+            return this.processCreatePendingTransactions(_response);
         });
     }
 
-    protected processCreateBoard(response: Response): Promise<BaseBoardResponse> {
+    protected processCreatePendingTransactions(response: Response): Promise<BaseTransactionResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseBoardResponse;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseTransactionResponse;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -277,43 +288,36 @@ export class BoardClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BaseBoardResponse>(null as any);
-    }
-}
-
-export class GameClient {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : window as any;
-        this.baseUrl = baseUrl ?? "";
+        return Promise.resolve<BaseTransactionResponse>(null as any);
     }
 
-    getGames(): Promise<BaseGameResponse[]> {
-        let url_ = this.baseUrl + "/api/game/GetGames";
+    updatePaymentStatus(dto: UpdateTransactionDto): Promise<BaseTransactionResponse> {
+        let url_ = this.baseUrl + "/api/Transaction/UpdatePaymentStatus";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(dto);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "PUT",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetGames(_response);
+            return this.processUpdatePaymentStatus(_response);
         });
     }
 
-    protected processGetGames(response: Response): Promise<BaseGameResponse[]> {
+    protected processUpdatePaymentStatus(response: Response): Promise<BaseTransactionResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseGameResponse[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseTransactionResponse;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -321,36 +325,36 @@ export class GameClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BaseGameResponse[]>(null as any);
+        return Promise.resolve<BaseTransactionResponse>(null as any);
     }
 
-    getGame(id: string | undefined): Promise<BaseGameResponse> {
-        let url_ = this.baseUrl + "/api/game/GetGame?";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+    getTransactions(model: SieveModel): Promise<BaseTransactionResponse[]> {
+        let url_ = this.baseUrl + "/api/Transaction/GetTransactions";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(model);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetGame(_response);
+            return this.processGetTransactions(_response);
         });
     }
 
-    protected processGetGame(response: Response): Promise<BaseGameResponse> {
+    protected processGetTransactions(response: Response): Promise<BaseTransactionResponse[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseGameResponse;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseTransactionResponse[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -358,7 +362,7 @@ export class GameClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BaseGameResponse>(null as any);
+        return Promise.resolve<BaseTransactionResponse[]>(null as any);
     }
 }
 
@@ -379,12 +383,20 @@ export interface RegisterRequest {
     email: string;
     password?: string;
     fullName: string;
+    phoneNumber: string;
 }
 
 export interface AuthUserInfo {
     id?: string;
     fullName?: string;
+    email?: string;
     role?: string;
+}
+
+export interface UserData extends AuthUserInfo {
+    balance?: number;
+    phoneNumber?: string;
+    isActive?: boolean;
 }
 
 export interface BaseBoardResponse {
@@ -396,42 +408,39 @@ export interface BaseBoardResponse {
 
 export interface BaseGameResponse {
     id?: string;
-    startTime?: string;
     winningBoardIds?: string[];
 }
 
-export interface CreateBoardDto {
-    userId?: string;
-    games?: Game[];
-    playedNumbers?: number[];
-}
-
-export interface Game {
+export interface BaseTransactionResponse {
     id?: string;
-    startDate?: string;
-    winningBoards?: Board[];
-}
-
-export interface Board {
-    id?: string;
-    user?: User;
-    games?: Game[];
-    playedNumbers?: number[];
-}
-
-export interface User {
-    id?: string;
-    fullName?: string;
+    mobilePayId?: string;
+    amount?: number;
     email?: string;
-    emailConfirmed?: boolean;
-    boards?: Board[];
-    role?: Role;
-    created?: string | undefined;
+    status?: PaymentStatus;
+    created?: string;
 }
 
-export enum Role {
-    Administrator = 0,
-    Bruger = 1,
+export type PaymentStatus = 0 | 1 | 2;
+
+export interface CreateTransactionDto {
+    mobilePayId: string;
+    amount: number;
+    email: string;
+}
+
+export interface UpdateTransactionDto {
+    id: string;
+    paymentStatus: PaymentStatus;
+}
+
+export interface SieveModelOfFilterTermAndSortTerm {
+    filters?: string | undefined;
+    sorts?: string | undefined;
+    page?: number | undefined;
+    pageSize?: number | undefined;
+}
+
+export interface SieveModel extends SieveModelOfFilterTermAndSortTerm {
 }
 
 export interface FileResponse {

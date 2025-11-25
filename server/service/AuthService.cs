@@ -19,7 +19,7 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
 
         var passwordResult = result == PasswordVerificationResult.Success;
 
-        return passwordResult ? new AuthUserInfo(getUser.Id, getUser.FullName, getUser.Role.ToString()) : throw new Exception("Invalid credentials");
+        return passwordResult ? new AuthUserInfo(getUser.Id, getUser.FullName, getUser.Email, getUser.Role.ToString()) : throw new Exception("Invalid credentials");
     }
 
     public async Task<AuthUserInfo> Register(RegisterRequest request)
@@ -31,20 +31,25 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
         var user = new User(
             id: Guid.NewGuid().ToString(),
             email: request.Email,
-            emailConfirmed: false,
+            isActive: false,
             fullName: request.FullName,
             passwordHash: "",
-            role: Role.Bruger
+            role: Role.Bruger,
+            phoneNumber: request.PhoneNumber
             );
         user.PasswordHash = passwordHasher.HashPassword(user, request.Password); // her?
         user.Created = DateTime.UtcNow;
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
-        return new AuthUserInfo(user.Id, user.FullName,  user.Role.ToString());
+        return new AuthUserInfo(user.Id, user.FullName, user.Email, user.Role.ToString());
     }
 
-    public AuthUserInfo? GetUserInfo(ClaimsPrincipal principal)
+    public UserData? GetUserInfo(ClaimsPrincipal principal)
     {
-        throw new NotImplementedException();
+        //var role = principal.FindFirstValue(ClaimTypes.Role);
+        var userID = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user = dbContext.Users.First(u => u.Id == userID);
+        var balance = dbContext.Transactions.Where(t => t.User.Id == userID).Sum(t => t.Amount);
+        return new UserData(user.Id, user.FullName, user.Email, user.Role.ToString(), balance, user.PhoneNumber, user.isActive);
     }
 }

@@ -1,8 +1,10 @@
-﻿using Bogus;
+﻿using System.Transactions;
+using Bogus;
 using dataaccess;
 using DataAccess.Entities;
 using dataaccess.Enums;
 using Microsoft.AspNetCore.Identity;
+using Transaction = DataAccess.Entities.Transaction;
 
 namespace api.Seeder;
 
@@ -23,7 +25,8 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
             .RuleFor(u => u.Email, f => f.Internet.Email())
             .RuleFor(u => u.FullName, f => f.Person.FullName)
             .RuleFor(u => u.Created, f => DateTime.UtcNow)
-            .RuleFor(u => u.EmailConfirmed, false);
+            .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber("########"))
+            .RuleFor(u => u.isActive, false);
 
         var users = userFaker.Generate(25);
         foreach (User u in users)
@@ -54,6 +57,18 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
             ]);
         var boards = boardFaker.Generate(25);
         context.Boards.AddRange(boards);
+        await context.SaveChangesAsync();
+
+
+        var transactionFaker = new Faker<Transaction>()
+            .RuleFor(t => t.Id, f => Guid.NewGuid().ToString())
+            .RuleFor(t => t.User, f => f.PickRandom(users))
+            .RuleFor(t => t.Amount, f => f.PickRandom(nums))
+            .RuleFor(t => t.Created, DateTime.UtcNow)
+            .RuleFor(t => t.MobilePayId, f => Guid.NewGuid().ToString())
+            .RuleFor(t => t.Status, f => f.PickRandom<PaymentStatus>());
+        var transactions = transactionFaker.Generate(500);
+        context.Transactions.AddRange(transactions);
         await context.SaveChangesAsync();
         
         context.ChangeTracker.Clear();

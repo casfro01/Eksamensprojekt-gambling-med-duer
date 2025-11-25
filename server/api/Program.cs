@@ -12,6 +12,7 @@ using service.Abstractions;
 using service.Models.Request;
 using service.Models.Responses;
 using service.Security;
+using Sieve.Services;
 
 namespace api;
 public class Program
@@ -30,11 +31,14 @@ public class Program
         // repos
         
         // services
+        //services.AddScoped<IService<BaseBookResponse, CreateBookDto, UpdateBookDto>, BookService>();
+        services.AddScoped<ISieveProcessor, SieveProcessor>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, JwtService>();
         services.AddScoped<IPasswordHasher<User>, NSecArgon2IdPasswordHasher>();
         services.AddScoped<IService<BaseBoardResponse, CreateBoardDto, UpdateBoardDto>, BoardService>();
         services.AddScoped<IGameService, GameService>();
+        services.AddScoped<IServiceWithSieve<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto>, TransactionService>();
         
         // seeder
         services.AddScoped<ISeeder, BogusSeed>();

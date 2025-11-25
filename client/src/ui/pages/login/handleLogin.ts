@@ -41,8 +41,12 @@ export const handleLogin = async (
             console.log('Login succesfuld!', response);
         }
 
-    } catch (err: any) {
-        setError(err.message || 'Forkert email eller password');
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            setError(err.message);
+        } else {
+            setError('Forkert email eller password');
+        }
     } finally {
         setLoading(false);
     }

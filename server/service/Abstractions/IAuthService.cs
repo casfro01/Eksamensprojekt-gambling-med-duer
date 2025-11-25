@@ -9,5 +9,5 @@ public interface IAuthService
     AuthUserInfo Authenticate(LoginRequest request);
     Task<AuthUserInfo> Register(RegisterRequest request);
     
-    AuthUserInfo? GetUserInfo(ClaimsPrincipal principal);
+    UserData? GetUserInfo(ClaimsPrincipal principal);
 }

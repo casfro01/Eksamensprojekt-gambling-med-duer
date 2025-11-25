@@ -1,7 +1,7 @@
 ﻿import { AuthClient, BoardClient } from "./ServerAPI.ts"
+import {TOKEN_KEY, tokenStorage} from "./atoms/token.ts";
 
-// TODO noget med tokens?
-/*
+
 const customFetch = async (url: RequestInfo, init?: RequestInit) => {
     const token = tokenStorage.getItem(TOKEN_KEY, null);
 
@@ -19,7 +19,6 @@ const customFetch = async (url: RequestInfo, init?: RequestInit) => {
     return await fetch(url, init);
 };
 const baseUrl = undefined;
-*/
 
-export const authClient = new AuthClient();
-export const boardClient = new BoardClient();
+export const authClient = new AuthClient(baseUrl, { fetch: customFetch });
+export const boardClient = new BoardClient(baseUrl, { fetch: customFetch });
