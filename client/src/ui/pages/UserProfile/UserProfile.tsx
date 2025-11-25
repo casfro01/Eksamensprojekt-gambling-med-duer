@@ -1,50 +1,55 @@
-﻿import { useState } from 'react';
+import React, {useState} from 'react';
 import './userProfile.css';
-import { useNavigate } from 'react-router';
+import {useNavigate} from 'react-router';
+import {useIsValidLogin} from "../../../utils/checkLogin.ts";
+import {useEditProfile} from "./EditProfile.ts";
+import {useEditUserData} from "./EditUserData.ts";
+import {useChangePassword} from "./ChangePassword.ts";
+import {useGetLoggedInUser} from "../Home/useLogin.ts";
 
-interface UserData {
-    fullName: string;
-    email: string;
-    phone: string;
-    balance: number;
-    isActive: boolean;
-}
-
-export default function UserProfile() {
+export function UserProfile(){
     const navigate = useNavigate();
+    const isValidLogin = useIsValidLogin();
 
-    const [userData, setUserData] = useState<UserData>({
-        fullName: 'Peter Jensen',
-        email: 'peter@email.dk',
-        phone: '12345678',
-        balance: 250,
-        isActive: true
-    });
+    const {
+        authUser,
+        setUserData,
+    } = useGetLoggedInUser();
+    // rename
+    const userData = authUser;
 
-    const [isEditingProfile, setIsEditingProfile] = useState(false);
-    const [isChangingPassword, setIsChangingPassword] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    if (!isValidLogin) navigate('/login');
 
-    const [editForm, setEditForm] = useState({
-        fullName: userData.fullName,
-        email: userData.email,
-        phone: userData.phone
-    });
+    const {
+        isEditingProfile,
+        isChangingPassword,
+        showPassword,
+        setIsEditingProfile,
+        setIsChangingPassword,
+        setShowPassword
+    } = useEditProfile()
 
-    const [passwordForm, setPasswordForm] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-    });
+    const {
+        editForm,
+        setEditForm
+    } = useEditUserData(userData)
 
+    const {
+        passwordForm,
+        setPasswordForm,
+    } = useChangePassword()
+
+    // TODO : flyt
     const [passwordError, setPasswordError] = useState('');
 
+    // TODO : flyt indholdet
     const handleSaveProfile = () => {
         setUserData({...userData, ...editForm});
         setIsEditingProfile(false);
         alert('Profil opdateret!');
     };
 
+    // TODO : flyt indholdet
     const handleChangePassword = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -57,10 +62,12 @@ export default function UserProfile() {
             setPasswordError('Passwords matcher ikke');
             return;
         }
-        //send til backend senere
+
+        // Send til backend senere
         console.log('Skift password:', passwordForm);
         alert('Password ændret!');
 
+        // Nulstil form
         setPasswordForm({
             currentPassword: '',
             newPassword: '',
@@ -69,7 +76,6 @@ export default function UserProfile() {
         setIsChangingPassword(false);
         setPasswordError('');
     };
-
     const handleLogout = () => {
         if (confirm('Er du sikker på at du vil logge ud?')) {
             localStorage.removeItem('token');
@@ -77,9 +83,13 @@ export default function UserProfile() {
         }
     };
 
+
+    if (authUser == null || userData == null) return <p>Failed to load data.</p>;
+
     return (
         <div className="profile-container">
             <div className="profile-content">
+                {/* Header */}
                 <div className="profile-header">
                     <button className="back-btn" onClick={() => navigate(-1)}>
                         ← Tilbage
@@ -87,11 +97,13 @@ export default function UserProfile() {
                     <h1>Min Profil</h1>
                 </div>
 
+                {/* Status banner */}
                 <div className={`status-banner ${userData.isActive ? 'active' : 'inactive'}`}>
                     <span className="status-icon">{userData.isActive ? '✓' : '⏸'}</span>
                     <span>Din konto er {userData.isActive ? 'aktiv' : 'inaktiv'}</span>
                 </div>
 
+                {/* Balance card */}
                 <div className="balance-card">
                     <div className="balance-info">
                         <span className="balance-label">Din saldo</span>
@@ -102,13 +114,21 @@ export default function UserProfile() {
                     </button>
                 </div>
 
+                {/* Profile info section */}
                 <div className="info-section">
                     <div className="section-header">
                         <h2>Personlige oplysninger</h2>
                         {!isEditingProfile && (
                             <button
                                 className="edit-btn"
-                                onClick={() => setIsEditingProfile(true)}
+                                onClick={() => {
+                                    setEditForm({
+                                        fullName: userData.fullName,
+                                        email: userData.email,
+                                        phone: userData.phoneNumber
+                                    });
+                                    setIsEditingProfile(true)
+                                }}
                             >
                                 ✏️ Rediger
                             </button>
@@ -148,7 +168,7 @@ export default function UserProfile() {
                                         setEditForm({
                                             fullName: userData.fullName,
                                             email: userData.email,
-                                            phone: userData.phone
+                                            phone: userData.phoneNumber
                                         });
                                         setIsEditingProfile(false);
                                     }}
@@ -172,12 +192,13 @@ export default function UserProfile() {
                             </div>
                             <div className="info-row">
                                 <span className="info-label">Telefon:</span>
-                                <span className="info-value">{userData.phone}</span>
+                                <span className="info-value">{userData.phoneNumber}</span>
                             </div>
                         </div>
                     )}
                 </div>
 
+                {/* Password section */}
                 <div className="info-section">
                     <div className="section-header">
                         <h2>Sikkerhed</h2>
@@ -198,7 +219,10 @@ export default function UserProfile() {
                                     type="password"
                                     required
                                     value={passwordForm.currentPassword}
-                                    onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
+                                    onChange={(e) => setPasswordForm({
+                                        ...passwordForm,
+                                        currentPassword: e.target.value
+                                    })}
                                 />
                             </div>
                             <div className="form-group">
@@ -208,7 +232,10 @@ export default function UserProfile() {
                                         type={showPassword ? "text" : "password"}
                                         required
                                         value={passwordForm.newPassword}
-                                        onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                                        onChange={(e) => setPasswordForm({
+                                            ...passwordForm,
+                                            newPassword: e.target.value
+                                        })}
                                         placeholder="Mindst 6 tegn"
                                     />
                                     <button
@@ -226,7 +253,10 @@ export default function UserProfile() {
                                     type={showPassword ? "text" : "password"}
                                     required
                                     value={passwordForm.confirmPassword}
-                                    onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                                    onChange={(e) => setPasswordForm({
+                                        ...passwordForm,
+                                        confirmPassword: e.target.value
+                                    })}
                                 />
                             </div>
                             {passwordError && <span className="error-text">{passwordError}</span>}

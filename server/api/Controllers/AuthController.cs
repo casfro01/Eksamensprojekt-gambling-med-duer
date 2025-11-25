@@ -47,7 +47,8 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
 
     [HttpGet]
     [Route("userinfo")]
-    public async Task<AuthUserInfo?> UserInfo()
+    [Authorize(Roles = "Bruger,Admin")]
+    public async Task<UserData?> UserInfo()
     {
         return service.GetUserInfo(User);
     }

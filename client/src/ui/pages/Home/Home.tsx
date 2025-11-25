@@ -1,13 +1,23 @@
 ﻿import './Home.css';
 import {useNavigate} from 'react-router';
 import ProfileButton from '../../components/ProfileButton';
+import {Suspense} from "react";
+import {UserGreeting} from "./UserGreeting.tsx";
+import {useIsValidLogin} from "../../../utils/checkLogin.ts";
 import AddPaymentButton from '../../components/AddPaymentButton';
 
 export default function Home() {
     const navigate = useNavigate();
+
+    const validLogin = useIsValidLogin();
+
     const handlePlayClick = () => {
         console.log('Gå til spil!');
-        navigate('/select');
+        if (validLogin) {
+            navigate('/select');
+        } else {
+            navigate('/login');
+        }
     };
 
     return (
@@ -18,6 +28,9 @@ export default function Home() {
                 {/* Header */}
                 <header className="home-header">
                     <h1 className="game-title">Døde Duer</h1>
+                    <Suspense fallback={<p>Login for at spille.</p>}>
+                        <UserGreeting/>
+                    </Suspense>
                     <p className="game-subtitle">Støt Jerne IF og vind præmier hver uge!</p>
                 </header>
 

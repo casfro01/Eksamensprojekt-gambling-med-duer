@@ -19,6 +19,7 @@ public class LoginTest(MyDbContext ctx, IAuthService authService, ISeeder seeder
         
         Assert.Equal(loginResponse.Id, user.Id);
         Assert.Equal(loginResponse.FullName, user.FullName);
+        Assert.Equal(loginResponse.Email, user.Email);
         Assert.Equal(loginResponse.Role, user.Role.ToString());
     }
 
