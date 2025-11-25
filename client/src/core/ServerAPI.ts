@@ -426,6 +426,7 @@ export interface CreateTransactionDto {
     mobilePayId: string;
     amount: number;
     email: string;
+    id?: string | undefined;
 }
 
 export interface UpdateTransactionDto {

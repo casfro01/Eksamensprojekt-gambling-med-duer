@@ -1,30 +1,22 @@
 ﻿import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import './addPayment.css';
+import { CreatePayment } from "./useAddPayment.ts";
 
 export default function AddPayment() {
     const navigate = useNavigate();
+
+    // todo: flyt ud
     const [amount, setAmount] = useState<string>('');
     const [mobilePayId, setMobilePayId] = useState<string>('');
     const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
+    // todo: flyt ud
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const amountNum = parseFloat(amount);
-
-        if (amountNum < 10) {
-            alert('Minimumsbeløb er 10 DKK');
-            return;
-        }
-
-        console.log('Indbetaling:', {
-            amount: amountNum,
-            mobilePayId: mobilePayId
-        });
-
-        alert(`Indbetaling af ${amountNum} DKK er registreret!\n\nMobilePay ID: ${mobilePayId}\n\nDine penge vil være tilgængelige om få minutter.`);
-
+        const message = await CreatePayment(amount, mobilePayId);
+        alert(message)
         navigate(-1);
     };
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using service.Abstractions;
 using service.Models.Request;
@@ -13,9 +14,12 @@ public class TransactionController(IServiceWithSieve<BaseTransactionResponse, Cr
 {
     
     [HttpPost(nameof(CreatePendingTransactions))]
-    [AllowAnonymous]
+    // skal admins også kunne sætte penge ind?, det kan de for nu
+    [Authorize(Roles = "Admin,Bruger")]
     public async Task<BaseTransactionResponse> CreatePendingTransactions([FromBody]CreateTransactionDto dto)
     {
+        var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        dto.Id = userID;
         return await service.Create(dto);
     }
     
