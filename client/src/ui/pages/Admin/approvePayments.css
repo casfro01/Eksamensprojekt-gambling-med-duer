@@ -1,0 +1,217 @@
+.approve-payments-container {
+    max-width: 1000px;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.payments-header {
+    margin-bottom: 32px;
+}
+
+.payments-header h1 {
+    font-size: 32px;
+    color: #EB5757;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 16px;
+}
+
+.payments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.payment-card {
+    background: #f8f8f8;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.2s ease;
+}
+
+.payment-card:hover {
+    border-color: #EB5757;
+    box-shadow: 0 4px 12px rgba(235, 87, 87, 0.1);
+}
+
+.payment-info {
+    flex: 1;
+}
+
+.player-section h3 {
+    font-size: 20px;
+    color: #333;
+    margin: 0 0 4px 0;
+}
+
+.timestamp {
+    font-size: 13px;
+    color: #999;
+}
+
+.payment-details {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.detail-row .label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 600;
+    min-width: 120px;
+}
+
+.detail-row .value {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.detail-row .value.amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: #EB5757;
+}
+
+.payment-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.approve-btn,
+.reject-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.approve-btn {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.approve-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.reject-btn {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.reject-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.page-btn {
+    background: #EB5757;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #d94545;
+    transform: translateY(-2px);
+}
+
+.page-btn:disabled {
+    background: #e0e0e0;
+    color: #999;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.page-info {
+    font-size: 16px;
+    color: #666;
+    font-weight: 600;
+}
+
+.no-payments {
+    text-align: center;
+    padding: 60px 40px;
+    background: #f8f8f8;
+    border-radius: 16px;
+    border: 2px dashed #e0e0e0;
+}
+
+.no-payments-icon {
+    font-size: 80px;
+    display: block;
+    margin-bottom: 20px;
+    color: #28a745;
+}
+
+.no-payments h2 {
+    font-size: 28px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.no-payments p {
+    font-size: 16px;
+    color: #999;
+}
+
+@media (max-width: 768px) {
+    .approve-payments-container {
+        padding: 24px;
+    }
+
+    .payment-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .payment-actions {
+        flex-direction: row;
+    }
+
+    .approve-btn,
+    .reject-btn {
+        flex: 1;
+    }
+}

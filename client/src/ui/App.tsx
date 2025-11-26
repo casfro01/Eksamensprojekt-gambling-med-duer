@@ -11,6 +11,7 @@ import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
 import {UserProfilePage} from "./pages/UserProfile/userProfilePage.tsx";
 import AddPayment from './pages/AddPayment/AddPayment';
+import ApprovePayments from './pages/Admin/ApprovePayments';
 
 export default function App() {
     return (
@@ -65,6 +66,10 @@ export default function App() {
                                 {
                                     path: "history",
                                     element: <GameHistory/>
+                                },
+                                {
+                                    path: "payments",
+                                    element: <ApprovePayments/>
                                 }
                                 // Tilføj flere admin routes senere
                             ]
