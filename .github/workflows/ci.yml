@@ -24,3 +24,6 @@ jobs:
       - name: Lint
         run: npm run lint
         working-directory: ./client
+      - name: Lint (No hooks in UI)
+        run: eslint run .
+        working-directory: ./client
