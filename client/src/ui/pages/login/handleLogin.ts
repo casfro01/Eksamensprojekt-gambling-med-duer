@@ -17,7 +17,7 @@ export const handleLogin = async (
     // Valider input
     if (!email || !password) {
         setError('Udfyld venligst alle felter');
-        return;
+        return "null";
     }
 
     setLoading(true);
@@ -37,9 +37,9 @@ export const handleLogin = async (
         // Gem token i localStorage
         if (response.jwt) {
             setJwt(response.jwt);
-            //localStorage.setItem('token', response.jwt);
-            console.log('Login succesfuld!', response);
+            //console.log('Login succesfuld!', response);
         }
+        return response.jwt;
 
     } catch (err: unknown) {
         if (err instanceof Error) {
