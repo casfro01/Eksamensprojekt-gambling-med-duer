@@ -82,10 +82,10 @@ export default function AddPayment() {
                             value={mobilePayId}
                             onChange={(e) => setMobilePayId(e.target.value)}
                             placeholder="f.eks. 12345678900"
-                            pattern="[0-9]{8}"
-                            maxLength={8}
+                            pattern="[0-9]{11}"
+                            maxLength={11}
                         />
-                        <span className="hint">Dit 8-cifrede telefonnummer</span>
+                        <span className="hint">MobilePay Transaktions ID</span>
                     </div>
 
                     {showTooltip && (
