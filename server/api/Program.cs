@@ -40,7 +40,8 @@ public class Program
         services.AddScoped<IServiceWithSieve<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto>, TransactionService>();
         
         // seeder
-        services.AddScoped<ISeeder, BogusSeed>();
+        //services.AddScoped<ISeeder, BogusSeed>();
+        services.AddScoped<ISeeder, SimpleSeeder>();
         services.AddProblemDetails();
         
         services.AddDbContext<MyDbContext>((services, options) =>

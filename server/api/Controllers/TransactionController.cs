@@ -15,7 +15,7 @@ public class TransactionController(IServiceWithSieve<BaseTransactionResponse, Cr
     
     [HttpPost(nameof(CreatePendingTransactions))]
     // skal admins også kunne sætte penge ind?, det kan de for nu
-    [Authorize(Roles = "Admin,Bruger")]
+    [Authorize(Roles = "Administrator,Bruger")]
     public async Task<BaseTransactionResponse> CreatePendingTransactions([FromBody]CreateTransactionDto dto)
     {
         var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -12,7 +12,7 @@ export default function AddPayment() {
     const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
     // todo: flyt ud
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const message = await CreatePayment(amount, mobilePayId);
