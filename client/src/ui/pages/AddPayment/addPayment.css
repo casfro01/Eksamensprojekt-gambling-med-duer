@@ -296,4 +296,11 @@
     .payment-content h1 {
         font-size: 24px;
     }
+    .form-group input.valid {
+        border-color: #28a745;
+    }
+
+    .form-group input.invalid {
+        border-color: #EB5757;
+    }
 }
