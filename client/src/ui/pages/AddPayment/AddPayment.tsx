@@ -11,12 +11,15 @@ export default function AddPayment() {
     const [mobilePayId, setMobilePayId] = useState<string>('');
     const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const message = await CreatePayment(amount, mobilePayId);
-        alert("Indbetaling: " + message);
-        navigate(-1);
+        const message = await CreatePayment(amount, mobilePayId)
+            .then(() => {
+                alert(message);
+                navigate(-1);
+            });
+
     };
 
     const quickAmounts = [50, 100, 200, 500];
@@ -31,7 +34,7 @@ export default function AddPayment() {
                 <h1>Indsæt Penge</h1>
                 <p className="subtitle">Tilføj penge til din konto via MobilePay</p>
 
-                <form onSubmit={handleSubmit} className="payment-form">
+                <form onSubmit={async () => await handleSubmit} className="payment-form">
                     <div className="quick-amounts">
                         <span className="quick-label">Hurtigvalg:</span>
                         <div className="quick-buttons">
