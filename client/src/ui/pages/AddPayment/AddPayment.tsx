@@ -14,12 +14,14 @@ export default function AddPayment() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const message = await CreatePayment(amount, mobilePayId)
-            .then(() => {
+        await CreatePayment(amount, mobilePayId)
+            .then(message => {
                 alert(message);
                 navigate(-1);
+            })
+            .catch((err) => {
+                alert(err);
             });
-
     };
 
     const quickAmounts = [50, 100, 200, 500];
@@ -34,7 +36,7 @@ export default function AddPayment() {
                 <h1>Indsæt Penge</h1>
                 <p className="subtitle">Tilføj penge til din konto via MobilePay</p>
 
-                <form onSubmit={async () => await handleSubmit} className="payment-form">
+                <form onSubmit={async (e) => await handleSubmit(e)} className="payment-form">
                     <div className="quick-amounts">
                         <span className="quick-label">Hurtigvalg:</span>
                         <div className="quick-buttons">
