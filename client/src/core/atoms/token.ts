@@ -1,4 +1,4 @@
-﻿import { atom } from "jotai";
+﻿import {atom, useAtom} from "jotai";
 import { atomWithStorage, createJSONStorage } from "jotai/utils";
 import { authClient } from "../api-clients.ts"
 
@@ -22,3 +22,8 @@ export const userInfoAtom = atom(async (get) => {
     const userInfo = await authClient.userInfo();
     return userInfo;
 });
+
+export function useRemoveToken(){
+    const [, setTokenAtom] = useAtom(tokenAtom);
+    return setTokenAtom;
+}

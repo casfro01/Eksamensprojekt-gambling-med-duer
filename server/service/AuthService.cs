@@ -49,7 +49,7 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
         //var role = principal.FindFirstValue(ClaimTypes.Role);
         var userID = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var user = dbContext.Users.First(u => u.Id == userID);
-        var balance = dbContext.Transactions.Where(t => t.User.Id == userID).Sum(t => t.Amount);
+        var balance = dbContext.Transactions.Where(t => t.User.Id == userID).Where(t => t.Status == PaymentStatus.Accepted).Sum(t => t.Amount);
         return new UserData(user.Id, user.FullName, user.Email, user.Role.ToString(), balance, user.PhoneNumber, user.isActive);
     }
 }

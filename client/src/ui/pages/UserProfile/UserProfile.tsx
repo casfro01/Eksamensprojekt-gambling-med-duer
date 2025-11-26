@@ -6,10 +6,12 @@ import {useEditProfile} from "./EditProfile.ts";
 import {useEditUserData} from "./EditUserData.ts";
 import {useChangePassword} from "./ChangePassword.ts";
 import {useGetLoggedInUser} from "../Home/useLogin.ts";
+import {useRemoveToken} from "../../../core/atoms/token.ts";
 
 export function UserProfile(){
     const navigate = useNavigate();
     const isValidLogin = useIsValidLogin();
+    const setToken = useRemoveToken();
 
     const {
         authUser,
@@ -78,7 +80,7 @@ export function UserProfile(){
     };
     const handleLogout = () => {
         if (confirm('Er du sikker på at du vil logge ud?')) {
-            localStorage.removeItem('token');
+            setToken(null);
             navigate('/login');
         }
     };
