@@ -164,6 +164,91 @@
         }
       }
     },
+    "/api/board/CreateBoard": {
+      "post": {
+        "tags": [
+          "Board"
+        ],
+        "operationId": "Board_CreateBoard",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBoardDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseBoardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/GetGames": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "operationId": "Game_GetGames",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BaseGameResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/GetGame": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "operationId": "Game_GetGame",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseGameResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Transaction/CreatePendingTransactions": {
       "post": {
         "tags": [
@@ -399,6 +484,10 @@
           "id": {
             "type": "string"
           },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
           "winningBoardIds": {
             "type": "array",
             "items": {
@@ -406,6 +495,139 @@
             }
           }
         }
+      },
+      "CreateBoardDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "games": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Game"
+            }
+          },
+          "playedNumbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "Game": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "winningBoards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Board"
+            }
+          }
+        }
+      },
+      "Board": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "games": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Game"
+            }
+          },
+          "playedNumbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "boards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Board"
+            }
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "Role": {
+        "type": "integer",
+        "description": "",
+        "x-enum-names": [
+          "Administrator",
+          "Bruger"
+        ],
+        "x-enum-varnames": [
+          "Administrator",
+          "Bruger"
+        ],
+        "x-enumNames": [
+          "Administrator",
+          "Bruger"
+        ],
+        "x-enum-descriptions": [
+          null,
+          null
+        ],
+        "x-enumDescriptions": [
+          null,
+          null
+        ],
+        "enum": [
+          0,
+          1
+        ]
       },
       "BaseTransactionResponse": {
         "type": "object",
