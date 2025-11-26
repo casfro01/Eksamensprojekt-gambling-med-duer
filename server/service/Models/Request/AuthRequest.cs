@@ -12,7 +12,7 @@ public record RegisterRequest
         this.PhoneNumber = phoneNumber;
     }
     [Required] [EmailAddress] public string Email { get; set; } = null!;
-    [MinLength(6)] public string Password { get; set; } = null!;
+    [Required] [MinLength(6)] public string Password { get; set; } = null!;
 
     [Required] [MinLength(5)] public string FullName { get; set; } = null!;
     
