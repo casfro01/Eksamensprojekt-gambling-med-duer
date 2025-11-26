@@ -16,6 +16,7 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
         context.Boards.RemoveRange(context.Boards);
         context.Games.RemoveRange(context.Games);
         context.Users.RemoveRange(context.Users);
+        context.Transactions.RemoveRange(context.Transactions);
         await context.SaveChangesAsync();
 
 

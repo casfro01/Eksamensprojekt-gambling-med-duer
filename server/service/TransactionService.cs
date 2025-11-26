@@ -24,8 +24,9 @@ public class TransactionService(MyDbContext ctx, ISieveProcessor processor) : IS
     public async Task<BaseTransactionResponse> Create(CreateTransactionDto request)
     {
         Validator.ValidateObject(request, new ValidationContext(request), true);
-        
-        User user = ctx.Users.First(u => u.Email == request.Email);
+        if (request.Id == null) throw new ValidationException("Missing id, try again when you get one");
+        Console.WriteLine(request.Id + " :Det id her");
+        User user = ctx.Users.First(u => u.Id == request.Id);
 
         Transaction trans = new Transaction
         {

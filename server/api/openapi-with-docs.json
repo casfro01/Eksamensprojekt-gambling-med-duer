@@ -490,6 +490,10 @@
             "type": "string",
             "format": "email",
             "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

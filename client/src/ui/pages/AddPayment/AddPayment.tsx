@@ -1,30 +1,22 @@
 ﻿import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import './addPayment.css';
+import { CreatePayment } from "./useAddPayment.ts";
 
 export default function AddPayment() {
     const navigate = useNavigate();
+
+    // todo: flyt ud
     const [amount, setAmount] = useState<string>('');
     const [mobilePayId, setMobilePayId] = useState<string>('');
     const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    // todo: flyt ud
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const amountNum = parseFloat(amount);
-
-        if (amountNum < 10) {
-            alert('Minimumsbeløb er 10 DKK');
-            return;
-        }
-
-        console.log('Indbetaling:', {
-            amount: amountNum,
-            mobilePayId: mobilePayId
-        });
-
-        alert(`Indbetaling af ${amountNum} DKK er registreret!\n\nMobilePay ID: ${mobilePayId}\n\nDine penge vil være tilgængelige om få minutter.`);
-
+        const message = await CreatePayment(amount, mobilePayId);
+        alert("Indbetaling: " + message);
         navigate(-1);
     };
 
@@ -90,10 +82,10 @@ export default function AddPayment() {
                             value={mobilePayId}
                             onChange={(e) => setMobilePayId(e.target.value)}
                             placeholder="f.eks. 12345678900"
-                            pattern="[0-9]{8}"
-                            maxLength={8}
+                            pattern="[0-9]{11}"
+                            maxLength={11}
                         />
-                        <span className="hint">Dit 8-cifrede telefonnummer</span>
+                        <span className="hint">MobilePay Transaktions ID</span>
                     </div>
 
                     {showTooltip && (
