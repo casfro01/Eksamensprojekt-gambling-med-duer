@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import './approvePayments.css';
+import {useFetchPendingPayments} from "./fetchPendingPayments.ts";
 
-interface Payment {
+export interface Payment {
     id: string;
-    playerName: string;
+    fullName: string;
     amount: number;
     mobilePayId: string;
     timestamp: string;
@@ -11,14 +11,19 @@ interface Payment {
 }
 
 export default function ApprovePayments() {
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 10;
+    const {
+        payments,
+        currentPage,
+        setCurrentPage
+    } = useFetchPendingPayments(itemsPerPage);
 
     // SLET DENNE DATA NÅR BACKEND ER CONNECTED
+    /*
     const [payments, setPayments] = useState<Payment[]>([
         {
             id: '1',
-            playerName: 'Peter Jensen',
+            fullName: 'Peter Jensen',
             amount: 100,
             mobilePayId: '12345678901',
             timestamp: '2025-11-26 14:23',
@@ -26,7 +31,7 @@ export default function ApprovePayments() {
         },
         {
             id: '2',
-            playerName: 'Anna Nielsen',
+            fullName: 'Anna Nielsen',
             amount: 200,
             mobilePayId: '98765432109',
             timestamp: '2025-11-26 13:15',
@@ -34,7 +39,7 @@ export default function ApprovePayments() {
         },
         {
             id: '3',
-            playerName: 'Lars Larsen',
+            fullName: 'Lars Larsen',
             amount: 50,
             mobilePayId: '11122233344',
             timestamp: '2025-11-26 12:45',
@@ -42,7 +47,7 @@ export default function ApprovePayments() {
         },
         {
             id: '4',
-            playerName: 'Maria Andersen',
+            fullName: 'Maria Andersen',
             amount: 500,
             mobilePayId: '55566677788',
             timestamp: '2025-11-26 11:30',
@@ -50,7 +55,7 @@ export default function ApprovePayments() {
         },
         {
             id: '5',
-            playerName: 'Jens Olsen',
+            fullName: 'Jens Olsen',
             amount: 150,
             mobilePayId: '99988877766',
             timestamp: '2025-11-26 10:20',
@@ -58,7 +63,7 @@ export default function ApprovePayments() {
         },
         {
             id: '6',
-            playerName: 'Sophie Hansen',
+            fullName: 'Sophie Hansen',
             amount: 300,
             mobilePayId: '12312312312',
             timestamp: '2025-11-26 09:15',
@@ -66,7 +71,7 @@ export default function ApprovePayments() {
         },
         {
             id: '7',
-            playerName: 'Thomas Berg',
+            fullName: 'Thomas Berg',
             amount: 75,
             mobilePayId: '45645645645',
             timestamp: '2025-11-26 08:50',
@@ -74,7 +79,7 @@ export default function ApprovePayments() {
         },
         {
             id: '8',
-            playerName: 'Emma Kristensen',
+            fullName: 'Emma Kristensen',
             amount: 250,
             mobilePayId: '78978978978',
             timestamp: '2025-11-26 08:30',
@@ -82,7 +87,7 @@ export default function ApprovePayments() {
         },
         {
             id: '9',
-            playerName: 'Mikkel Sørensen',
+            fullName: 'Mikkel Sørensen',
             amount: 400,
             mobilePayId: '32132132132',
             timestamp: '2025-11-26 07:45',
@@ -90,7 +95,7 @@ export default function ApprovePayments() {
         },
         {
             id: '10',
-            playerName: 'Julie Pedersen',
+            fullName: 'Julie Pedersen',
             amount: 180,
             mobilePayId: '65465465465',
             timestamp: '2025-11-26 07:20',
@@ -98,7 +103,7 @@ export default function ApprovePayments() {
         },
         {
             id: '11',
-            playerName: 'Martin Nielsen',
+            fullName: 'Martin Nielsen',
             amount: 220,
             mobilePayId: '14725836901',
             timestamp: '2025-11-25 18:30',
@@ -106,13 +111,13 @@ export default function ApprovePayments() {
         },
         {
             id: '12',
-            playerName: 'Sofie Madsen',
+            fullName: 'Sofie Madsen',
             amount: 90,
             mobilePayId: '36925814701',
             timestamp: '2025-11-25 17:15',
             status: 'pending'
         }
-    ]);
+    ]);*/
 
     const handleApprove = (id: string) => {
         setPayments(payments.map(p =>
@@ -157,7 +162,7 @@ export default function ApprovePayments() {
                             <div key={payment.id} className="payment-card">
                                 <div className="payment-info">
                                     <div className="player-section">
-                                        <h3>{payment.playerName}</h3>
+                                        <h3>{payment.fullName}</h3>
                                         <span className="timestamp">{payment.timestamp}</span>
                                     </div>
                                     <div className="payment-details">
