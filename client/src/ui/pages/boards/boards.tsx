@@ -8,13 +8,17 @@ type DeadPigeonBoard = BaseBoardResponse & { [key: string]: unknown };
 const price = [20, 40, 80, 160];
 
 const getNumbers = (board: DeadPigeonBoard): string[] => {
-    return board.playedNumbers!
-        .map((num) => num.toString())
+    return (board.playedNumbers ?? []).map((num) => num.toString());
 };
 
+
 const getPriceLabel = (board: DeadPigeonBoard): string => {
-    return price[board.playedNumbers?.length! - 5].toString() || "Ukendt"
+    const len = board.playedNumbers?.length ?? 0;
+    const priceIndex = len - 5;
+
+    return price[priceIndex] !== undefined ? price[priceIndex].toString() : "Ukendt";
 };
+
 
 const getOwnerLabel = (board: DeadPigeonBoard): string => {
     return board.user?.fullName || "Ukendt"
@@ -31,20 +35,26 @@ function getWeekNumber(date: Date): number {
     return 1 + Math.round(diff / (7 * 24 * 60 * 60 * 1000));
 }
 
-const getWeekLabel = (board: DeadPigeonBoard) => {
-    return "Uge - " + board.games!.map((game) => " " + getWeekNumber(new Date(game.startTime!)))
+const getWeekLabel = (board: DeadPigeonBoard): string => {
+    const games = board.games ?? [];
+    const weeks = games
+        .map((game) => (game.startTime ? getWeekNumber(new Date(game.startTime)) : null))
+        .filter((w): w is number => w !== null);
+
+    return "Uge - " + weeks.join(" ");
 };
+
 
 const getStatusVariant = (board: DeadPigeonBoard): 'active' | 'ended' => {
-   const weeks = board.games!.map((game) => getWeekNumber(new Date(game.startTime!)))
-   const currentWeek = getWeekNumber(new Date())
+    const games = board.games ?? [];
+    const weeks = games
+        .map((game) => (game.startTime ? getWeekNumber(new Date(game.startTime)) : null))
+        .filter((w): w is number => w !== null);
 
-   if (weeks.includes(currentWeek)) {
-        return "active"
-   } else {
-        return "ended"
-   }
+    const currentWeek = getWeekNumber(new Date());
+    return weeks.includes(currentWeek) ? 'active' : 'ended';
 };
+
 
 export default function Boards() {
     const [boards, setBoards] = useState<DeadPigeonBoard[]>([]);
