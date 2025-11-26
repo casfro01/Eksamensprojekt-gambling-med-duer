@@ -1,19 +1,22 @@
 import './approvePayments.css';
 import {useFetchPendingPayments} from "./fetchPendingPayments.ts";
+import {approvePayments} from "./ApprovePayment.ts";
 
+export type statusType = 'pending' | 'approved' | 'rejected';
 export interface Payment {
     id: string;
     fullName: string;
     amount: number;
     mobilePayId: string;
     timestamp: string;
-    status: 'pending' | 'approved' | 'rejected';
+    status: statusType;
 }
 
 export default function ApprovePayments() {
     const itemsPerPage = 10;
     const {
         payments,
+        setPayments,
         currentPage,
         setCurrentPage
     } = useFetchPendingPayments(itemsPerPage);
@@ -119,22 +122,24 @@ export default function ApprovePayments() {
         }
     ]);*/
 
-    const handleApprove = (id: string) => {
+    const handleApprove = async (id: string) => {
         setPayments(payments.map(p =>
             p.id === id ? { ...p, status: 'approved' } : p
         ));
+        const ans = await approvePayments(id, 1);
         console.log('Godkendt betaling:', id);
         // Send til backend senere
-        alert('Betaling godkendt!');
+        alert(ans + ': ' + 'Betaling godkendt!');
     };
 
-    const handleReject = (id: string) => {
+    const handleReject = async (id: string) => {
         setPayments(payments.map(p =>
             p.id === id ? { ...p, status: 'rejected' } : p
         ));
+        const ans = await approvePayments(id, 2);
         console.log('Afvist betaling:', id);
         // Send til backend senere
-        alert('Betaling afvist!');
+        alert(ans + ': ' + 'Betaling afvist!');
     };
 
     // Filter pending payments
@@ -179,13 +184,13 @@ export default function ApprovePayments() {
                                 <div className="payment-actions">
                                     <button
                                         className="approve-btn"
-                                        onClick={() => handleApprove(payment.id)}
+                                        onClick={async () => handleApprove(payment.id)}
                                     >
                                         ✓ Godkend
                                     </button>
                                     <button
                                         className="reject-btn"
-                                        onClick={() => handleReject(payment.id)}
+                                        onClick={async () => handleReject(payment.id)}
                                     >
                                         ✕ Afvis
                                     </button>
