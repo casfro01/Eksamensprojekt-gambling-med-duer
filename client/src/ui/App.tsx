@@ -11,7 +11,7 @@ import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
 import {UserProfilePage} from "./pages/UserProfile/userProfilePage.tsx";
 import AddPayment from './pages/AddPayment/AddPayment';
-import ApprovePayments from './pages/Admin/ApprovePayments';
+import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 
 export default function App() {
     return (

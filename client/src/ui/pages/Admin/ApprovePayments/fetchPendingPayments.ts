@@ -1,8 +1,8 @@
 import type {Payment} from "./ApprovePayments.tsx";
 import {useState, useEffect} from "react";
-import {transactionClient} from "../../../core/api-clients.ts";
+import {transactionClient} from "../../../../core/api-clients.ts";
 import {SieveQueryBuilder} from "ts-sieve-query-builder";
-import type {BaseTransactionResponse, PaymentStatus} from "../../../core/ServerAPI.ts";
+import type {BaseTransactionResponse, PaymentStatus} from "../../../../core/ServerAPI.ts";
 
 export const useFetchPendingPayments = (itemsPerPage: number) => {
     const [payments, setPayments] = useState<Payment[]>([]);
