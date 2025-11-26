@@ -16,6 +16,7 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
         context.Boards.RemoveRange(context.Boards);
         context.Games.RemoveRange(context.Games);
         context.Users.RemoveRange(context.Users);
+        context.Transactions.RemoveRange(context.Transactions);
         await context.SaveChangesAsync();
 
 
@@ -36,8 +37,13 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
         context.Users.AddRange(users);
         await context.SaveChangesAsync();
 
+        var startDate = DateTime.UtcNow.AddDays(-30);
+        var startDateSunday = startDate.Date.AddDays(-(7 + (startDate.DayOfWeek - DayOfWeek.Sunday)) % 7);
         var gameFaker = new Faker<Game>()
-            .RuleFor(g => g.Id, f => Guid.NewGuid().ToString());
+            .RuleFor(g => g.Id, f => Guid.NewGuid().ToString())
+            .RuleFor(g => g.StartDate, f => startDateSunday.AddDays(f.IndexFaker * 7)
+            );
+        
         var games = gameFaker.Generate(25);
         context.Games.AddRange(games);
 
@@ -45,7 +51,7 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
         var boardFaker = new Faker<Board>()
             .RuleFor(b => b.Id, f => Guid.NewGuid().ToString())
             .RuleFor(b => b.User, f => f.PickRandom(users))
-            .RuleFor(b => b.Games, games)
+            .RuleFor(b => b.Games, f => new[]{f.PickRandom(games), f.PickRandom(games), f.PickRandom(games)})
             .RuleFor(b => b.PlayedNumbers, f =>
             [
                 f.PickRandom(nums), f.PickRandom(nums), f.PickRandom(nums), f.PickRandom(nums), f.PickRandom(nums)

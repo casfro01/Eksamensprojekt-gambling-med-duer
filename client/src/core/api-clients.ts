@@ -1,4 +1,4 @@
-﻿import { AuthClient, BoardClient } from "./ServerAPI.ts"
+﻿import {AuthClient, BoardClient, TransactionClient} from "./ServerAPI.ts"
 import {TOKEN_KEY, tokenStorage} from "./atoms/token.ts";
 
 
@@ -22,3 +22,4 @@ const baseUrl = undefined;
 
 export const authClient = new AuthClient(baseUrl, { fetch: customFetch });
 export const boardClient = new BoardClient(baseUrl, { fetch: customFetch });
+export const transactionClient = new TransactionClient(baseUrl, { fetch: customFetch });
