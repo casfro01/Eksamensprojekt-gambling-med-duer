@@ -16,7 +16,7 @@ export default function AddPayment() {
         e.preventDefault();
 
         const message = await CreatePayment(amount, mobilePayId);
-        alert(message)
+        alert("Indbetaling: " + message);
         navigate(-1);
     };
 

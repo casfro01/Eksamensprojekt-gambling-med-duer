@@ -23,7 +23,8 @@ public class SimpleSeeder(MyDbContext ctx, IPasswordHasher<User> hasher) : ISeed
             isActive = true,
             PasswordHash = "",
             Role = Role.Administrator,
-            PhoneNumber = "70202020"
+            PhoneNumber = "70202020",
+            Created = DateTime.UtcNow
         };
         adminBruger.PasswordHash = hasher.HashPassword(adminBruger, "Password");
 
@@ -35,7 +36,8 @@ public class SimpleSeeder(MyDbContext ctx, IPasswordHasher<User> hasher) : ISeed
             isActive = true,
             PasswordHash = "",
             Role = Role.Bruger,
-            PhoneNumber = "70202020"
+            PhoneNumber = "70202020",
+            Created = DateTime.UtcNow
         };
         normalBurger.PasswordHash = hasher.HashPassword(normalBurger, "Password");
 
