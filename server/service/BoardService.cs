@@ -14,6 +14,7 @@ public class BoardService(MyDbContext db): IService<BaseBoardResponse, CreateBoa
     {
         return db.Boards
             .Include(b => b.Games)
+            .Include(b => b.User)
             .Select(b => new BaseBoardResponse(b)).ToListAsync();
     }
 

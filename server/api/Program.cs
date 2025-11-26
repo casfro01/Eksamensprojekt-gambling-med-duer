@@ -37,6 +37,7 @@ public class Program
         services.AddScoped<ITokenService, JwtService>();
         services.AddScoped<IPasswordHasher<User>, NSecArgon2IdPasswordHasher>();
         services.AddScoped<IService<BaseBoardResponse, CreateBoardDto, UpdateBoardDto>, BoardService>();
+        services.AddScoped<IGameService, GameService>();
         services.AddScoped<IServiceWithSieve<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto>, TransactionService>();
         
         // seeder
