@@ -5,6 +5,7 @@ using service.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 using service.Abstractions;
 using service.Security;
+using Sieve.Models;
 
 namespace api.Controllers;
 
@@ -51,5 +52,13 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
     public async Task<UserData?> UserInfo()
     {
         return service.GetUserInfo(User);
+    }
+
+    [HttpPost]
+    [Route("getUsersByFilter")]
+    [Authorize(Roles = "Administrator")]
+    public async Task<GetAllUsersResponse> GetAllUsers([FromBody] SieveModel request)
+    {
+        return await service.GetAllUsersResponse(request);
     }
 }
