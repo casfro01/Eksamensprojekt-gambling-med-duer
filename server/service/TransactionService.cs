@@ -21,6 +21,7 @@ public class TransactionService(MyDbContext ctx, ISieveProcessor processor) : IS
         return (from transaction in res select new BaseTransactionResponse(transaction)).ToList();
     }
 
+    // TODO : lav så man ikke kan have to transaktioner med samme id (gælder ikke hvis den er rejected - hvis nu der blev tastet en forkert beløb ind eller nogle bruteforcer og optager mobilepay id'er), som er accepteret
     public async Task<BaseTransactionResponse> Create(CreateTransactionDto request)
     {
         Validator.ValidateObject(request, new ValidationContext(request), true);

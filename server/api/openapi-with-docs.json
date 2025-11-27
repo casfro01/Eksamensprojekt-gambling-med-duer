@@ -386,6 +386,7 @@
         "additionalProperties": false,
         "required": [
           "email",
+          "password",
           "fullName",
           "phoneNumber"
         ],

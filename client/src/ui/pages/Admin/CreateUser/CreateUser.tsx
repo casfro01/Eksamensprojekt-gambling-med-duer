@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 import './createUser.css';
-import {createUser} from "./useCreateUser.ts";
+import { createUser } from "./CreateUserFunction";
 import type {RegisterRequest} from "../../../../core/ServerAPI.ts";
 
 export default function CreateUser() {

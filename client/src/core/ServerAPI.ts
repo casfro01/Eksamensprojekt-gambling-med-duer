@@ -499,7 +499,7 @@ export interface RegisterResponse {
 
 export interface RegisterRequest {
     email: string;
-    password?: string;
+    password: string;
     fullName: string;
     phoneNumber: string;
 }
