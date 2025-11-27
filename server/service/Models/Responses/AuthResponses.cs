@@ -14,11 +14,11 @@ public class UserData
 {
     public string Id { get; set; }
     public string FullName { get; set; }
-    private string Email { get; set; }
-    private string Role { get; set; }
-    private int Balance { get; set; }
-    private string phoneNumber { get; set; }
-    private bool isActive { get; set; }
+    public string Email { get; set; }
+    public string Role { get; set; }
+    public int Balance { get; set; }
+    public string phoneNumber { get; set; }
+    public bool isActive { get; set; }
     public UserData(User user)
     {
         Id = user.Id;

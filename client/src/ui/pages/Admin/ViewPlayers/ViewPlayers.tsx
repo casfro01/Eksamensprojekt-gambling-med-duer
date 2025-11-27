@@ -1,6 +1,7 @@
-﻿import { useState } from 'react';
+﻿
 import './viewPlayers.css';
-
+import {useGetAllUsers} from "./useGetAllUsers.ts";
+/*
 interface Player {
     id: string;
     fullName: string;
@@ -9,10 +10,13 @@ interface Player {
     isActive: boolean;
     balance: number;
     createdDate: string;
-}
+}*/
+
+export type StateFilter = 'all' | 'active' | 'inactive';
 
 export default function ViewPlayers() {
     // Dummy data - skal hentes fra backend senere
+    /*
     const [players, setPlayers] = useState<Player[]>([
         {
             id: '1',
@@ -32,27 +36,40 @@ export default function ViewPlayers() {
             balance: 0,
             createdDate: '2025-02-20'
         }
-    ]);
+    ]);*/
+    const {
+        filter,
+        setFilter,
+        page,
+        setPage,
+        allUsers,
+        activeUsers,
+        userData
+    } = useGetAllUsers()
 
-    const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
+    //const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
 
+    // TODO : implement
+    /*
     const togglePlayerStatus = (id: string) => {
         setPlayers(players.map(p =>
             p.id === id ? {...p, isActive: !p.isActive} : p
         ));
-    };
+    };*/
 
+    // TODO : implement
+    /*
     const deletePlayer = (id: string) => {
         if (confirm('Er du sikker på at du vil slette denne spiller?')) {
             setPlayers(players.filter(p => p.id !== id));
         }
-    };
+    };*/
 
-    const filteredPlayers = players.filter(p => {
+    const filteredPlayers = userData /*players.filter(p => {
         if (filter === 'active') return p.isActive;
         if (filter === 'inactive') return !p.isActive;
         return true;
-    });
+    });*/
 
     return (
         <div className="view-players-container">
@@ -64,11 +81,11 @@ export default function ViewPlayers() {
                 <div className="header-stats">
                     <div className="stat-box">
                         <span className="stat-label">Total</span>
-                        <span className="stat-value">{players.length}</span>
+                        <span className="stat-value">{allUsers}</span>
                     </div>
                     <div className="stat-box active">
                         <span className="stat-label">Aktive</span>
-                        <span className="stat-value">{players.filter(p => p.isActive).length}</span>
+                        <span className="stat-value">{activeUsers}</span>
                     </div>
                 </div>
             </div>
@@ -114,18 +131,18 @@ export default function ViewPlayers() {
                         <tr key={player.id}>
                             <td className="player-name">{player.fullName}</td>
                             <td>{player.email}</td>
-                            <td>{player.phone}</td>
+                            <td>{player.phoneNumber}</td>
                             <td className="balance">{player.balance} DKK</td>
                             <td>
                   <span className={`status-badge ${player.isActive ? 'active' : 'inactive'}`}>
                     {player.isActive ? 'Aktiv' : 'Inaktiv'}
                   </span>
                             </td>
-                            <td>{new Date(player.createdDate).toLocaleDateString('da-DK')}</td>
+                            <td>{"TILFØJ DATO"/*new Date(player.createdDate).toLocaleDateString('da-DK')*/}</td>
                             <td className="actions">
                                 <button
                                     className="action-btn toggle"
-                                    onClick={() => togglePlayerStatus(player.id)}
+                                    onClick={() => console.log("toggle")/*() => togglePlayerStatus(player.id)*/}
                                     title={player.isActive ? 'Deaktiver' : 'Aktiver'}
                                 >
                                     {player.isActive ? '⏸️' : '▶️'}
@@ -138,7 +155,7 @@ export default function ViewPlayers() {
                                 </button>
                                 <button
                                     className="action-btn delete"
-                                    onClick={() => deletePlayer(player.id)}
+                                    onClick={() => console.log("Delete")/*() => deletePlayer(player.id)*/}
                                     title="Slet"
                                 >
                                     🗑️

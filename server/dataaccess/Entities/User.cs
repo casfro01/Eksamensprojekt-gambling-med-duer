@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using dataaccess.Enums;
 using Microsoft.EntityFrameworkCore;
+using Sieve.Attributes;
 
 namespace DataAccess.Entities;
 
@@ -15,9 +16,11 @@ public partial class User
 
     public string FullName { get; set; } = null!;
     
+    [Sieve(CanFilter = true, CanSort = true)]
     [Required]
     public string Email { get; set; } = null!;
 
+    [Sieve(CanFilter = true, CanSort = true)]
     public bool isActive { get; set; } = false;
     
     public List<Board> Boards { get; set; } = new List<Board>();
@@ -25,10 +28,13 @@ public partial class User
     [JsonIgnore]
     public string PasswordHash { get; set; } = null!;
 
+    [Sieve(CanFilter = true, CanSort = true)]
     public Role Role { get; set; } = Role.Bruger;
     
+    [Sieve(CanFilter = true, CanSort = true)]
     public DateTime? Created { get; set; }
     
+    [Sieve(CanFilter = true, CanSort = true)]
     public string PhoneNumber { get; set; } = null!;
     
     public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
