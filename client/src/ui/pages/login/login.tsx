@@ -3,9 +3,11 @@ import './login.css';
 import { useLogin } from './useLogin.ts';
 import { handleLogin } from './handleLogin.ts';
 import { useNavigate } from "react-router";
+import { getRoleFromJwt } from "../../../utils/checkLogin.ts";
+import { useCheckIsLoggedin } from "./useCheckIsLoggedin.ts";
 
 export default function Login(){
-    const navigate = useNavigate(); // TODO : flyt?
+    const navigate = useNavigate();
     // Hent state fra useLogin hook
     const {
         email,
@@ -17,16 +19,20 @@ export default function Login(){
         loading,
         setLoading,
         setJwt,
-        Jwt
+        Jwt,
     } = useLogin();
 
-    if (Jwt != null){
-        navigate('/');
-    }
+    useCheckIsLoggedin(Jwt);
+
     const onSubmit = (e: React.FormEvent) => {
         handleLogin(e, email, password, setError, setLoading, setJwt)
-            .then( () =>
-                navigate("/")
+            .then( token => {
+                const role = getRoleFromJwt(token)
+                if (role === "Administrator"){
+                    navigate('/admin/create-user');
+                }
+                else navigate("/");
+            }
             );
     };
     return (

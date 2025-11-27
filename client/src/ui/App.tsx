@@ -4,13 +4,14 @@ import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
 import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
 import Admin from "./pages/Admin/admin";  
-import CreateUser from "./pages/Admin/CreateUser";
+import CreateUser from "./pages/Admin/CreateUser/CreateUser.tsx";
 import ViewPlayers from "./pages/Admin/ViewPlayers";  
 import ViewBoards from "./pages/Admin/ViewBoards"; 
 import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
 import {UserProfilePage} from "./pages/UserProfile/userProfilePage.tsx";
 import AddPayment from './pages/AddPayment/AddPayment';
+import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 
 export default function App() {
     return (
@@ -65,6 +66,10 @@ export default function App() {
                                 {
                                     path: "history",
                                     element: <GameHistory/>
+                                },
+                                {
+                                    path: "payments",
+                                    element: <ApprovePayments/>
                                 }
                                 // Tilføj flere admin routes senere
                             ]

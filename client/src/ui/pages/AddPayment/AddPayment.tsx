@@ -11,13 +11,17 @@ export default function AddPayment() {
     const [mobilePayId, setMobilePayId] = useState<string>('');
     const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
-    // todo: flyt ud
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const message = await CreatePayment(amount, mobilePayId);
-        alert("Indbetaling: " + message);
-        navigate(-1);
+        await CreatePayment(amount, mobilePayId)
+            .then(message => {
+                alert(message);
+                navigate(-1);
+            })
+            .catch((err) => {
+                alert(err);
+            });
     };
 
     const quickAmounts = [50, 100, 200, 500];
@@ -32,7 +36,7 @@ export default function AddPayment() {
                 <h1>Indsæt Penge</h1>
                 <p className="subtitle">Tilføj penge til din konto via MobilePay</p>
 
-                <form onSubmit={handleSubmit} className="payment-form">
+                <form onSubmit={async (e) => await handleSubmit(e)} className="payment-form">
                     <div className="quick-amounts">
                         <span className="quick-label">Hurtigvalg:</span>
                         <div className="quick-buttons">
@@ -60,13 +64,14 @@ export default function AddPayment() {
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             placeholder="f.eks. 100"
+                            className={amount ? (parseFloat(amount) >= 10 ? 'valid' : 'invalid') : ''}
                         />
                         <span className="hint">Minimum 10 DKK</span>
                     </div>
 
                     <div className="form-group">
                         <div className="label-with-help">
-                            <label htmlFor="mobilePayId">MobilePay ID *</label>
+                            <label htmlFor="mobilePayId">MobilePay Transaktions-ID *</label>
                             <button
                                 type="button"
                                 className="help-btn"
@@ -77,13 +82,14 @@ export default function AddPayment() {
                         </div>
                         <input
                             id="mobilePayId"
-                            type="tel"
+                            type="text"
                             required
                             value={mobilePayId}
                             onChange={(e) => setMobilePayId(e.target.value)}
-                            placeholder="f.eks. 12345678900"
+                            placeholder="f.eks. 12345678901"
                             pattern="[0-9]{11}"
                             maxLength={11}
+                            className={mobilePayId ? (mobilePayId.length === 11 && /^[0-9]{11}$/.test(mobilePayId) ? 'valid' : 'invalid') : ''}
                         />
                         <span className="hint">MobilePay Transaktions ID</span>
                     </div>
@@ -97,12 +103,12 @@ export default function AddPayment() {
                             >
                                 ✕
                             </button>
-                            <strong>💡 Sådan finder du MobilePay ID:</strong>
+                            <strong>💡 Sådan finder du MobilePay Transaktions-ID:</strong>
                             <ol>
                                 <li>Åbn MobilePay appen</li>
                                 <li>Find din overførsel under "Aktiviteter"</li>
                                 <li>Tryk på overførslen</li>
-                                <li>MobilePay ID'et vises nederst under "transaktion" (11 cifre)</li>
+                                <li>Transaktions-ID'et vises nederst under "Transaktion" (11 cifre)</li>
                                 <li>Indtast dette ID her på siden</li>
                             </ol>
                         </div>
@@ -111,10 +117,9 @@ export default function AddPayment() {
                     <div className="info-box">
                         <strong>💳 Sådan fungerer det:</strong>
                         <ol>
-                            <li>Overfør beløb på mobilepay til: 28 44 29 23</li>
+                            <li>Overfør beløb på MobilePay til: 28 44 29 23</li>
                             <li>Indtast det beløb du overførte på MobilePay</li>
-                            <li>Indtast mobilepay ID på overførslen her på siden</li>
-                            
+                            <li>Indtast MobilePay transaktions-ID på overførslen her på siden</li>
                         </ol>
                     </div>
 
@@ -135,7 +140,7 @@ export default function AddPayment() {
                     <button
                         type="submit"
                         className="submit-btn"
-                        disabled={!amount || parseFloat(amount) < 10 || !mobilePayId}
+                        disabled={!amount || parseFloat(amount) < 10 || !mobilePayId || mobilePayId.length !== 11}
                     >
                         💰 Indbetal {amount ? `${parseFloat(amount)} DKK` : ''}
                     </button>

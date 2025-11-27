@@ -24,6 +24,7 @@ public class TransactionController(IServiceWithSieve<BaseTransactionResponse, Cr
     }
     
     [HttpPut(nameof(UpdatePaymentStatus))]
+    [Authorize(Roles = "Administrator")]
     public async Task<BaseTransactionResponse> UpdatePaymentStatus([FromBody]UpdateTransactionDto dto)
     {
         return await service.Update(dto);

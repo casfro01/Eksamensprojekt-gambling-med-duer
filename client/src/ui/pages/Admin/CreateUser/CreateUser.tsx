@@ -1,5 +1,7 @@
 ﻿import React, { useState } from 'react';
 import './createUser.css';
+import { createUser } from "./CreateUserFunction";
+import type {RegisterRequest} from "../../../../core/ServerAPI.ts";
 
 export default function CreateUser() {
     const [formData, setFormData] = useState({
@@ -7,7 +9,7 @@ export default function CreateUser() {
         email: '',
         phone: '',
         password: '',
-        isActive: false
+        isActive: false // denne er vitterligt altid false når man laver en bruger TODO : dette kan måske ændres
     });
 
     const [passwordError, setPasswordError] = useState('');
@@ -22,7 +24,7 @@ export default function CreateUser() {
         return true;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!validatePassword()) {
@@ -32,6 +34,13 @@ export default function CreateUser() {
         console.log('Opret bruger:', formData);
 
         // Send til backend senere
+        const dto: RegisterRequest = {
+            email: formData.email,
+            password: formData.password,
+            fullName: formData.fullName,
+            phoneNumber: formData.phone,
+        }
+        await createUser(dto);
         alert(`Bruger oprettet: ${formData.fullName}\nPassword: ${formData.password}`);
 
         // Nulstil form
@@ -50,7 +59,7 @@ export default function CreateUser() {
             <h1>Opret Ny Bruger</h1>
             <p className="subtitle">Tilføj et nyt medlem til systemet</p>
 
-            <form onSubmit={handleSubmit} className="user-form">
+            <form onSubmit={async (e) => await handleSubmit(e)} className="user-form">
                 <div className="form-group">
                     <label htmlFor="fullName">Fulde navn *</label>
                     <input

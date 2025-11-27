@@ -1,11 +1,13 @@
-﻿import { useState } from 'react';
+﻿import {useRef, useState} from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router';
 import './admin.css';
+import {useRemoveToken} from "../../../core/atoms/token.ts";
 
 export default function AdminLayout() {
     const navigate = useNavigate();
     const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(true);
+    const setToken = useRemoveToken();
 
     const menuItems = [
         { path: '/admin/create-user', label: '👤 Opret Bruger', icon: '➕' },
@@ -48,7 +50,10 @@ export default function AdminLayout() {
                 <div className="sidebar-footer">
                     <button
                         className="logout-btn"
-                        onClick={() => navigate('/')}
+                        onClick={() => {
+                            setToken(null);
+                            navigate('/');
+                        }}
                     >
                         {menuOpen ? '🚪 Log ud' : '🚪'}
                     </button>
