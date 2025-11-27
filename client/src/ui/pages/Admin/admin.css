@@ -36,6 +36,13 @@
     font-weight: 700;
     margin: 0;
     white-space: nowrap;
+    transition: opacity 0.3s ease;
+}
+
+.admin-sidebar.closed .sidebar-header h2 {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
 }
 
 .toggle-btn {
@@ -96,24 +103,37 @@
 
 .nav-label {
     white-space: nowrap;
+    transition: opacity 0.3s ease;
+}
+
+.admin-sidebar.closed .nav-label {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
 }
 
 .sidebar-footer {
     padding: 16px;
     border-top: 2px solid rgba(255, 255, 255, 0.2);
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    margin-right: 60px;
+    margin-bottom: 10px;
 }
 
 .logout-btn {
-    width: 100%;
     background: rgba(0, 0, 0, 0.2);
     border: none;
     color: white;
-    padding: 12px;
+    padding: 12px 24px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
     transition: all 0.2s ease;
+    width: auto;
+    min-width: 48px;
 }
 
 .logout-btn:hover {
