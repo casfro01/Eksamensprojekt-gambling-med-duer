@@ -57,8 +57,16 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
     [HttpPost]
     [Route("getUsersByFilter")]
     [Authorize(Roles = "Administrator")]
-    public async Task<GetAllUsersResponse> GetAllUsers([FromBody] SieveModel request)
+    public async Task<GetAllUsersResponse> GetAllUsers([FromBody]SieveModel request)
     {
         return await service.GetAllUsersResponse(request);
+    }
+
+    [HttpPut]
+    [Route(nameof(SetUserStatus))]
+    [Authorize(Roles = "Administrator")]
+    public async Task<UserData> SetUserStatus([FromBody]UpdateUserStatusDto dto)
+    {
+        return await service.SetUserStatus(dto);
     }
 }

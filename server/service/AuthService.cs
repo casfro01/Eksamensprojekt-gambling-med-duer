@@ -58,11 +58,22 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
 
     public async Task<GetAllUsersResponse> GetAllUsersResponse(SieveModel model)
     {
+        int userCount = dbContext.Users.Count(); // flytte til cached value?
+        int activeUsers = dbContext.Users.Count(u => u.isActive); // same here?
         IQueryable<User> query = dbContext.Users.Include(u => u.Transactions);
         query = processor.Apply(model, query);
+        
         var users = await query.ToListAsync();
-        int userCount = dbContext.Users.Count();
-        int activeUsers = dbContext.Users.Count(u => u.isActive);
         return new GetAllUsersResponse{ ActiveUsers = activeUsers, AllUsers = userCount, PagedUsers = users.Select(u => new UserData(u)).ToList() };
+    }
+
+    public async Task<UserData> SetUserStatus(UpdateUserStatusDto dto)
+    {
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
+        
+        var user = dbContext.Users.First(u => u.Id == dto.Id);
+        user.isActive = dto.Status;
+        await dbContext.SaveChangesAsync();
+        return new UserData(user);
     }
 }

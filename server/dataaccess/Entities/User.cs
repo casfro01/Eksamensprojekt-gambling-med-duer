@@ -14,6 +14,7 @@ public partial class User
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; } = null!;
 
+    [Sieve(CanFilter = true, CanSort = true)]
     public string FullName { get; set; } = null!;
     
     [Sieve(CanFilter = true, CanSort = true)]
@@ -21,7 +22,7 @@ public partial class User
     public string Email { get; set; } = null!;
 
     [Sieve(CanFilter = true, CanSort = true)]
-    public bool isActive { get; set; } = false;
+    public bool isActive { get; set; }
     
     public List<Board> Boards { get; set; } = new List<Board>();
 

@@ -143,6 +143,38 @@
         }
       }
     },
+    "/api/auth/SetUserStatus": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "Auth_SetUserStatus",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserStatusDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/board/GetBoards": {
       "get": {
         "tags": [
@@ -528,6 +560,22 @@
             "maximum": 2147483647.0,
             "minimum": 1.0,
             "nullable": true
+          }
+        }
+      },
+      "UpdateUserStatusDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "boolean"
           }
         }
       },

@@ -1,6 +1,7 @@
 ﻿
 import './viewPlayers.css';
 import {useGetAllUsers} from "./useGetAllUsers.ts";
+import {UpdatePlayerStatus} from "./UpdatePlayerStatus.ts";
 /*
 interface Player {
     id: string;
@@ -44,18 +45,23 @@ export default function ViewPlayers() {
         setPage,
         allUsers,
         activeUsers,
-        userData
+        userData,
+        refreshTrigger,
+        setRefreshTrigger
     } = useGetAllUsers()
 
     //const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
 
-    // TODO : implement
-    /*
-    const togglePlayerStatus = (id: string) => {
-        setPlayers(players.map(p =>
+    const togglePlayerStatus = async (id: string) => {
+        /*setPlayers(players.map(p =>
             p.id === id ? {...p, isActive: !p.isActive} : p
-        ));
-    };*/
+        ));*/
+        let bool = !userData.find(u => u.id === id)?.isActive;
+        if (bool == undefined) bool = false;
+        await UpdatePlayerStatus(id, bool)
+        alert("Brugerens status sat til: " + bool);
+        setRefreshTrigger(refreshTrigger + 1)// opdatere siden ;)
+    };
 
     // TODO : implement
     /*
@@ -142,7 +148,7 @@ export default function ViewPlayers() {
                             <td className="actions">
                                 <button
                                     className="action-btn toggle"
-                                    onClick={() => console.log("toggle")/*() => togglePlayerStatus(player.id)*/}
+                                    onClick={async () => {await togglePlayerStatus(player.id != undefined ? player.id : "")}}
                                     title={player.isActive ? 'Deaktiver' : 'Aktiver'}
                                 >
                                     {player.isActive ? '⏸️' : '▶️'}
@@ -166,6 +172,27 @@ export default function ViewPlayers() {
                     </tbody>
                 </table>
             </div>
+
+            {allUsers/10 > 1 && (
+                <div className="pagination">
+                    <button
+                        className="page-btn"
+                        onClick={() => setPage(page - 1)}
+                        disabled={page === 1}
+                    >
+                        ← Forrige
+                    </button>
+                    <span className="page-info">
+                                Side {page} af {Math.ceil(allUsers / 10)}
+                            </span>
+                    <button
+                        className="page-btn"
+                        onClick={() => setPage(page + 1)}
+                        disabled={page === Math.ceil(allUsers / 10)}
+                    >
+                        Næste →
+                    </button>
+                </div>)}
         </div>
     );
 }
