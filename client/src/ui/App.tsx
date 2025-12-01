@@ -9,7 +9,6 @@ import ViewPlayers from "./pages/Admin/ViewPlayers/ViewPlayers.tsx";
 import ViewBoards from "./pages/Admin/ViewBoards"; 
 import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
-import {UserProfilePage} from "./pages/UserProfile/userProfilePage.tsx";
 import AddPayment from './pages/AddPayment/AddPayment';
 import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 import {UserProfile} from "./pages/UserProfile/UserProfile.tsx";
