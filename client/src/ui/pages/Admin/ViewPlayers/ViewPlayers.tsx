@@ -100,19 +100,19 @@ export default function ViewPlayers() {
             <div className="filter-bar">
                 <button
                     className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
-                    onClick={() => setFilter('all')}
+                    onClick={() => {setFilter('all'); setPage(1)}}
                 >
                     Alle
                 </button>
                 <button
                     className={`filter-btn ${filter === 'active' ? 'active' : ''}`}
-                    onClick={() => setFilter('active')}
+                    onClick={() => {setFilter('active'); setPage(1)}}
                 >
                     Aktive
                 </button>
                 <button
                     className={`filter-btn ${filter === 'inactive' ? 'active' : ''}`}
-                    onClick={() => setFilter('inactive')}
+                    onClick={() => {setFilter('inactive'); setPage(1)}}
                 >
                     Inaktive
                 </button>
@@ -182,13 +182,16 @@ export default function ViewPlayers() {
                     >
                         ← Forrige
                     </button>
+                    { filter === "all" ?
                     <span className="page-info">
                                 Side {page} af {Math.ceil(allUsers / 10)}
-                            </span>
+                            </span> : <span className="page-info">
+                                Side: {page}
+                            </span>}
                     <button
                         className="page-btn"
                         onClick={() => setPage(page + 1)}
-                        disabled={page === Math.ceil(allUsers / 10)}
+                        disabled={filter === "all" ? page === Math.ceil(allUsers / 10) : userData.length != 10}
                     >
                         Næste →
                     </button>
