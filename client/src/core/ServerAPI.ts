@@ -586,6 +586,7 @@ export interface UserData {
     balance?: number;
     phoneNumber?: string;
     isActive?: boolean;
+    created?: string;
 }
 
 export interface GetAllUsersResponse {

@@ -144,7 +144,7 @@ export default function ViewPlayers() {
                     {player.isActive ? 'Aktiv' : 'Inaktiv'}
                   </span>
                             </td>
-                            <td>{"TILFØJ DATO"/*new Date(player.createdDate).toLocaleDateString('da-DK')*/}</td>
+                            <td>{new Date(player.created != null ? player.created.toString() : "").toLocaleDateString('da-DK')}</td>
                             <td className="actions">
                                 <button
                                     className="action-btn toggle"

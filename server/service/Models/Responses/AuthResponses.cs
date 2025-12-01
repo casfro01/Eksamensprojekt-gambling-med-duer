@@ -19,6 +19,7 @@ public class UserData
     public int Balance { get; set; }
     public string phoneNumber { get; set; }
     public bool isActive { get; set; }
+    public DateTime Created { get; set; }
     public UserData(User user)
     {
         Id = user.Id;
@@ -28,5 +29,6 @@ public class UserData
         Balance = user.Transactions.Where(t => t.Status == PaymentStatus.Accepted).Sum(t => t.Amount);
         phoneNumber = user.PhoneNumber;
         isActive = user.isActive;
+        Created = user.Created ?? new DateTime(1974, 9, 7);
     }
 }
