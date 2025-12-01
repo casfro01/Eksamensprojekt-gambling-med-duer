@@ -1,5 +1,5 @@
 import {useState} from "react";
-import type {UserData} from "../../../core/ServerAPI.ts";
+import type {UserData} from "../../../../core/ServerAPI.ts";
 
 export const useEditUserData = (userData: UserData | null) => {
     const [editForm, setEditForm] = useState({
