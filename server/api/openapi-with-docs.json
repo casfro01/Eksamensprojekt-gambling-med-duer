@@ -111,6 +111,70 @@
         }
       }
     },
+    "/api/auth/getUsersByFilter": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "Auth_GetAllUsers",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SieveModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllUsersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/SetUserStatus": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "Auth_SetUserStatus",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserStatusDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/board/GetBoards": {
       "get": {
         "tags": [
@@ -413,29 +477,6 @@
         }
       },
       "UserData": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AuthUserInfo"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "balance": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "phoneNumber": {
-                "type": "string"
-              },
-              "isActive": {
-                "type": "boolean"
-              }
-            }
-          }
-        ]
-      },
-      "AuthUserInfo": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -450,6 +491,95 @@
           },
           "role": {
             "type": "string"
+          },
+          "balance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetAllUsersResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pagedUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserData"
+            }
+          },
+          "allUsers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activeUsers": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SieveModel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SieveModelOfFilterTermAndSortTerm"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false
+          }
+        ]
+      },
+      "SieveModelOfFilterTermAndSortTerm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "filters": {
+            "type": "string",
+            "nullable": true
+          },
+          "sorts": {
+            "type": "string",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "nullable": true
+          }
+        }
+      },
+      "UpdateUserStatusDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "boolean"
           }
         }
       },
@@ -475,6 +605,24 @@
               "type": "integer",
               "format": "int32"
             }
+          }
+        }
+      },
+      "AuthUserInfo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
           }
         }
       },
@@ -599,6 +747,12 @@
           },
           "phoneNumber": {
             "type": "string"
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
           }
         }
       },
@@ -630,29 +784,38 @@
           1
         ]
       },
-      "BaseTransactionResponse": {
+      "Transaction": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "user",
+          "mobilePayId",
+          "amount",
+          "status",
+          "created"
+        ],
         "properties": {
           "id": {
             "type": "string"
           },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
           "mobilePayId": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "amount": {
             "type": "integer",
             "format": "int32"
-          },
-          "email": {
-            "type": "string"
           },
           "status": {
             "$ref": "#/components/schemas/PaymentStatus"
           },
           "created": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "minLength": 1
           }
         }
       },
@@ -689,6 +852,32 @@
           1,
           2
         ]
+      },
+      "BaseTransactionResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "mobilePayId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PaymentStatus"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
       },
       "CreateTransactionDto": {
         "type": "object",
@@ -734,45 +923,6 @@
           },
           "paymentStatus": {
             "$ref": "#/components/schemas/PaymentStatus"
-          }
-        }
-      },
-      "SieveModel": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/SieveModelOfFilterTermAndSortTerm"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false
-          }
-        ]
-      },
-      "SieveModelOfFilterTermAndSortTerm": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "filters": {
-            "type": "string",
-            "nullable": true
-          },
-          "sorts": {
-            "type": "string",
-            "nullable": true
-          },
-          "page": {
-            "type": "integer",
-            "format": "int32",
-            "maximum": 2147483647.0,
-            "minimum": 1.0,
-            "nullable": true
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32",
-            "maximum": 2147483647.0,
-            "minimum": 1.0,
-            "nullable": true
           }
         }
       }

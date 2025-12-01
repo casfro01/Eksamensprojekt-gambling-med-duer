@@ -23,3 +23,9 @@ public record RegisterRequest
 }
 
 public record LoginRequest([Required] string Email, [Required] string Password);
+
+public record UpdateUserStatusDto
+{
+    [Required] public string Id { get; set; } = null!;
+    public bool Status { get; set; } = false;
+}
