@@ -175,6 +175,38 @@
         }
       }
     },
+    "/api/auth/UpdateUserInformation": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "Auth_UpdateUserInformation",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/board/GetBoards": {
       "get": {
         "tags": [
@@ -580,6 +612,33 @@
           },
           "status": {
             "type": "boolean"
+          }
+        }
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "fullName": {
+            "type": "string",
+            "minLength": 5
+          },
+          "phoneNumber": {
+            "type": "string",
+            "maxLength": 8,
+            "minLength": 8,
+            "pattern": "^\\d{8}$"
           }
         }
       },

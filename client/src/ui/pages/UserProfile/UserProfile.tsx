@@ -16,6 +16,8 @@ export function UserProfile(){
     const {
         authUser,
         setUserData,
+        refresh,
+        setRefresh
     } = useGetLoggedInUser();
     // rename
     const userData = authUser;
@@ -45,10 +47,14 @@ export function UserProfile(){
     const [passwordError, setPasswordError] = useState('');
 
     // TODO : flyt indholdet
-    const handleSaveProfile = () => {
-        setUserData({...userData, ...editForm});
+    const handleSaveProfile = async () => {
+        const res = await setUserData({...userData, ...editForm});
         setIsEditingProfile(false);
-        alert('Profil opdateret!');
+        if (res){
+            alert('Profil opdateret!');
+            setRefresh(refresh + 1);
+        }
+        else alert("Opdatering fejlede, tjek din forbindelse.")
     };
 
     // TODO : flyt indholdet
@@ -127,7 +133,7 @@ export function UserProfile(){
                                     setEditForm({
                                         fullName: userData.fullName,
                                         email: userData.email,
-                                        phone: userData.phoneNumber
+                                        phoneNumber: userData.phoneNumber
                                     });
                                     setIsEditingProfile(true)
                                 }}
@@ -159,8 +165,8 @@ export function UserProfile(){
                                 <label>Telefon</label>
                                 <input
                                     type="tel"
-                                    value={editForm.phone}
-                                    onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
+                                    value={editForm.phoneNumber}
+                                    onChange={(e) => setEditForm({...editForm, phoneNumber: e.target.value})}
                                 />
                             </div>
                             <div className="form-actions">
@@ -170,14 +176,14 @@ export function UserProfile(){
                                         setEditForm({
                                             fullName: userData.fullName,
                                             email: userData.email,
-                                            phone: userData.phoneNumber
+                                            phoneNumber: userData.phoneNumber
                                         });
                                         setIsEditingProfile(false);
                                     }}
                                 >
                                     Annuller
                                 </button>
-                                <button className="save-btn" onClick={handleSaveProfile}>
+                                <button className="save-btn" onClick={async () => {await handleSaveProfile()}}>
                                     Gem ændringer
                                 </button>
                             </div>

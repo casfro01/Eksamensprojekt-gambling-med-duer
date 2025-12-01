@@ -13,4 +13,5 @@ public interface IAuthService
     UserData? GetUserInfo(ClaimsPrincipal principal);
     Task<GetAllUsersResponse> GetAllUsersResponse(SieveModel request);
     Task<UserData> SetUserStatus(UpdateUserStatusDto dto);
+    Task<UserData> UpdateContactInformation(UpdateUserDto dto);
 }
