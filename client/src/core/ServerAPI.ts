@@ -161,6 +161,80 @@ export class AuthClient {
         }
         return Promise.resolve<UserData>(null as any);
     }
+
+    getAllUsers(request: SieveModel): Promise<GetAllUsersResponse> {
+        let url_ = this.baseUrl + "/api/auth/getUsersByFilter";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(request);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetAllUsers(_response);
+        });
+    }
+
+    protected processGetAllUsers(response: Response): Promise<GetAllUsersResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetAllUsersResponse;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GetAllUsersResponse>(null as any);
+    }
+
+    setUserStatus(dto: UpdateUserStatusDto): Promise<UserData> {
+        let url_ = this.baseUrl + "/api/auth/SetUserStatus";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSetUserStatus(_response);
+        });
+    }
+
+    protected processSetUserStatus(response: Response): Promise<UserData> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserData;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<UserData>(null as any);
+    }
 }
 
 export class BoardClient {
@@ -504,17 +578,36 @@ export interface RegisterRequest {
     phoneNumber: string;
 }
 
-export interface AuthUserInfo {
+export interface UserData {
     id?: string;
     fullName?: string;
     email?: string;
     role?: string;
-}
-
-export interface UserData extends AuthUserInfo {
     balance?: number;
     phoneNumber?: string;
     isActive?: boolean;
+    created?: string;
+}
+
+export interface GetAllUsersResponse {
+    pagedUsers?: UserData[];
+    allUsers?: number;
+    activeUsers?: number;
+}
+
+export interface SieveModelOfFilterTermAndSortTerm {
+    filters?: string | undefined;
+    sorts?: string | undefined;
+    page?: number | undefined;
+    pageSize?: number | undefined;
+}
+
+export interface SieveModel extends SieveModelOfFilterTermAndSortTerm {
+}
+
+export interface UpdateUserStatusDto {
+    id: string;
+    status?: boolean;
 }
 
 export interface BaseBoardResponse {
@@ -522,6 +615,13 @@ export interface BaseBoardResponse {
     user?: AuthUserInfo;
     games?: BaseGameResponse[];
     playedNumbers?: number[];
+}
+
+export interface AuthUserInfo {
+    id?: string;
+    fullName?: string;
+    email?: string;
+    role?: string;
 }
 
 export interface BaseGameResponse {
@@ -558,9 +658,21 @@ export interface User {
     role?: Role;
     created?: string | undefined;
     phoneNumber?: string;
+    transactions?: Transaction[];
 }
 
 export type Role = 0 | 1;
+
+export interface Transaction {
+    id?: string;
+    user: User;
+    mobilePayId: string;
+    amount: number;
+    status: PaymentStatus;
+    created: string;
+}
+
+export type PaymentStatus = 0 | 1 | 2;
 
 export interface BaseTransactionResponse {
     id?: string;
@@ -570,8 +682,6 @@ export interface BaseTransactionResponse {
     status?: PaymentStatus;
     created?: string;
 }
-
-export type PaymentStatus = 0 | 1 | 2;
 
 export interface CreateTransactionDto {
     mobilePayId: string;
@@ -583,16 +693,6 @@ export interface CreateTransactionDto {
 export interface UpdateTransactionDto {
     id: string;
     paymentStatus: PaymentStatus;
-}
-
-export interface SieveModelOfFilterTermAndSortTerm {
-    filters?: string | undefined;
-    sorts?: string | undefined;
-    page?: number | undefined;
-    pageSize?: number | undefined;
-}
-
-export interface SieveModel extends SieveModelOfFilterTermAndSortTerm {
 }
 
 export interface FileResponse {

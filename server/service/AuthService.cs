@@ -4,13 +4,16 @@ using dataaccess;
 using DataAccess.Entities;
 using dataaccess.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using service.Abstractions;
 using service.Models.Request;
 using service.Models.Responses;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace service;
 
-public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHasher) : IAuthService
+public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHasher, ISieveProcessor processor) : IAuthService
 {
     public AuthUserInfo Authenticate(LoginRequest request)
     {
@@ -48,8 +51,29 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
     {
         //var role = principal.FindFirstValue(ClaimTypes.Role);
         var userID = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var user = dbContext.Users.First(u => u.Id == userID);
-        var balance = dbContext.Transactions.Where(t => t.User.Id == userID).Where(t => t.Status == PaymentStatus.Accepted).Sum(t => t.Amount);
-        return new UserData(user.Id, user.FullName, user.Email, user.Role.ToString(), balance, user.PhoneNumber, user.isActive);
+        var user = dbContext.Users.Include(u => u.Transactions).First(u => u.Id == userID);
+        //var balance = dbContext.Transactions.Where(t => t.User.Id == userID).Where(t => t.Status == PaymentStatus.Accepted).Sum(t => t.Amount);
+        return new UserData(user);
+    }
+
+    public async Task<GetAllUsersResponse> GetAllUsersResponse(SieveModel model)
+    {
+        int userCount = dbContext.Users.Count(); // flytte til cached value?
+        int activeUsers = dbContext.Users.Count(u => u.isActive); // same here?
+        IQueryable<User> query = dbContext.Users.Include(u => u.Transactions);
+        query = processor.Apply(model, query);
+        
+        var users = await query.ToListAsync();
+        return new GetAllUsersResponse{ ActiveUsers = activeUsers, AllUsers = userCount, PagedUsers = users.Select(u => new UserData(u)).ToList() };
+    }
+
+    public async Task<UserData> SetUserStatus(UpdateUserStatusDto dto)
+    {
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
+        
+        var user = dbContext.Users.First(u => u.Id == dto.Id);
+        user.isActive = dto.Status;
+        await dbContext.SaveChangesAsync();
+        return new UserData(user);
     }
 }
