@@ -10,12 +10,12 @@ export default function AdminLayout() {
     const setToken = useRemoveToken();
 
     const menuItems = [
-        { path: '/admin/create-user', label: '👤 Opret Bruger', icon: '➕' },
-        { path: '/admin/players', label: '👥 Se Spillere', icon: '📋' },
-        { path: '/admin/boards', label: '🎲 Se Spillebrætter', icon: '📊' },
-        { path: '/admin/payments', label: '💰 Godkend Indbetalinger', icon: '✓' },
-        { path: '/admin/winning-numbers', label: '🎯 Indtast Vindernumre', icon: '🔢' },
-        { path: '/admin/history', label: '📜 Spilhistorik', icon: '⏱️' },
+        { path: '/admin/create-user', label: 'Opret Bruger', icon: '👤' },
+        { path: '/admin/players', label: 'Se Spillere', icon: '👥' },
+        { path: '/admin/boards', label: 'Se Spillebrætter', icon: '🎲' },
+        { path: '/admin/payments', label: 'Godkend Indbetalinger', icon: '💰' },
+        { path: '/admin/winning-numbers', label: 'Indtast Vindernumre', icon: '🎯' },
+        { path: '/admin/history', label: 'Spilhistorik', icon: '📜' }
     ];
 
     const isActive = (path: string) => location.pathname === path;
@@ -25,7 +25,7 @@ export default function AdminLayout() {
             {/* Sidebar Menu */}
             <aside className={`admin-sidebar ${menuOpen ? 'open' : 'closed'}`}>
                 <div className="sidebar-header">
-                    <h2>Admin Panel</h2>
+                    <h2>AdminPanel</h2>
                     <button
                         className="toggle-btn"
                         onClick={() => setMenuOpen(!menuOpen)}
