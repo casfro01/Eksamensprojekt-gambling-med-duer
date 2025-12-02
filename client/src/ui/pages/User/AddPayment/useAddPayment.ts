@@ -1,5 +1,5 @@
-import {transactionClient} from "../../../core/api-clients.ts";
-import type {CreateTransactionDto} from "../../../core/ServerAPI.ts";
+import {transactionClient} from "../../../../core/api-clients.ts";
+import type {CreateTransactionDto} from "../../../../core/ServerAPI.ts";
 
 
 export const CreatePayment = async (amount: string, mobilePayId: string): Promise<string> => {

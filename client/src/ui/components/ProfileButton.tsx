@@ -11,7 +11,7 @@ export default function ProfileButton() {
             className="floating-profile-btn"
             onClick={() => {
                 if (validLogin) {
-                    navigate('/profile');
+                    navigate('/user/profile');
                 } else {
                     navigate('/login');
                 }
