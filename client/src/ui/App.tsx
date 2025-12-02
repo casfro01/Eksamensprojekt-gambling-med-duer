@@ -90,8 +90,10 @@ export default function App() {
                                     path: "payments",
                                     element: <ApprovePayments/>
                                 }
+                                // Tilføj flere admin routes senere
                             ]
                         }
+                        // Flere routes kommer her senere (dashboard, games, osv.)
                     ]
                 }
             ])}

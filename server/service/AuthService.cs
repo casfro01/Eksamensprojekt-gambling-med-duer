@@ -76,4 +76,16 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
         await dbContext.SaveChangesAsync();
         return new UserData(user);
     }
+
+    public async Task<UserData> UpdateContactInformation(UpdateUserDto dto)
+    {
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
+        
+        var user = dbContext.Users.First(u => u.Id == dto.Id);
+        user.FullName = dto.FullName;
+        user.Email = dto.Email;
+        user.PhoneNumber = dto.PhoneNumber;
+        await dbContext.SaveChangesAsync();
+        return new UserData(user);
+    }
 }
