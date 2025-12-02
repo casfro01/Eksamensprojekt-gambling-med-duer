@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using service.Models.Request;
 using service.Models.Responses;
@@ -68,5 +70,16 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
     public async Task<UserData> SetUserStatus([FromBody]UpdateUserStatusDto dto)
     {
         return await service.SetUserStatus(dto);
+    }
+
+    [HttpPut]
+    [Route(nameof(UpdateUserInformation))]
+    [Authorize(Roles = "Administrator,Bruger")]
+    public async Task<UserData> UpdateUserInformation([FromBody] UpdateUserDto dto)
+    {
+        var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userID == null) throw new ValidationException("Not a correct user.");
+        dto.Id = userID;
+        return await service.UpdateContactInformation(dto);
     }
 }

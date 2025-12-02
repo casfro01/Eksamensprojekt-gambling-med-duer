@@ -1,6 +1,9 @@
 import {useAtom} from "jotai";
 import {tokenAtom, userInfoAtom} from "../../../core/atoms/token.ts";
 import type {UserData} from "../../../core/ServerAPI.ts";
+import {updateProfileData} from "../UserProfile/EditUserData.ts";
+import {useEffect, useState} from "react";
+import {authClient} from "../../../core/api-clients.ts";
 
 export const useLoginInformation = () => {
     const [Jwt,] = useAtom(tokenAtom);
@@ -13,13 +16,22 @@ export const useLoginInformation = () => {
 }
 
 export const useGetLoggedInUser = () => {
-    const [authUser,] = useAtom(userInfoAtom);
-    const setUserData = (userData: UserData) => {
-        console.log(userData);
-        throw new Error("Not implemented yet; opdater kun navn email og tlf. ya know -> buissness logik");
+    const [authUser, setData] = useState<UserData | null>(null);
+    const [refresh, setRefresh] = useState<number>(0);
+    const setUserData = async (userData: UserData) => {
+        return await updateProfileData(userData)
     };
+
+    useEffect(() => {
+        async function getData(): Promise<UserData>{
+            return await authClient.userInfo();
+        }
+        getData().then(res => setData(res));
+    }, [refresh]);
     return {
         authUser,
         setUserData,
+        refresh,
+        setRefresh,
     };
 }
