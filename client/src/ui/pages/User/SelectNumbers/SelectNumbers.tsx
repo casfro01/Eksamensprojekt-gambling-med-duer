@@ -1,8 +1,8 @@
 ﻿import './selectNumbers.css';
 import { useSelectNumbers } from './useSelectNumbers';
-import ProfileButton from '../../components/ProfileButton';
+import ProfileButton from '../../../components/ProfileButton';
 import { handleSubmit } from './handleSubmit';
-import AddPaymentButton from '../../components/AddPaymentButton';
+import AddPaymentButton from '../../../components/AddPaymentButton';
 import { useState } from 'react';
 
 export default function SelectNumbers() {

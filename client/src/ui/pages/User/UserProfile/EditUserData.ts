@@ -1,6 +1,6 @@
 import {useState} from "react";
-import type {UpdateUserDto, UserData} from "../../../core/ServerAPI.ts";
-import {authClient} from "../../../core/api-clients.ts";
+import type {UpdateUserDto, UserData} from "../../../../core/ServerAPI.ts";
+import {authClient} from "../../../../core/api-clients.ts";
 
 export const useEditUserData = (userData: UserData | null) => {
     const [editForm, setEditForm] = useState({

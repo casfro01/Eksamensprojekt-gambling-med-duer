@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import './userProfile.css';
 import {useNavigate} from 'react-router';
-import {useIsValidLogin} from "../../../utils/checkLogin.ts";
+import {useIsValidLogin} from "../../../../utils/checkLogin.ts";
 import {useEditProfile} from "./EditProfile.ts";
 import {useEditUserData} from "./EditUserData.ts";
 import {useChangePassword} from "./ChangePassword.ts";
-import {useGetLoggedInUser} from "../Home/useLogin.ts";
-import {useRemoveToken} from "../../../core/atoms/token.ts";
+import {useGetLoggedInUser} from "../../Home/useLogin.ts";
+import {useRemoveToken} from "../../../../core/atoms/token.ts";
 
 export function UserProfile(){
     const navigate = useNavigate();

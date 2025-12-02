@@ -1,7 +1,7 @@
 import {useAtom} from "jotai";
 import {tokenAtom, userInfoAtom} from "../../../core/atoms/token.ts";
 import type {UserData} from "../../../core/ServerAPI.ts";
-import {updateProfileData} from "../UserProfile/EditUserData.ts";
+import {updateProfileData} from "../User/UserProfile/EditUserData";
 import {useEffect, useState} from "react";
 import {authClient} from "../../../core/api-clients.ts";
 

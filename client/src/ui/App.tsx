@@ -2,16 +2,17 @@ import {createBrowserRouter, Outlet, RouterProvider} from "react-router";
 import Login from "./pages/login/login.tsx";
 import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
-import SelectNumbers from "./pages/SelectNumbers/SelectNumbers";
-import Admin from "./pages/Admin/admin";  
+import SelectNumbers from "./pages/User/SelectNumbers/SelectNumbers";
+import Admin from "./pages/Admin/admin";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.tsx";
 import ViewPlayers from "./pages/Admin/ViewPlayers/ViewPlayers.tsx";
-import ViewBoards from "./pages/Admin/ViewBoards"; 
+import ViewBoards from "./pages/Admin/ViewBoards";
 import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
-import AddPayment from './pages/AddPayment/AddPayment';
+import {UserProfile} from "./pages/User/UserProfile/UserProfile";
+import AddPayment from './pages/User/AddPayment/AddPayment';
 import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
-import {UserProfile} from "./pages/UserProfile/UserProfile.tsx";
+import UserPanel from './pages/User/UserPanel/UserPanel';
 
 export default function App() {
     return (
@@ -25,28 +26,46 @@ export default function App() {
                     children:[
                         {
                             path: "/login",
-                            element: <Login/>  // Forside = Login
+                            element: <Login/>
                         },
                         {
                             path: "/",
-                            element: <Home/>  // Forside = Home
+                            element: <Home/>
                         },
                         {
                             path: "/Select",
-                            element: <SelectNumbers/>  // Forside = Home
+                            element: <SelectNumbers/>
                         },
                         {
-                            path: "/profile",
-                            element: <UserProfile/>
-                        },
-                        {
-                            path: "/add-payment",
-                            element: <AddPayment/>
+                            path: "/user",
+                            element: <UserPanel/>,
+                            children: [
+                                {
+                                    path: "profile",
+                                    element: <UserProfile/>
+                                },
+                                {
+                                    path: "deposit",
+                                    element: <AddPayment/>
+                                },
+                                {
+                                    path: "new-board",
+                                    element: <SelectNumbers/>
+                                },
+                                {
+                                    path: "game-history",
+                                    element: <div>Spilhistorik - kommer snart</div>
+                                },
+                                {
+                                    path: "transactions",
+                                    element: <div>Transaktionshistorik - kommer snart</div>
+                                }
+                            ]
                         },
                         {
                             path: "/admin",
-                            element: <Admin/>, 
-                            children: [  
+                            element: <Admin/>,
+                            children: [
                                 {
                                     path: "create-user",
                                     element: <CreateUser/>
@@ -60,8 +79,8 @@ export default function App() {
                                     element: <ViewBoards/>
                                 },
                                 {
-                                   path: "winning-numbers",
-                                   element: <EnterWinningNumbers/> 
+                                    path: "winning-numbers",
+                                    element: <EnterWinningNumbers/>
                                 },
                                 {
                                     path: "history",
