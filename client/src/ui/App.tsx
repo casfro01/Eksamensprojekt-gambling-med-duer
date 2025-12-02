@@ -9,7 +9,7 @@ import ViewPlayers from "./pages/Admin/ViewPlayers/ViewPlayers.tsx";
 import ViewBoards from "./pages/Admin/ViewBoards";
 import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
-import {UserProfilePage} from "./pages/User/UserProfile/userProfilePage.tsx";
+import {UserProfile} from "./pages/User/UserProfile/UserProfile";
 import AddPayment from './pages/User/AddPayment/AddPayment';
 import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 import UserPanel from './pages/User/UserPanel/UserPanel';
@@ -42,7 +42,7 @@ export default function App() {
                             children: [
                                 {
                                     path: "profile",
-                                    element: <UserProfilePage/>
+                                    element: <UserProfile/>
                                 },
                                 {
                                     path: "deposit",
