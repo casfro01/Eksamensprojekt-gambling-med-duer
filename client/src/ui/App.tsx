@@ -17,7 +17,7 @@ import UserPanel from './pages/User/UserPanel/UserPanel';
 export default function App() {
     return (
         <>
-            <header><title>Gambling Site</title></header>
+            <header><title>Døde Duer</title></header>
 
             <RouterProvider router={createBrowserRouter([
                 {
