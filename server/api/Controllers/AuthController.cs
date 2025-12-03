@@ -86,9 +86,11 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
     [HttpPut]
     [Route(nameof(UpdatePassword))]
     [Authorize(Roles = "Bruger,Administrator")]
-    public async Task<bool> UpdatePassword([FromBody] Chan)
+    public async Task<bool> UpdatePassword([FromBody] ChangePasswordRequest dto)
     {
-        //User.FindFirst(ClaimTypes.)
-        
+        var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userID == null) throw new ValidationException("Not a correct user.");
+        dto.userID = userID;
+        return await service.ChangePassword(dto);
     }
 }

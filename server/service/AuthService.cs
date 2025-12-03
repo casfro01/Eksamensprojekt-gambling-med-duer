@@ -88,4 +88,16 @@ public class AuthService(MyDbContext dbContext, IPasswordHasher<User> passwordHa
         await dbContext.SaveChangesAsync();
         return new UserData(user);
     }
+
+    public async Task<bool> ChangePassword(ChangePasswordRequest dto)
+    {
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
+        if (dto.NewPassword.Equals(dto.PreviousPassword)) throw new ValidationException("Du kan ikke fucking bruge det samme password som dit fede fucking forrige password, idiot, så lad være med at opdatere dit fucking password.");
+
+        var user = dbContext.Users.First(u => u.Id == dto.userID);
+        if (passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.NewPassword) == PasswordVerificationResult.Failed) throw new ValidationException("Dit nuværende password er forkert!");
+        user.PasswordHash = passwordHasher.HashPassword(user, dto.NewPassword);
+        await dbContext.SaveChangesAsync();
+        return true;
+    }
 }
