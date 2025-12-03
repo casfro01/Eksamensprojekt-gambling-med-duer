@@ -41,6 +41,7 @@ export function UserProfile(){
     const {
         passwordForm,
         setPasswordForm,
+        sendPassword
     } = useChangePassword()
 
     // TODO : flyt
@@ -58,7 +59,7 @@ export function UserProfile(){
     };
 
     // TODO : flyt indholdet
-    const handleChangePassword = (e: React.FormEvent) => {
+    const handleChangePassword = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (passwordForm.newPassword.length < 6) {
@@ -70,10 +71,13 @@ export function UserProfile(){
             setPasswordError('Passwords matcher ikke');
             return;
         }
+        if (authUser == undefined || authUser.id == undefined) {setPasswordError("Invalid user"); return;}
 
         // Send til backend senere
         console.log('Skift password:', passwordForm);
-        alert('Password ændret!');
+        const res = await sendPassword(authUser.id)
+        if (res) alert('Password ændret!');
+        else alert("Password kunne ikke ændre lige nu.")
 
         // Nulstil form
         setPasswordForm({
