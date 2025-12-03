@@ -82,4 +82,13 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
         dto.Id = userID;
         return await service.UpdateContactInformation(dto);
     }
+
+    [HttpPut]
+    [Route(nameof(UpdatePassword))]
+    [Authorize(Roles = "Bruger,Administrator")]
+    public async Task<bool> UpdatePassword([FromBody] Chan)
+    {
+        //User.FindFirst(ClaimTypes.)
+        
+    }
 }
