@@ -8,7 +8,7 @@ public class BaseTransactionResponse
     public string Id { get; set; } = null!;
     public string MobilePayId { get; set; } = null!;
     public int Amount { get; set; } = 0;
-    public string Email { get; set; } = null!;
+    public UserData User { get; set; } = null!;
     public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
     public DateTime Created { get; set; }
 
@@ -17,7 +17,7 @@ public class BaseTransactionResponse
         Id = transaction.Id;
         MobilePayId = transaction.MobilePayId;
         Amount = transaction.Amount;
-        Email = transaction.User.Email;
+        User = new UserData(transaction.User);
         Status = transaction.Status;
         Created = transaction.Created;
     }

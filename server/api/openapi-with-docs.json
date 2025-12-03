@@ -926,8 +926,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "email": {
-            "type": "string"
+          "user": {
+            "$ref": "#/components/schemas/UserData"
           },
           "status": {
             "$ref": "#/components/schemas/PaymentStatus"

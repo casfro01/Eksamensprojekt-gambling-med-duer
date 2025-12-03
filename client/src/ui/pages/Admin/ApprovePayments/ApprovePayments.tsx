@@ -10,6 +10,7 @@ export interface Payment {
     mobilePayId: string;
     timestamp: string;
     status: statusType;
+    phoneNumber: string;
 }
 
 export default function ApprovePayments() {
@@ -20,107 +21,6 @@ export default function ApprovePayments() {
         currentPage,
         setCurrentPage
     } = useFetchPendingPayments(itemsPerPage);
-
-    // SLET DENNE DATA NÅR BACKEND ER CONNECTED
-    /*
-    const [payments, setPayments] = useState<Payment[]>([
-        {
-            id: '1',
-            fullName: 'Peter Jensen',
-            amount: 100,
-            mobilePayId: '12345678901',
-            timestamp: '2025-11-26 14:23',
-            status: 'pending'
-        },
-        {
-            id: '2',
-            fullName: 'Anna Nielsen',
-            amount: 200,
-            mobilePayId: '98765432109',
-            timestamp: '2025-11-26 13:15',
-            status: 'pending'
-        },
-        {
-            id: '3',
-            fullName: 'Lars Larsen',
-            amount: 50,
-            mobilePayId: '11122233344',
-            timestamp: '2025-11-26 12:45',
-            status: 'pending'
-        },
-        {
-            id: '4',
-            fullName: 'Maria Andersen',
-            amount: 500,
-            mobilePayId: '55566677788',
-            timestamp: '2025-11-26 11:30',
-            status: 'pending'
-        },
-        {
-            id: '5',
-            fullName: 'Jens Olsen',
-            amount: 150,
-            mobilePayId: '99988877766',
-            timestamp: '2025-11-26 10:20',
-            status: 'pending'
-        },
-        {
-            id: '6',
-            fullName: 'Sophie Hansen',
-            amount: 300,
-            mobilePayId: '12312312312',
-            timestamp: '2025-11-26 09:15',
-            status: 'pending'
-        },
-        {
-            id: '7',
-            fullName: 'Thomas Berg',
-            amount: 75,
-            mobilePayId: '45645645645',
-            timestamp: '2025-11-26 08:50',
-            status: 'pending'
-        },
-        {
-            id: '8',
-            fullName: 'Emma Kristensen',
-            amount: 250,
-            mobilePayId: '78978978978',
-            timestamp: '2025-11-26 08:30',
-            status: 'pending'
-        },
-        {
-            id: '9',
-            fullName: 'Mikkel Sørensen',
-            amount: 400,
-            mobilePayId: '32132132132',
-            timestamp: '2025-11-26 07:45',
-            status: 'pending'
-        },
-        {
-            id: '10',
-            fullName: 'Julie Pedersen',
-            amount: 180,
-            mobilePayId: '65465465465',
-            timestamp: '2025-11-26 07:20',
-            status: 'pending'
-        },
-        {
-            id: '11',
-            fullName: 'Martin Nielsen',
-            amount: 220,
-            mobilePayId: '14725836901',
-            timestamp: '2025-11-25 18:30',
-            status: 'pending'
-        },
-        {
-            id: '12',
-            fullName: 'Sofie Madsen',
-            amount: 90,
-            mobilePayId: '36925814701',
-            timestamp: '2025-11-25 17:15',
-            status: 'pending'
-        }
-    ]);*/
 
     const handleApprove = async (id: string) => {
         setPayments(payments.map(p =>
@@ -174,6 +74,10 @@ export default function ApprovePayments() {
                                         <div className="detail-row">
                                             <span className="label">Beløb:</span>
                                             <span className="value amount">{payment.amount} DKK</span>
+                                        </div>
+                                        <div className="detail-row">
+                                            <span className="label">Telefonnummer:</span>
+                                            <span className="value">{payment.phoneNumber}</span>
                                         </div>
                                         <div className="detail-row">
                                             <span className="label">MobilePay ID:</span>

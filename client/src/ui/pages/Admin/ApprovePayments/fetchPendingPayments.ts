@@ -34,11 +34,12 @@ export const useFetchPendingPayments = (itemsPerPage: number) => {
 function mapToPaymentType(tx: BaseTransactionResponse): Payment{
     return {
         id: tx.id != undefined ? tx.id : "",
-        fullName: tx.email != undefined ? tx.email : "",
+        fullName: tx.user != undefined ? tx.user.fullName != undefined ? tx.user.fullName : "" :'',
         amount: tx.amount != undefined ? tx.amount : 0,
         mobilePayId: tx.mobilePayId != undefined ? tx.mobilePayId : "",
         timestamp: tx.created != undefined ? tx.created : "",
         status: statusMap[tx.status != undefined ? tx.status : 0] as statusType,
+        phoneNumber: tx.user != undefined ? tx.user.phoneNumber != undefined ? tx.user.phoneNumber :"" : '',
     }
 }
 
