@@ -722,7 +722,7 @@ export interface BaseTransactionResponse {
     id?: string;
     mobilePayId?: string;
     amount?: number;
-    email?: string;
+    user?: UserData;
     status?: PaymentStatus;
     created?: string;
 }
