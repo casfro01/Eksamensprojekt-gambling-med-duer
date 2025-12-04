@@ -14,4 +14,5 @@ public interface IAuthService
     Task<GetAllUsersResponse> GetAllUsersResponse(SieveModel request);
     Task<UserData> SetUserStatus(UpdateUserStatusDto dto);
     Task<UserData> UpdateContactInformation(UpdateUserDto dto);
+    Task<bool> ChangePassword(ChangePasswordRequest dto);
 }
