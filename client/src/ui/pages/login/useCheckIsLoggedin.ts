@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import {useNavigate} from "react-router";
 import {getRoleFromJwt} from "../../../utils/checkLogin.ts";
 
-export const useCheckIsLoggedin = (jwt: string) => {
+export const useCheckIsLoggedin = (jwt: string | null) => {
     const navigate = useNavigate();
     useEffect(() => {
         if (jwt != null) {
