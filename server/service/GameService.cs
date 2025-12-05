@@ -5,12 +5,6 @@ using service.Models.Responses;
 
 namespace service;
 
-public interface IGameService
-{
-    Task<List<BaseGameResponse>> Get();
-    Task<BaseGameResponse> Get(string id);
-}
-
 public class GameService(MyDbContext db) : IGameService
 {
     public Task<List<BaseGameResponse>> Get()
@@ -24,5 +18,14 @@ public class GameService(MyDbContext db) : IGameService
     {
         var game = await db.Games.FirstOrDefaultAsync(g => g.Id == id);
         return game == null ? throw new KeyNotFoundException("Game not found") : new BaseGameResponse(game);
+    }
+
+    public async Task<BaseGameResponse> SetWinningNumbers(WinningNumbers winningNumbers)
+    {
+        var activeGame = db.Games.OrderBy(g => g.StartDate).First(g => !g.IsFinished);
+        activeGame.IsFinished = true;
+        activeGame.WinningNumbers = winningNumbers.numbers;
+        await db.SaveChangesAsync();
+        return new BaseGameResponse(activeGame);
     }
 }

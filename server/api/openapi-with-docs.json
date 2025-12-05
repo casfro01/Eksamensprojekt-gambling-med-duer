@@ -324,7 +324,7 @@
         }
       }
     },
-    "/api/game/GetGames": {
+    "/api/Game/GetGames": {
       "get": {
         "tags": [
           "Game"
@@ -347,7 +347,7 @@
         }
       }
     },
-    "/api/game/GetGame": {
+    "/api/Game/GetGame": {
       "get": {
         "tags": [
           "Game"
@@ -363,6 +363,38 @@
             "x-position": 1
           }
         ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseGameResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Game/SetNumbers": {
+      "post": {
+        "tags": [
+          "Game"
+        ],
+        "operationId": "Game_SetNumbers",
+        "requestBody": {
+          "x-name": "winningNumbers",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WinningNumbers"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -818,6 +850,16 @@
             "items": {
               "$ref": "#/components/schemas/Board"
             }
+          },
+          "isFinished": {
+            "type": "boolean"
+          },
+          "winningNumbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
       },
@@ -987,6 +1029,22 @@
           1,
           2
         ]
+      },
+      "WinningNumbers": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
       },
       "BaseTransactionResponse": {
         "type": "object",

@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import {useSetWinningNumbers, setWinningNumbers} from './useSetWinningNumbers';
 import './enterWinningNumbers.css';
 
 export default function EnterWinningNumbers() {
-    const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
-    const [currentWeek, setCurrentWeek] = useState<string>('');
-    const [drawDate, setDrawDate] = useState<string>(new Date().toISOString().split('T')[0]);
+    const {
+        selectedNumbers,
+        setSelectedNumbers,
+        currentWeek,
+        setCurrentWeek,
+        drawDate,
+        setDrawDate
+    } = useSetWinningNumbers();
 
     const toggleNumber = (num: number) => {
         if (selectedNumbers.includes(num)) {
@@ -20,7 +25,7 @@ export default function EnterWinningNumbers() {
         setSelectedNumbers([]);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (selectedNumbers.length !== 3) {
@@ -33,10 +38,12 @@ export default function EnterWinningNumbers() {
             week: currentWeek,
             date: drawDate
         });
-
+        
+        await setWinningNumbers(selectedNumbers);
+        
         // Send til backend senere
         alert(`Vindernumre indsat!\n\nNumre: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\nUge: ${currentWeek}\nDato: ${drawDate}`);
-
+    
         // Reset form
         setSelectedNumbers([]);
         setCurrentWeek('');
@@ -47,7 +54,7 @@ export default function EnterWinningNumbers() {
             <h1>Indtast Vindernumre</h1>
             <p className="subtitle">Vælg de 3 vindernumre for denne uge</p>
 
-            <form onSubmit={handleSubmit} className="winning-form">
+            <form onSubmit={async event => {await handleSubmit(event)}} className="winning-form">
                 {/* Week info */}
                 <div className="info-section">
                     <div className="form-group">
