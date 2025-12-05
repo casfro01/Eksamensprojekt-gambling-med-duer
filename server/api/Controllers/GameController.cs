@@ -21,4 +21,9 @@ public class GameController(IGameService gameService) : ControllerBase
     {
         return await gameService.Get(id);
     }
+
+    public async Task<BaseGameResponse> SetNumbers(WinningNumbers winningNumbers)
+    {
+        return await gameService.SetWinningNumbers(winningNumbers);
+    }
 }

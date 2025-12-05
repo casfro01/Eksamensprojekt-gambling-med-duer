@@ -40,9 +40,10 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
         var startDate = DateTime.UtcNow.AddDays(-30);
         var startDateSunday = startDate.Date.AddDays(-(7 + (startDate.DayOfWeek - DayOfWeek.Sunday)) % 7);
         var gameFaker = new Faker<Game>()
-            .RuleFor(g => g.Id, f => Guid.NewGuid().ToString())
-            .RuleFor(g => g.StartDate, f => startDateSunday.AddDays(f.IndexFaker * 7)
-            );
+                .RuleFor(g => g.Id, f => Guid.NewGuid().ToString())
+                .RuleFor(g => g.StartDate, f => startDateSunday.AddDays(f.IndexFaker * 7))
+                .RuleFor(g => g.IsFinished, f => false)
+            ;
         
         var games = gameFaker.Generate(25);
         context.Games.AddRange(games);
