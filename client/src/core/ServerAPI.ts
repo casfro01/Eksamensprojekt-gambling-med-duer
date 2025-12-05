@@ -440,7 +440,7 @@ export class GameClient {
     }
 
     getGames(): Promise<BaseGameResponse[]> {
-        let url_ = this.baseUrl + "/api/game/GetGames";
+        let url_ = this.baseUrl + "/api/Game/GetGames";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -473,7 +473,7 @@ export class GameClient {
     }
 
     getGame(id: string | undefined): Promise<BaseGameResponse> {
-        let url_ = this.baseUrl + "/api/game/GetGame?";
+        let url_ = this.baseUrl + "/api/Game/GetGame?";
         if (id === null)
             throw new globalThis.Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -510,7 +510,7 @@ export class GameClient {
     }
 
     setNumbers(winningNumbers: WinningNumbers): Promise<BaseGameResponse> {
-        let url_ = this.baseUrl + "/api/game";
+        let url_ = this.baseUrl + "/api/Game/SetNumbers";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(winningNumbers);

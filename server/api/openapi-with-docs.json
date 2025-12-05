@@ -324,7 +324,7 @@
         }
       }
     },
-    "/api/game/GetGames": {
+    "/api/Game/GetGames": {
       "get": {
         "tags": [
           "Game"
@@ -347,7 +347,7 @@
         }
       }
     },
-    "/api/game/GetGame": {
+    "/api/Game/GetGame": {
       "get": {
         "tags": [
           "Game"
@@ -377,7 +377,7 @@
         }
       }
     },
-    "/api/game": {
+    "/api/Game/SetNumbers": {
       "post": {
         "tags": [
           "Game"
