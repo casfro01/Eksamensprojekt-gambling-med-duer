@@ -1,4 +1,5 @@
-﻿using System.Transactions;
+﻿using System.Security.Cryptography;
+using System.Transactions;
 using Bogus;
 using dataaccess;
 using DataAccess.Entities;
@@ -67,7 +68,7 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
             .RuleFor(t => t.User, f => f.PickRandom(users))
             .RuleFor(t => t.Amount, f => f.PickRandom(nums))
             .RuleFor(t => t.Created, DateTime.UtcNow)
-            .RuleFor(t => t.MobilePayId, f => Guid.NewGuid().ToString())
+            .RuleFor(t => t.MobilePayId, f => f.Finance.Account())
             .RuleFor(t => t.Status, f => f.PickRandom<PaymentStatus>());
         var transactions = transactionFaker.Generate(500);
         context.Transactions.AddRange(transactions);
