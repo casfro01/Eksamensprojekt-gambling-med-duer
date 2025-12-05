@@ -36,6 +36,14 @@ public class TransactionController(IServiceWithSieve<BaseTransactionResponse, Cr
     {
         return await service.Get(model);
     }
+
+    [HttpGet(nameof(GetAmountOfTransactions))]
+    [Authorize(Roles = "Administrator")]
+    public async Task<int> GetAmountOfTransactions()
+    {
+        if (service is IGetLength lengthService) return await lengthService.GetLength();
+        else return 0;
+    }
     
     // ved køb af en plade, så skal nummrene bare sendes til serversiden og derefter opdateres deres balance - kan evt. refreshe client siden og hente balancen igen
 }

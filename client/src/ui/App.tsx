@@ -13,6 +13,7 @@ import {UserProfile} from "./pages/User/UserProfile/UserProfile";
 import AddPayment from './pages/User/AddPayment/AddPayment';
 import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 import UserPanel from './pages/User/UserPanel/UserPanel';
+import PaymentHistory from "./pages/Admin/PaymentHistory/PaymentHistory.tsx";
 
 export default function App() {
     return (
@@ -89,6 +90,10 @@ export default function App() {
                                 {
                                     path: "payments",
                                     element: <ApprovePayments/>
+                                },
+                                {
+                                    path: "payment-history",
+                                    element: <PaymentHistory/>
                                 }
                                 // Tilføj flere admin routes senere
                             ]

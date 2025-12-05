@@ -11,7 +11,7 @@ using Sieve.Services;
 
 namespace service;
 
-public class TransactionService(MyDbContext ctx, ISieveProcessor processor) : IServiceWithSieve<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto>
+public class TransactionService(MyDbContext ctx, ISieveProcessor processor) : IServiceWithSieve<BaseTransactionResponse, CreateTransactionDto, UpdateTransactionDto>, IGetLength
 {
     public async Task<List<BaseTransactionResponse>> Get(SieveModel model)
     {
@@ -57,5 +57,10 @@ public class TransactionService(MyDbContext ctx, ISieveProcessor processor) : IS
     public Task<BaseTransactionResponse> Delete(string id)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<int> GetLength()
+    {
+        return await ctx.Transactions.CountAsync();
     }
 }
