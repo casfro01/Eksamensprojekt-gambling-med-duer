@@ -4,9 +4,11 @@ import ProfileButton from '../../../components/ProfileButton';
 import { handleSubmit } from './handleSubmit';
 import AddPaymentButton from '../../../components/AddPaymentButton';
 import { useState } from 'react';
+import { useGetLoggedInUser } from '../../Home/useLogin';
 
 export default function SelectNumbers() {
     const [isUserActive] = useState<boolean>(true);
+    const { authUser } = useGetLoggedInUser();
 
     const {
         selectedNumbers,
@@ -24,7 +26,7 @@ export default function SelectNumbers() {
             alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
             return;
         }
-        handleSubmit(selectedNumbers, numberOfWeeks, calculatePricePerWeek, calculateTotalPrice, canSubmit);
+        handleSubmit(selectedNumbers, numberOfWeeks, canSubmit, authUser);
     };
 
     const handleNumberClick = (num: number) => {
