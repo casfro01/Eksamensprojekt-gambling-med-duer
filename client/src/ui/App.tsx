@@ -7,7 +7,7 @@ import Admin from "./pages/Admin/admin";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.tsx";
 import ViewPlayers from "./pages/Admin/ViewPlayers/ViewPlayers.tsx";
 import ViewBoards from "./pages/Admin/ViewBoards";
-import EnterWinningNumbers from './pages/Admin/EnterWinningNumbers';
+import EnterWinningNumbers from './pages/Admin/enterWinningNumbers/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory';
 import {UserProfile} from "./pages/User/UserProfile/UserProfile";
 import AddPayment from './pages/User/AddPayment/AddPayment';
