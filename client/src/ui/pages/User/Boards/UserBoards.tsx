@@ -171,12 +171,6 @@ export default function UserBoards() {
                             </div>
 
                             <div className="board-actions">
-                                <button
-                                    className="details-btn"
-                                    onClick={() => navigate(`/user/board/${board.id}`)}
-                                >
-                                    📋 Se detaljer
-                                </button>
                                 {board.status === 'active' && board.weeksRemaining > 1 && (
                                     <button
                                         className="cancel-btn"
