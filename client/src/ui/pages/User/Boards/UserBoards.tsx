@@ -70,7 +70,7 @@ export default function UserBoards() {
         const board = boards.find(b => b.id === boardId);
         if (!board) return;
 
-        const confirmMessage = `⚠️ Annuller fremtidige uger?\n\nBræt: ${boardNumbers.join(', ')}\nTilbageværende uger: ${board.weeksRemaining}\n\nDette vil stoppe de automatiske betalinger og brættet spiller kun den aktuelle uge.\n\nEr du sikker?`;
+        const confirmMessage = `⚠️ Annuller fremtidige uger?\n\nBræt: ${boardNumbers.join(', ')}\nTilbageværende uger: ${board.weeksRemaining}\n\nDette vil stoppe de automatiske betalinger og plader spiller kun den aktuelle uge.\n\nEr du sikker?`;
 
         if (confirm(confirmMessage)) {
             console.log('Annulleret fremtidige uger for bræt:', boardId);
@@ -87,12 +87,12 @@ export default function UserBoards() {
         <div className="user-boards-container">
             <div className="boards-header">
                 <div>
-                    <h1>Mine Spillebrætter</h1>
-                    <p className="subtitle">Oversigt over dine aktive og tidligere brætter</p>
+                    <h1>Mine Spilleplader</h1>
+                    <p className="subtitle">Oversigt over dine aktive og tidligere plader</p>
                 </div>
                 <div className="stats-summary">
                     <div className="stat-box">
-                        <span className="stat-label">Aktive brætter</span>
+                        <span className="stat-label">Aktive plader</span>
                         <span className="stat-value">{activeBoards.length}</span>
                     </div>
                     <div className="stat-box">
@@ -193,12 +193,12 @@ export default function UserBoards() {
                 <div className="no-boards">
                     <span className="no-boards-icon">🎲</span>
                     <h2>
-                        {filter === 'active' ? 'Ingen aktive brætter' : 'Ingen afsluttede brætter'}
+                        {filter === 'active' ? 'Ingen aktive plader' : 'Ingen afsluttede plader'}
                     </h2>
                     <p>
                         {filter === 'active'
                             ? 'Køb et nyt spillebræt for at komme i gang!'
-                            : 'Dine afsluttede brætter vises her når de er færdige.'}
+                            : 'Dine afsluttede plader vises her når de er færdige.'}
                     </p>
                     {filter === 'active' && (
                         <button

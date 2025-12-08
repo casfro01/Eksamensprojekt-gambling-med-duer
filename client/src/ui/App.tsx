@@ -59,10 +59,6 @@ export default function App() {
                                     element: <UserBoards/>
                                 },
                                 {
-                                    path: "game-history",  
-                                    element: <UserBoards/>  
-                                },
-                                {
                                     path: "transactions",
                                     element: <div>Transaktionshistorik - kommer snart</div>
                                 }
