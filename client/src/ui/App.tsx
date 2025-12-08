@@ -15,6 +15,7 @@ import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 import UserPanel from './pages/User/UserPanel/UserPanel';
 import PaymentHistory from "./pages/Admin/PaymentHistory/PaymentHistory.tsx";
 import UserBoards from "./pages/User/Boards/UserBoards";
+import ProtectedRoute from "./pages/Admin/ProtectedRoute.tsx";
 
 export default function App() {
     return (
@@ -55,7 +56,7 @@ export default function App() {
                                     element: <SelectNumbers/>
                                 },
                                 {
-                                    path: "boards",  
+                                    path: "boards",
                                     element: <UserBoards/>
                                 },
                                 {
@@ -66,7 +67,11 @@ export default function App() {
                         },
                         {
                             path: "/admin",
-                            element: <Admin/>,
+                            element:(<ProtectedRoute
+                                requiredRole="Administrator">
+                                    <Admin/>
+                            </ProtectedRoute>
+                                ),
                             children: [
                                 {
                                     path: "create-user",
@@ -105,6 +110,6 @@ export default function App() {
             ])}
             />
             <Toaster position="top-center" reverseOrder={false}/>
-            </>
+        </>
     )
 }

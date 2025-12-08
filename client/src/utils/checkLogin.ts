@@ -14,8 +14,8 @@ export const useIsValidLogin = (): boolean => {
     return true;
 }
 
-export function getRoleFromJwt(token: string | undefined): string | null {
-    if (token == undefined) return null;
+export function getRoleFromJwt(token: string | null): string | null {
+    if (token == null) return null;
     try {
         const payload = decodeJwt<{ role: string }>(token);
 
