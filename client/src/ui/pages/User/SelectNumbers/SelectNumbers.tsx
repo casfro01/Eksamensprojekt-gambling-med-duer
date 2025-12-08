@@ -55,6 +55,12 @@ export default function SelectNumbers() {
         clearSelection();
     };
 
+    const handleRemoveRepeat = () => {
+        if (confirm(`⚠️ Fjern gentagelse?\n\nDit bræt spiller nu ${numberOfWeeks} uger i træk.\nHvis du fjerner gentagelsen, spiller det kun denne uge.\n\nVil du fjerne gentagelsen?`)) {
+            setNumberOfWeeks(1);
+        }
+    };
+
     return (
         <div className="selectnumbers-container">
             <ProfileButton />
@@ -141,6 +147,16 @@ export default function SelectNumbers() {
                         </button>
                     </div>
                     <p className="weeks-hint">Spil de samme tal i op til 10 uger</p>
+
+                    {/* FJERN GENTAGELSE KNAP*/}
+                    {numberOfWeeks > 1 && (
+                        <button
+                            className="remove-repeat-button"
+                            onClick={handleRemoveRepeat}
+                        >
+                            🗑️ Fjern gentagelse
+                        </button>
+                    )}
                 </div>
 
                 {canSubmit() && numberOfWeeks > 1 && (
