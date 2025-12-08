@@ -23,6 +23,7 @@ public class CreateTransaction(MyDbContext ctx, IServiceWithSieve<BaseTransactio
         await ctx.Transactions.ExecuteDeleteAsync(cancellationToken: TestContext.Current.CancellationToken);
         var dto = new CreateTransactionDto
         {
+            Id = user.Id,
             Amount = amount,
             MobilePayId = mobilepayid,
             Email = user.Email,
@@ -38,7 +39,9 @@ public class CreateTransaction(MyDbContext ctx, IServiceWithSieve<BaseTransactio
         Assert.Equal(DBtrans.User.Email, user.Email);
         Assert.Equal(trans.Amount, amount);
         Assert.Equal(trans.MobilePayId, mobilepayid);
-        Assert.Equal(trans.Email, user.Email);
+        Assert.Equal(trans.User.Email, user.Email);
+        Assert.Equal(trans.User.FullName, user.FullName);
+        Assert.Equal(trans.User.Id, user.Id);
     }
     
     
@@ -65,6 +68,7 @@ public class CreateTransaction(MyDbContext ctx, IServiceWithSieve<BaseTransactio
         var user = ctx.Users.First();
         var dto = new CreateTransactionDto
         {
+            Id = user.Id,
             Amount = amount,
             MobilePayId = mobilepayid,
             Email = user.Email,
