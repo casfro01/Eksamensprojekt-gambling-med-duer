@@ -106,12 +106,12 @@ public class Program
         ConfigureServices(builder.Services, builder);
         
         var app = builder.Build();
-        
+        /*
         using (var scope = app.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<MyDbContext>();
             db.Database.EnsureCreated();
-        }
+        }*/
         
         app.UseOpenApi();
         app.UseSwaggerUi();
@@ -122,12 +122,13 @@ public class Program
         app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(x => true));
 
         // config færdig her
-        app.GenerateApiClientsFromOpenApi("/../../client/src/core/ServerAPI.ts").GetAwaiter().GetResult();
+        //app.GenerateApiClientsFromOpenApi("/../../client/src/core/ServerAPI.ts").GetAwaiter().GetResult();
         // for development
+        /*
         using (var scope = app.Services.CreateScope())
         {
             scope.ServiceProvider.GetRequiredService<ISeeder>().Seed().GetAwaiter().GetResult();
-        }
+        }*/
         
         app.Run();
         
