@@ -83,7 +83,7 @@ export default function PaymentHistory() {
                 </table>
             </div>
 
-            {allTransactionsNumber/10 > 1 && (
+            {allTransactionsNumber/intake > 1 && (
                 <div className="pagination">
                     <button
                         className="page-btn"
@@ -94,12 +94,12 @@ export default function PaymentHistory() {
                     </button>
                     {
                         <span className="page-info">
-                                Side {page} af {Math.ceil(allTransactionsNumber / 10)}
+                                Side {page} af {Math.ceil(allTransactionsNumber / intake)}
                             </span>}
                     <button
                         className="page-btn"
                         onClick={() => setPage(page + 1)}
-                        disabled={page === Math.ceil(allTransactionsNumber / 10) || payments.length != intake}
+                        disabled={page === Math.ceil(allTransactionsNumber / intake) || payments.length != intake}
                     >
                         Næste →
                     </button>
