@@ -15,6 +15,7 @@ import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 import UserPanel from './pages/User/UserPanel/UserPanel';
 import PaymentHistory from "./pages/Admin/PaymentHistory/PaymentHistory.tsx";
 import UserBoards from "./pages/User/Boards/UserBoards";
+import UserTransactions from './pages/User/Transactions/UserTransaction';
 
 export default function App() {
     return (
@@ -60,7 +61,7 @@ export default function App() {
                                 },
                                 {
                                     path: "transactions",
-                                    element: <div>Transaktionshistorik - kommer snart</div>
+                                    element: <UserTransactions/>
                                 }
                             ]
                         },
