@@ -14,6 +14,7 @@ import AddPayment from './pages/User/AddPayment/AddPayment';
 import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 import UserPanel from './pages/User/UserPanel/UserPanel';
 import PaymentHistory from "./pages/Admin/PaymentHistory/PaymentHistory.tsx";
+import UserBoards from "./pages/User/Boards/UserBoards";
 
 export default function App() {
     return (
@@ -54,8 +55,12 @@ export default function App() {
                                     element: <SelectNumbers/>
                                 },
                                 {
-                                    path: "game-history",
-                                    element: <div>Spilhistorik - kommer snart</div>
+                                    path: "boards",  
+                                    element: <UserBoards/>
+                                },
+                                {
+                                    path: "game-history",  
+                                    element: <UserBoards/>  
                                 },
                                 {
                                     path: "transactions",
@@ -104,6 +109,6 @@ export default function App() {
             ])}
             />
             <Toaster position="top-center" reverseOrder={false}/>
-        </>
+            </>
     )
 }

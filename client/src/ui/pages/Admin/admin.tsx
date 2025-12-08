@@ -16,7 +16,7 @@ export default function AdminLayout() {
         { path: '/admin/payments', label: 'Godkend Indbetalinger', icon: '💰' },
         { path: '/admin/winning-numbers', label: 'Indtast Vindernumre', icon: '🎯' },
         { path: '/admin/history', label: 'Spilhistorik', icon: '📜' },
-        { path: '/admin/payment-history', label: 'Betalingshistorik', icon: '💰📜' }
+        { path: '/admin/payment-history', label: 'Betalingshistorik', icon: '💳' }
     ];
 
     const isActive = (path: string) => location.pathname === path;
