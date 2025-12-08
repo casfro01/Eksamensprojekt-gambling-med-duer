@@ -16,7 +16,8 @@ export const useUserPanel = () => {
         { path: '/user/profile', label: 'Bruger Information', icon: '👤' },
         { path: '/user/deposit', label: 'Indbetaling', icon: '💰' },
         { path: '/user/new-board', label: 'Nyt Bræt', icon: '🎲' },
-        { path: '/user/boards', label: 'Mine Plader', icon: '📋' }, 
+        { path: '/user/boards', label: 'Mine Brætter', icon: '📋' },  // <-- TILFØJ DENNE LINJE
+        { path: '/user/game-history', label: 'Spilhistorik', icon: '📜' },
         { path: '/user/transactions', label: 'Transaktionshistorik', icon: '💳' }
     ];
 
