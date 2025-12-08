@@ -45,7 +45,7 @@ export const useUserTransactions = () => {
             mobilePayId: '55566677788',
             timestamp: '2025-12-05T16:45:00',
             status: 'rejected',
-            rejectionReason: 'MobilePay ID matcher ikke overførsel'
+            rejectionReason: 'MobilePay ID matcher ikke overførsel eller dublikeret overførsel'
         }
     ]);
 
