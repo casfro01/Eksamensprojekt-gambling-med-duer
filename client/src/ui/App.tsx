@@ -14,6 +14,7 @@ import AddPayment from './pages/User/AddPayment/AddPayment';
 import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 import UserPanel from './pages/User/UserPanel/UserPanel';
 import PaymentHistory from "./pages/Admin/PaymentHistory/PaymentHistory.tsx";
+import ProtectedRoute from "./pages/Admin/ProtectedRoute.tsx";
 
 export default function App() {
     return (
@@ -65,7 +66,11 @@ export default function App() {
                         },
                         {
                             path: "/admin",
-                            element: <Admin/>,
+                            element:(<ProtectedRoute
+                                requiredRole="Administrator">
+                                    <Admin/>
+                            </ProtectedRoute>
+                                ),
                             children: [
                                 {
                                     path: "create-user",
