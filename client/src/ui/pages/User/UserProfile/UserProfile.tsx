@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
 import './userProfile.css';
 import {useNavigate} from 'react-router';
 import {useIsValidLogin} from "../../../../utils/checkLogin.ts";
 import {useEditProfile} from "./EditProfile.ts";
 import {useEditUserData} from "./EditUserData.ts";
-import {useChangePassword} from "./ChangePassword.ts";
+import {useChangePassword, usePasswordError} from "./ChangePassword.ts";
 import {useGetLoggedInUser} from "../../Home/useLogin.ts";
 import {useRemoveToken} from "../../../../core/atoms/token.ts";
 
@@ -44,8 +43,7 @@ export function UserProfile(){
         sendPassword
     } = useChangePassword()
 
-    // TODO : flyt
-    const [passwordError, setPasswordError] = useState('');
+    const { passwordError, setPasswordError } = usePasswordError()
 
     // TODO : flyt indholdet
     const handleSaveProfile = async () => {
