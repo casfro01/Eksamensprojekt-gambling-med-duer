@@ -1,19 +1,16 @@
-﻿import React, { useState } from 'react';
-import './createUser.css';
-import { createUser } from "./CreateUserFunction";
-import type {RegisterRequest} from "../../../../core/ServerAPI.ts";
+﻿import './createUser.css';
+import {createUserFunction, useCreateUser} from "./useCreateUser.ts";
 
 export default function CreateUser() {
-    const [formData, setFormData] = useState({
-        fullName: '',
-        email: '',
-        phone: '',
-        password: '',
-        isActive: false // denne er vitterligt altid false når man laver en bruger TODO : dette kan måske ændres
-    });
 
-    const [passwordError, setPasswordError] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const {
+        formData,
+        setFormData,
+        passwordError,
+        setPasswordError,
+        showPassword,
+        setShowPassword,
+    } = useCreateUser();
 
     const validatePassword = () => {
         if (formData.password.length < 6) {
@@ -33,14 +30,8 @@ export default function CreateUser() {
 
         console.log('Opret bruger:', formData);
 
-        // Send til backend senere
-        const dto: RegisterRequest = {
-            email: formData.email,
-            password: formData.password,
-            fullName: formData.fullName,
-            phoneNumber: formData.phone,
-        }
-        await createUser(dto);
+        await createUserFunction(formData);
+        
         alert(`Bruger oprettet: ${formData.fullName}\nPassword: ${formData.password}`);
 
         // Nulstil form
