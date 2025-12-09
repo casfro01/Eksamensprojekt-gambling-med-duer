@@ -3,7 +3,7 @@ import Login from "./pages/login/login.tsx";
 import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
 import SelectNumbers from "./pages/User/SelectNumbers/SelectNumbers";
-import Admin from "./pages/Admin/admin";
+import Admin from "./pages/Admin/AdminPanel/admin.tsx";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.tsx";
 import ViewPlayers from "./pages/Admin/ViewPlayers/ViewPlayers.tsx";
 import ViewBoards from "./pages/Admin/ViewBoards";

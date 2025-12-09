@@ -31,7 +31,7 @@ export default function CreateUser() {
         console.log('Opret bruger:', formData);
 
         await createUserFunction(formData);
-        
+
         alert(`Bruger oprettet: ${formData.fullName}\nPassword: ${formData.password}`);
 
         // Nulstil form
