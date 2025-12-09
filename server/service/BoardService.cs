@@ -39,13 +39,27 @@ public class BoardService(MyDbContext db): IService<BaseBoardResponse, CreateBoa
         Validator.ValidateObject(dto, new ValidationContext(dto), true);
         
         var id = Guid.NewGuid().ToString();
+        
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == dto.UserId)
+                   ?? throw new KeyNotFoundException("User not found");
+
+        var games = await db.Games
+            .Where(g => !g.IsFinished && g.StartDate.Date >= DateTime.UtcNow.Date)
+            .OrderBy(g => g.StartDate)
+            .Take(dto.Weeks)
+            .ToListAsync();
+
+        if (!games.Any())
+        {
+            throw new InvalidOperationException("No upcoming games available for the requested period");
+        }
 
         var board = new Board
         {
             Id = id,
-            User = db.Users.First(u => u.Id == dto.UserId),
-            Games = dto.Games,
-            PlayedNumbers = dto.PlayedNumbers,
+            User = user,
+            Games = games,
+            PlayedNumbers = dto.PlayedNumbers.OrderBy(n => n).ToList(),
         };
 
         db.Boards.Add(board);
