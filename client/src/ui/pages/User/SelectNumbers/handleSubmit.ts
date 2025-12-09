@@ -1,27 +1,30 @@
-﻿export const handleSubmit = (
+﻿import { boardClient } from "../../../../core/api-clients";
+import type { CreateBoardDto, UserData } from "../../../../core/ServerAPI";
+
+
+
+export const handleSubmit = async (
     selectedNumbers: number[],
     numberOfWeeks: number,
-    calculatePricePerWeek: () => number,
-    calculateTotalPrice: () => number,
-    canSubmit: () => boolean
+    canSubmit: () => boolean,
+    authUser: UserData | null
 ) => {
     if (canSubmit()) {
-        const pricePerWeek = calculatePricePerWeek();
-        const totalPrice = calculateTotalPrice();
-
-        console.log('Spillebræt:', {
-            numbers: selectedNumbers.sort((a, b) => a - b),
-            weeks: numberOfWeeks,
-            pricePerWeek: pricePerWeek,
-            totalPrice: totalPrice,
-            firstPayment: pricePerWeek
-        });
-
-        // Alert besked
-        if (numberOfWeeks === 1) {
-            alert(`Bræt oprettet!\n\nTal: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\n\nDu betaler ${pricePerWeek} DKK nu.`);
-        } else {
-            alert(`Bræt oprettet!\n\nTal: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\n\nDu betaler ${pricePerWeek} DKK nu.\nDerefter ${pricePerWeek} DKK ugentligt i ${numberOfWeeks - 1} ${numberOfWeeks - 1 === 1 ? 'uge' : 'uger'} mere.\n\nSamlet: ${totalPrice} DKK`);
+        if (!authUser?.id) {
+            alert('Du er ikke logget ind');
+            return;
         }
+
+        try {
+            const dto: CreateBoardDto = {
+                userId: authUser?.id,
+                weeks: numberOfWeeks,
+                playedNumbers: [...selectedNumbers].sort((a, b) => a - b),
+            };
+            const response = await boardClient.createBoard(dto);
+            console.log('Spillebræt oprettet:', response);
+        } catch (error) {
+            console.error('Fejl ved oprettelse af spillebræt:', error);
+        };
     }
 };

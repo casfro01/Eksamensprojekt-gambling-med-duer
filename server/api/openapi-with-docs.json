@@ -803,232 +803,36 @@
           "startTime": {
             "type": "string",
             "format": "date-time"
-          },
-          "winningBoardIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
       "CreateBoardDto": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "userId"
+        ],
         "properties": {
           "userId": {
-            "type": "string"
-          },
-          "games": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Game"
-            }
-          },
-          "playedNumbers": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        }
-      },
-      "Game": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "winningBoards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Board"
-            }
-          },
-          "isFinished": {
-            "type": "boolean"
-          },
-          "winningNumbers": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        }
-      },
-      "Board": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "games": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Game"
-            }
-          },
-          "playedNumbers": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        }
-      },
-      "User": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "email"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "fullName": {
-            "type": "string"
-          },
-          "email": {
             "type": "string",
             "minLength": 1
           },
-          "isActive": {
-            "type": "boolean"
-          },
-          "boards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Board"
-            }
-          },
-          "role": {
-            "$ref": "#/components/schemas/Role"
-          },
-          "created": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "phoneNumber": {
-            "type": "string"
-          },
-          "transactions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Transaction"
-            }
-          }
-        }
-      },
-      "Role": {
-        "type": "integer",
-        "description": "",
-        "x-enum-names": [
-          "Administrator",
-          "Bruger"
-        ],
-        "x-enum-varnames": [
-          "Administrator",
-          "Bruger"
-        ],
-        "x-enumNames": [
-          "Administrator",
-          "Bruger"
-        ],
-        "x-enum-descriptions": [
-          null,
-          null
-        ],
-        "x-enumDescriptions": [
-          null,
-          null
-        ],
-        "enum": [
-          0,
-          1
-        ]
-      },
-      "Transaction": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "user",
-          "mobilePayId",
-          "amount",
-          "status",
-          "created"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "mobilePayId": {
-            "type": "string",
-            "minLength": 1
-          },
-          "amount": {
+          "weeks": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "maximum": 10.0,
+            "minimum": 1.0
           },
-          "status": {
-            "$ref": "#/components/schemas/PaymentStatus"
-          },
-          "created": {
-            "type": "string",
-            "format": "date-time",
-            "minLength": 1
+          "playedNumbers": {
+            "type": "array",
+            "maxItems": 8,
+            "minItems": 5,
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
-      },
-      "PaymentStatus": {
-        "type": "integer",
-        "description": "",
-        "x-enum-names": [
-          "Pending",
-          "Accepted",
-          "Rejected"
-        ],
-        "x-enum-varnames": [
-          "Pending",
-          "Accepted",
-          "Rejected"
-        ],
-        "x-enumNames": [
-          "Pending",
-          "Accepted",
-          "Rejected"
-        ],
-        "x-enum-descriptions": [
-          null,
-          null,
-          null
-        ],
-        "x-enumDescriptions": [
-          null,
-          null,
-          null
-        ],
-        "enum": [
-          0,
-          1,
-          2
-        ]
       },
       "WinningNumbers": {
         "type": "object",
@@ -1071,6 +875,40 @@
             "format": "date-time"
           }
         }
+      },
+      "PaymentStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enum-names": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ],
+        "x-enum-varnames": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ],
+        "x-enumNames": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ],
+        "x-enum-descriptions": [
+          null,
+          null,
+          null
+        ],
+        "x-enumDescriptions": [
+          null,
+          null,
+          null
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
       },
       "CreateTransactionDto": {
         "type": "object",

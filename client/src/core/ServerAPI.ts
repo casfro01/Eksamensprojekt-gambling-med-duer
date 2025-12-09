@@ -784,54 +784,13 @@ export interface AuthUserInfo {
 export interface BaseGameResponse {
     id?: string;
     startTime?: string;
-    winningBoardIds?: string[];
 }
 
 export interface CreateBoardDto {
-    userId?: string;
-    games?: Game[];
+    userId: string;
+    weeks?: number;
     playedNumbers?: number[];
 }
-
-export interface Game {
-    id?: string;
-    startDate?: string;
-    winningBoards?: Board[];
-    isFinished?: boolean;
-    winningNumbers?: number[];
-}
-
-export interface Board {
-    id?: string;
-    user?: User;
-    games?: Game[];
-    playedNumbers?: number[];
-}
-
-export interface User {
-    id?: string;
-    fullName?: string;
-    email: string;
-    isActive?: boolean;
-    boards?: Board[];
-    role?: Role;
-    created?: string | undefined;
-    phoneNumber?: string;
-    transactions?: Transaction[];
-}
-
-export type Role = 0 | 1;
-
-export interface Transaction {
-    id?: string;
-    user: User;
-    mobilePayId: string;
-    amount: number;
-    status: PaymentStatus;
-    created: string;
-}
-
-export type PaymentStatus = 0 | 1 | 2;
 
 export interface WinningNumbers {
     numbers: number[];
@@ -845,6 +804,8 @@ export interface BaseTransactionResponse {
     status?: PaymentStatus;
     created?: string;
 }
+
+export type PaymentStatus = 0 | 1 | 2;
 
 export interface CreateTransactionDto {
     mobilePayId: string;

@@ -1,12 +1,12 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export const useUserPanel = () => {
-    const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
+export const useAdminPanel = () => {
+    const [menuOpen, setMenuOpen] = useState(window.innerWidth >= 768);
 
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth < 768) {
-                setIsOpen(false);
+                setMenuOpen(false);
             }
         };
 
@@ -15,7 +15,7 @@ export const useUserPanel = () => {
     }, []);
 
     return {
-        isOpen,
-        setIsOpen
-    };
-};
+        menuOpen,
+        setMenuOpen,
+    }
+}

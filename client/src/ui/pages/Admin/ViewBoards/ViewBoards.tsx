@@ -1,42 +1,14 @@
-﻿import { useState } from 'react';
-import './viewBoards.css';
-
-interface Board {
-    id: string;
-    playerName: string;
-    numbers: number[];
-    weeks: number;
-    pricePerWeek: number;
-    totalPrice: number;
-    createdDate: string;
-    isWinning: boolean;
-}
+﻿import './viewBoards.css';
+import {useFetchBoards} from "./useFetchBoards.ts";
 
 export default function ViewBoards() {
-    const [boards] = useState<Board[]>([
-        {
-            id: '1',
-            playerName: 'Peter Jensen',
-            numbers: [1, 5, 7, 12, 15],
-            weeks: 3,
-            pricePerWeek: 20,
-            totalPrice: 60,
-            createdDate: '2025-01-20',
-            isWinning: false
-        },
-        {
-            id: '2',
-            playerName: 'Anna Nielsen',
-            numbers: [2, 4, 8, 10, 13, 14, 16],
-            weeks: 1,
-            pricePerWeek: 80,
-            totalPrice: 80,
-            createdDate: '2025-01-21',
-            isWinning: true
-        }
-    ]);
 
-    const [currentWeekWinningNumbers] = useState<number[]>([2, 8, 13]);
+    const {
+        boards,
+        currentWeekWinningNumbers
+    } = useFetchBoards();
+
+
 
     return (
         <div className="view-boards-container">

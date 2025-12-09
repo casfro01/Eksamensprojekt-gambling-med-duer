@@ -1,15 +1,19 @@
-﻿import { useState } from 'react';
-import { useNavigate } from 'react-router';
+﻿import { useNavigate } from 'react-router';
 import './addPayment.css';
 import { CreatePayment } from "./useAddPayment.ts";
+import HomeButton from '../../../components/HomeButton';
+import {usePaymentStates} from "./usePaymentStates.ts";
 
 export default function AddPayment() {
     const navigate = useNavigate();
-
-    // todo: flyt ud
-    const [amount, setAmount] = useState<string>('');
-    const [mobilePayId, setMobilePayId] = useState<string>('');
-    const [showTooltip, setShowTooltip] = useState<boolean>(false);
+    const {
+        amount,
+        mobilePayId,
+        showTooltip,
+        setAmount,
+        setMobilePayId,
+        setShowTooltip
+    } = usePaymentStates();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,11 +32,8 @@ export default function AddPayment() {
 
     return (
         <div className="add-payment-container">
+        <HomeButton/>
             <div className="payment-content">
-                <button className="back-btn" onClick={() => navigate(-1)}>
-                    ← Tilbage
-                </button>
-
                 <h1>Indsæt Penge</h1>
                 <p className="subtitle">Tilføj penge til din konto via MobilePay</p>
 
