@@ -1,5 +1,6 @@
 ﻿using dataaccess;
 using DataAccess.Entities;
+using Bogus;
 using dataaccess.Enums;
 using Microsoft.AspNetCore.Identity;
 
@@ -43,6 +44,19 @@ public class SimpleSeeder(MyDbContext ctx, IPasswordHasher<User> hasher) : ISeed
 
         ctx.Users.Add(adminBruger);
         ctx.Users.Add(normalBurger);
+
+        var startDate = DateTime.UtcNow.AddDays(-30);
+        var startDateSunday = startDate.Date.AddDays(-(7 + (startDate.DayOfWeek - DayOfWeek.Sunday)) % 7);
+        var gameFaker = new Faker<Game>()
+                .RuleFor(g => g.Id, f => Guid.NewGuid().ToString())
+                .RuleFor(g => g.StartDate, f => startDateSunday.AddDays(f.IndexFaker * 7))
+                .RuleFor(g => g.IsFinished, f => DateTime.UtcNow.Date > startDateSunday.AddDays(f.IndexFaker * 7).Date)
+            ;
+        
+        var games = gameFaker.Generate(25);
+        ctx.Games.AddRange(games);
+
+
         await ctx.SaveChangesAsync();
     }
 }

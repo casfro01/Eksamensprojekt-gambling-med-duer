@@ -6,7 +6,7 @@ public class Game
     
     public DateTime StartDate { get; set; } = DateTime.MinValue;
     
-    public ICollection<Board> WinningBoards { get; set; } = new List<Board>();
+    public virtual ICollection<Board> Boards { get; set; } = new List<Board>();
     
     public bool IsFinished { get; set; } = false;
 
