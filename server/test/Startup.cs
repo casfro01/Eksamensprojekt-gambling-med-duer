@@ -30,5 +30,6 @@ public class Startup
             ctx.Database.EnsureCreated();
             return ctx;
         });
+        services.AddScoped<ISeeder, BogusSeed>();
     }
 }
