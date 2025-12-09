@@ -1,9 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
 import './boards.css';
-import type { BaseBoardResponse } from '../../../core/ServerAPI.ts';
-import { BoardClient } from '../../../core/ServerAPI.ts';
-
-type DeadPigeonBoard = BaseBoardResponse & { [key: string]: unknown };
+import {type DeadPigeonBoard, useFetchBoards} from "./useFetchBoards.ts";
 
 const price = [20, 40, 80, 160];
 
@@ -57,11 +53,16 @@ const getStatusVariant = (board: DeadPigeonBoard): 'active' | 'ended' => {
 
 
 export default function Boards() {
-    const [boards, setBoards] = useState<DeadPigeonBoard[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+    const{
+        boards,
+        loading,
+        error,
+        lastUpdated,
+        refresh,
+        setRefresh
+    } = useFetchBoards();
 
+    /*
     const fetchBoards = useCallback(async () => {
         setLoading(true);
         setError(null);
@@ -78,11 +79,11 @@ export default function Boards() {
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, []);*/
 
-    useEffect(() => {
+    /*useEffect(() => {
         fetchBoards();
-    }, [fetchBoards]);
+    }, [fetchBoards]);*/
 
     const renderCards = () => {
         if (loading && boards.length === 0) {
@@ -174,7 +175,7 @@ export default function Boards() {
                         )}
                     </div>
                     <div className="hero-actions">
-                        <button type="button" onClick={fetchBoards} disabled={loading}>
+                        <button type="button" onClick={() => setRefresh(refresh + 1)} disabled={loading}>
                             {loading ? 'Opdaterer...' : 'Opdater brætter'}
                         </button>
                     </div>
