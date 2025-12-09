@@ -2,6 +2,7 @@
 import { useNavigate } from 'react-router';
 import './addPayment.css';
 import { CreatePayment } from "./useAddPayment.ts";
+import HomeButton from '../../../components/HomeButton';
 
 export default function AddPayment() {
     const navigate = useNavigate();
@@ -28,11 +29,8 @@ export default function AddPayment() {
 
     return (
         <div className="add-payment-container">
+        <HomeButton/>
             <div className="payment-content">
-                <button className="back-btn" onClick={() => navigate(-1)}>
-                    ← Tilbage
-                </button>
-
                 <h1>Indsæt Penge</h1>
                 <p className="subtitle">Tilføj penge til din konto via MobilePay</p>
 

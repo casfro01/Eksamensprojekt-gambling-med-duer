@@ -6,6 +6,7 @@ import {useEditUserData} from "./EditUserData.ts";
 import {useChangePassword, usePasswordError} from "./ChangePassword.ts";
 import {useGetLoggedInUser} from "../../Home/useLogin.ts";
 import {useRemoveToken} from "../../../../core/atoms/token.ts";
+import HomeButton from '../../../components/HomeButton';
 
 export function UserProfile(){
     const navigate = useNavigate();
@@ -98,12 +99,10 @@ export function UserProfile(){
 
     return (
         <div className="profile-container">
+            <HomeButton/>
             <div className="profile-content">
                 {/* Header */}
                 <div className="profile-header">
-                    <button className="back-btn" onClick={() => navigate(-1)}>
-                        ← Tilbage
-                    </button>
                     <h1>Min Profil</h1>
                 </div>
 
