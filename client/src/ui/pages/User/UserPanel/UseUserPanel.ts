@@ -1,42 +1,21 @@
-﻿import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router';
-
-interface MenuItem {
-    path: string;
-    label: string;
-    icon: string;
-}
+﻿import { useState, useEffect } from 'react';
 
 export const useUserPanel = () => {
-    const [isOpen, setIsOpen] = useState(true);
-    const navigate = useNavigate();
-    const location = useLocation();
+    const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
 
-    const menuItems: MenuItem[] = [
-        { path: '/user/profile', label: 'Bruger Information', icon: '👤' },
-        { path: '/user/deposit', label: 'Indbetaling', icon: '💰' },
-        { path: '/user/new-board', label: 'Nyt Bræt', icon: '🎲' },
-        { path: '/user/boards', label: 'Mine Plader', icon: '📋' }, 
-        { path: '/user/transactions', label: 'Transaktionshistorik', icon: '💳' }
-    ];
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setIsOpen(false);
+            }
+        };
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const navigateTo = (path: string) => {
-        navigate(path);
-    };
-
-    const isActive = (path: string) => {
-        return location.pathname === path;
-    };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return {
         isOpen,
-        menuItems,
-        toggleSidebar,
-        navigateTo,
-        isActive
+        setIsOpen
     };
 };
