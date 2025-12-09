@@ -1,6 +1,7 @@
 ﻿import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import './userBoards.css';
+import HomeButton from '../../../components/HomeButton';
 
 interface Board {
     id: string;
@@ -85,6 +86,7 @@ export default function UserBoards() {
 
     return (
         <div className="user-boards-container">
+            <HomeButton/>
             <div className="boards-header">
                 <div>
                     <h1>Mine Spilleplader</h1>

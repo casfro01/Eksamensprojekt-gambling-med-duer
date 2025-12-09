@@ -1,5 +1,6 @@
 ﻿import { useUserTransactions } from './useUserTransactions';
 import './userTransactions.css';
+import HomeButton from '../../../components/HomeButton';
 
 export default function UserTransactions() {
     const {
@@ -34,6 +35,7 @@ export default function UserTransactions() {
 
     return (
         <div className="user-transactions-container">
+            <HomeButton/>
             <div className="transactions-header">
                 <div>
                     <h1>Transaktionshistorik</h1>

@@ -1,8 +1,7 @@
 ﻿import './selectNumbers.css';
 import { useSelectNumbers } from './useSelectNumbers';
-import ProfileButton from '../../../components/ProfileButton';
 import { handleSubmit } from './handleSubmit';
-import AddPaymentButton from '../../../components/AddPaymentButton';
+import HomeButton from '../../../components/HomeButton';
 import { useState } from 'react';
 
 export default function SelectNumbers() {
@@ -63,8 +62,7 @@ export default function SelectNumbers() {
 
     return (
         <div className="selectnumbers-container">
-            <ProfileButton />
-            <AddPaymentButton />
+            <HomeButton/>
             <div className="selectnumbers-content">
                 <header className="selectnumbers-header">
                     <h1>Vælg dine numre</h1>
