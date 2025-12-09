@@ -1,63 +1,15 @@
-import { useState } from 'react';
 import './gameHistory.css';
-
-interface Game {
-    id: string;
-    weekNumber: string;
-    drawDate: string;
-    winningNumbers: number[];
-    totalBoards: number;
-    winningBoards: number;
-    totalRevenue: number;
-    prizePool: number;
-    status: 'completed' | 'active';
-}
-
-interface WinningBoard {
-    playerName: string;
-    numbers: number[];
-    pricePerWeek: number;
-}
+import {useFetchGames, type WinningBoard} from "./fetchGames.ts";
+import {useGameInformation} from "./useGameInformation.ts";
 
 export default function GameHistory() {
     // SLET LINJE 23-57 NÅR BACKEND ER CONNECTED
-    const [games] = useState<Game[]>([
-        {
-            id: '1',
-            weekNumber: 'Uge 46',
-            drawDate: '2025-11-15',
-            winningNumbers: [3, 7, 12],
-            totalBoards: 15,
-            winningBoards: 3,
-            totalRevenue: 800,
-            prizePool: 560,
-            status: 'completed'
-        },
-        {
-            id: '2',
-            weekNumber: 'Uge 45',
-            drawDate: '2025-11-08',
-            winningNumbers: [1, 9, 14],
-            totalBoards: 12,
-            winningBoards: 2,
-            totalRevenue: 640,
-            prizePool: 448,
-            status: 'completed'
-        },
-        {
-            id: '3',
-            weekNumber: 'Uge 44',
-            drawDate: '2025-11-01',
-            winningNumbers: [5, 8, 16],
-            totalBoards: 18,
-            winningBoards: 0,
-            totalRevenue: 920,
-            prizePool: 644,
-            status: 'completed'
-        }
-    ]);
+    const games = useFetchGames();
 
-    const [expandedGame, setExpandedGame] = useState<string | null>(null);
+    const {
+        expandedGame,
+        setExpandedGame,
+    } = useGameInformation();
 
     // SLET LINJE 62-75 NÅR BACKEND ER CONNECTED
     const getWinningBoards = (gameId: string): WinningBoard[] => {
