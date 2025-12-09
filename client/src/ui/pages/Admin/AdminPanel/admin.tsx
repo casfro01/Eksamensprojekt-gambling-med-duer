@@ -1,12 +1,12 @@
-﻿import {useState} from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router';
+﻿import { Outlet, useNavigate, useLocation } from 'react-router';
 import './admin.css';
-import {useRemoveToken} from "../../../core/atoms/token.ts";
+import {useRemoveToken} from "../../../../core/atoms/token.ts";
+import {useAdminPanel} from "./useAdminPanel.ts";
 
 export default function AdminLayout() {
     const navigate = useNavigate();
     const location = useLocation();
-    const [menuOpen, setMenuOpen] = useState(true);
+    const { menuOpen, setMenuOpen } = useAdminPanel()
     const setToken = useRemoveToken();
 
     const menuItems = [

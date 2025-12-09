@@ -8,7 +8,7 @@ export const handleLogin = async (
     setError: (error: string) => void,
     setLoading: (loading: boolean) => void,
     setJwt: (token: string) => void,
-) => {
+): Promise<string | null> => {
     e.preventDefault();
 
     // Reset fejlbesked
@@ -17,7 +17,7 @@ export const handleLogin = async (
     // Valider input
     if (!email || !password) {
         setError('Udfyld venligst alle felter');
-        return "null";
+        return null;
     }
 
     setLoading(true);
@@ -38,8 +38,9 @@ export const handleLogin = async (
         if (response.jwt) {
             setJwt(response.jwt);
             //console.log('Login succesfuld!', response);
+            return response.jwt
         }
-        return response.jwt;
+        return null;
 
     } catch (err: unknown) {
         if (err instanceof Error) {
@@ -50,4 +51,5 @@ export const handleLogin = async (
     } finally {
         setLoading(false);
     }
+    return null; // dette forhindre typen "undefined" i at blive tilføjet til metode typen.
 };

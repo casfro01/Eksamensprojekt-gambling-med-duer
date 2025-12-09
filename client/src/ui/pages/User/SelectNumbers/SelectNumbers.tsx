@@ -1,13 +1,9 @@
 ﻿import './selectNumbers.css';
 import { useSelectNumbers } from './useSelectNumbers';
-import ProfileButton from '../../../components/ProfileButton';
 import { handleSubmit } from './handleSubmit';
-import AddPaymentButton from '../../../components/AddPaymentButton';
-import { useState } from 'react';
-import { useGetLoggedInUser } from '../../Home/useLogin';
+import HomeButton from '../../../components/HomeButton';import { useGetLoggedInUser } from '../../Home/useLogin';
 
 export default function SelectNumbers() {
-    const [isUserActive] = useState<boolean>(true);
     const { authUser } = useGetLoggedInUser();
 
     const {
@@ -22,7 +18,7 @@ export default function SelectNumbers() {
     } = useSelectNumbers();
 
     const onSubmit = () => {
-        if (!isUserActive) {
+        if (authUser == null || !authUser.isActive) {
             alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
             return;
         }
@@ -30,7 +26,7 @@ export default function SelectNumbers() {
     };
 
     const handleNumberClick = (num: number) => {
-        if (!isUserActive) {
+        if (authUser == null || !authUser.isActive) {
             alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
             return;
         }
@@ -38,7 +34,7 @@ export default function SelectNumbers() {
     };
 
     const handleWeekChange = (action: 'increment' | 'decrement') => {
-        if (!isUserActive) {
+        if (authUser == null || !authUser.isActive) {
             alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
             return;
         }
@@ -50,7 +46,7 @@ export default function SelectNumbers() {
     };
 
     const handleClearClick = () => {
-        if (!isUserActive) {
+        if (authUser == null || !authUser.isActive) {
             alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
             return;
         }
@@ -65,15 +61,14 @@ export default function SelectNumbers() {
 
     return (
         <div className="selectnumbers-container">
-            <ProfileButton />
-            <AddPaymentButton />
+            <HomeButton/>
             <div className="selectnumbers-content">
                 <header className="selectnumbers-header">
                     <h1>Vælg dine numre</h1>
                     <p>Vælg mellem 5-8 numre fra 1-16</p>
                 </header>
 
-                {!isUserActive && (
+                {(authUser == null || !authUser.isActive) && (
                     <div className="inactive-warning">
                         ⚠️ Din konto er inaktiv. Du skal betale medlemskab for at kunne spille. Kontakt admin.
                     </div>
@@ -96,7 +91,7 @@ export default function SelectNumbers() {
                             key={num}
                             className={`number-button ${selectedNumbers.includes(num) ? 'selected' : ''} ${
                                 selectedNumbers.length >= 8 && !selectedNumbers.includes(num) ? 'disabled' : ''
-                            } ${!isUserActive ? 'inactive-disabled' : ''}`}
+                            } ${authUser == null || !authUser.isActive ? 'inactive-disabled' : ''}`}
                             onClick={() => handleNumberClick(num)}
                         >
                             {num}
@@ -133,7 +128,7 @@ export default function SelectNumbers() {
                             max="10"
                             value={numberOfWeeks}
                             onChange={(e) => {
-                                if (!isUserActive) {
+                                if (authUser == null || !authUser.isActive) {
                                     alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
                                     return;
                                 }

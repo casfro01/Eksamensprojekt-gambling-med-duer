@@ -3,18 +3,19 @@ import Login from "./pages/login/login.tsx";
 import {Toaster} from "react-hot-toast";
 import Home from "./pages/Home/Home";
 import SelectNumbers from "./pages/User/SelectNumbers/SelectNumbers";
-import Admin from "./pages/Admin/admin";
+import Admin from "./pages/Admin/AdminPanel/admin.tsx";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.tsx";
 import ViewPlayers from "./pages/Admin/ViewPlayers/ViewPlayers.tsx";
-import ViewBoards from "./pages/Admin/ViewBoards";
+import ViewBoards from "./pages/Admin/ViewBoards/ViewBoards.tsx";
 import EnterWinningNumbers from './pages/Admin/enterWinningNumbers/EnterWinningNumbers';
-import GameHistory from './pages/Admin/GameHistory';
+import GameHistory from './pages/Admin/GameHistory/GameHistory.tsx';
 import {UserProfile} from "./pages/User/UserProfile/UserProfile";
 import AddPayment from './pages/User/AddPayment/AddPayment';
 import ApprovePayments from './pages/Admin/ApprovePayments/ApprovePayments.tsx';
 import UserPanel from './pages/User/UserPanel/UserPanel';
 import PaymentHistory from "./pages/Admin/PaymentHistory/PaymentHistory.tsx";
 import UserBoards from "./pages/User/Boards/UserBoards";
+import UserTransactions from './pages/User/Transactions/UserTransaction';
 import ProtectedRoute from "./pages/Admin/ProtectedRoute.tsx";
 
 export default function App() {
@@ -61,7 +62,7 @@ export default function App() {
                                 },
                                 {
                                     path: "transactions",
-                                    element: <div>Transaktionshistorik - kommer snart</div>
+                                    element: <UserTransactions/>
                                 }
                             ]
                         },

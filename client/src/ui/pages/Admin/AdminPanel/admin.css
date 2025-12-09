@@ -3,6 +3,8 @@
     min-height: 100vh;
     background: #f5f5f5;
 }
+
+/* Sidebar */
 .admin-sidebar {
     background: linear-gradient(180deg, #EB5757 0%, #d94545 100%);
     color: white;
@@ -45,26 +47,6 @@
     opacity: 0;
     width: 0;
     overflow: hidden;
-}
-
-.admin-sidebar.closed .logout-btn {
-    padding: 12px 8px;
-    font-size: 14px;
-    min-width: auto;
-    width: 48px;
-    padding: 12px;
-    margin-right: 7px;
-    background: rgba(255, 255, 255, 0.15);
-    margin-left: 10px;
-}
-
-.admin-sidebar.closed .logout-btn:hover {
-    background: rgba(255, 255, 255, 0.30);
-}
-
-.admin-sidebar.closed .sidebar-footer {
-    justify-content: center;
-    padding: 16px 8px;
 }
 
 .toggle-btn {
@@ -118,14 +100,14 @@
 }
 
 .nav-icon {
-    font-size: 20px;
-    min-width: 25px;
+    font-size: 24px;
+    min-width: 32px;
     text-align: center;
 }
 
 .nav-label {
     white-space: nowrap;
-    transition: opacity 0.6s ease;
+    transition: opacity 0.3s ease;
 }
 
 .admin-sidebar.closed .nav-label {
@@ -134,32 +116,34 @@
     overflow: hidden;
 }
 
+/* Sidebar Footer */
 .sidebar-footer {
     padding: 16px;
-    /*border-top: 2px solid rgba(255, 255, 255, 0.2);*/
+    display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: auto;
-    margin-right: 10px;
-    margin-bottom: 10px;
 }
 
 .logout-btn {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.1);
     border: none;
     color: white;
-    padding: 12px 24px;
+    padding: 12px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
     transition: all 0.2s ease;
-    margin-bottom: 20px;
-    margin-right: 50px;
+    width: auto;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
 }
 
 .logout-btn:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.4);
 }
 
 /* Main Content */
@@ -171,21 +155,30 @@
     transition: margin-left 0.3s ease;
 }
 
+.admin-sidebar.closed ~ .admin-content {
+    margin-left: 80px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .admin-sidebar.open {
         width: 100%;
         position: fixed;
-        z-index: 1000;
+        z-index: 10000;
         height: 100vh;
     }
 
     .admin-sidebar.closed {
-        width: 0;
-        overflow: hidden;
+        width: 80px;
+        overflow: visible;
     }
 
     .admin-content {
         padding: 20px;
+        margin-left: 80px;
+    }
+
+    .admin-sidebar.open ~ .admin-content {
+        margin-left: 0;
     }
 }

@@ -1,70 +1,17 @@
-﻿import { useState } from 'react';
-import { useNavigate } from 'react-router';
+﻿import { useNavigate } from 'react-router';
 import './userBoards.css';
-
-interface Board {
-    id: string;
-    numbers: number[];
-    weeksTotal: number;
-    weeksRemaining: number;
-    pricePerWeek: number;
-    totalPrice: number;
-    startDate: string;
-    status: 'active' | 'completed';
-    isWinner?: boolean;
-}
-
-type FilterType = 'active' | 'completed';
+import HomeButton from '../../../components/HomeButton';
+import {useFetchUserBoards} from "./useFetchUserBoards.ts";
 
 export default function UserBoards() {
     const navigate = useNavigate();
-    const [filter, setFilter] = useState<FilterType>('active');
 
-    // SLET DENNE DATA NÅR BACKEND ER CONNECTED
-    const [boards] = useState<Board[]>([
-        {
-            id: '1',
-            numbers: [3, 7, 12, 15, 16],
-            weeksTotal: 5,
-            weeksRemaining: 3,
-            pricePerWeek: 20,
-            totalPrice: 100,
-            startDate: '2025-11-20',
-            status: 'active'
-        },
-        {
-            id: '2',
-            numbers: [1, 5, 8, 14],
-            weeksTotal: 2,
-            weeksRemaining: 2,
-            pricePerWeek: 20,
-            totalPrice: 40,
-            startDate: '2025-11-25',
-            status: 'active'
-        },
-        {
-            id: '3',
-            numbers: [2, 6, 9, 11, 13],
-            weeksTotal: 4,
-            weeksRemaining: 0,
-            pricePerWeek: 20,
-            totalPrice: 80,
-            startDate: '2025-10-15',
-            status: 'completed',
-            isWinner: true
-        },
-        {
-            id: '4',
-            numbers: [4, 7, 10, 12, 15, 16],
-            weeksTotal: 3,
-            weeksRemaining: 0,
-            pricePerWeek: 40,
-            totalPrice: 120,
-            startDate: '2025-10-01',
-            status: 'completed',
-            isWinner: false
-        }
-    ]);
+    const {
+        boards,
+        filter,
+        setFilter
+    } = useFetchUserBoards();
+
 
     const handleCancelFutureWeeks = (boardId: string, boardNumbers: number[]) => {
         const board = boards.find(b => b.id === boardId);
@@ -85,6 +32,7 @@ export default function UserBoards() {
 
     return (
         <div className="user-boards-container">
+            <HomeButton/>
             <div className="boards-header">
                 <div>
                     <h1>Mine Spilleplader</h1>

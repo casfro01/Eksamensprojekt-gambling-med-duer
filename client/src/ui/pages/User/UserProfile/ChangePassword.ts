@@ -2,6 +2,15 @@ import {useState} from "react";
 import {authClient} from "../../../../core/api-clients.ts";
 import type {ChangePasswordRequest} from "../../../../core/ServerAPI.ts";
 
+export const usePasswordError = () => {
+    const [passwordError, setPasswordError] = useState('');
+
+    return{
+        passwordError,
+        setPasswordError,
+    }
+}
+
 export const useChangePassword = () => {
     const [passwordForm, setPasswordForm] = useState({
         currentPassword: '',
