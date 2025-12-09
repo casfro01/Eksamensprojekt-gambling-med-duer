@@ -6,7 +6,7 @@ import SelectNumbers from "./pages/User/SelectNumbers/SelectNumbers";
 import Admin from "./pages/Admin/AdminPanel/admin.tsx";
 import CreateUser from "./pages/Admin/CreateUser/CreateUser.tsx";
 import ViewPlayers from "./pages/Admin/ViewPlayers/ViewPlayers.tsx";
-import ViewBoards from "./pages/Admin/ViewBoards";
+import ViewBoards from "./pages/Admin/ViewBoards/ViewBoards.tsx";
 import EnterWinningNumbers from './pages/Admin/enterWinningNumbers/EnterWinningNumbers';
 import GameHistory from './pages/Admin/GameHistory/GameHistory.tsx';
 import {UserProfile} from "./pages/User/UserProfile/UserProfile";
