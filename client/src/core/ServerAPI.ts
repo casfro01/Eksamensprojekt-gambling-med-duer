@@ -668,6 +668,43 @@ export class TransactionClient {
         return Promise.resolve<BaseTransactionResponse[]>(null as any);
     }
 
+    getUserTransactions(model: SieveModel): Promise<BaseTransactionResponse[]> {
+        let url_ = this.baseUrl + "/api/Transaction/GetUserTransactions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(model);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetUserTransactions(_response);
+        });
+    }
+
+    protected processGetUserTransactions(response: Response): Promise<BaseTransactionResponse[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseTransactionResponse[];
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseTransactionResponse[]>(null as any);
+    }
+
     getAmountOfTransactions(): Promise<number> {
         let url_ = this.baseUrl + "/api/Transaction/GetAmountOfTransactions";
         url_ = url_.replace(/[?&]$/, "");
@@ -797,12 +834,12 @@ export interface WinningNumbers {
 }
 
 export interface BaseTransactionResponse {
-    id?: string;
-    mobilePayId?: string;
-    amount?: number;
+    id: string;
+    mobilePayId: string;
+    amount: number;
     user?: UserData;
-    status?: PaymentStatus;
-    created?: string;
+    status: PaymentStatus;
+    created: string;
 }
 
 export type PaymentStatus = 0 | 1 | 2;

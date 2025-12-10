@@ -508,6 +508,41 @@
         }
       }
     },
+    "/api/Transaction/GetUserTransactions": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "operationId": "Transaction_GetUserTransactions",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SieveModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BaseTransactionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Transaction/GetAmountOfTransactions": {
       "get": {
         "tags": [
@@ -853,12 +888,21 @@
       "BaseTransactionResponse": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "id",
+          "mobilePayId",
+          "amount",
+          "status",
+          "created"
+        ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "mobilePayId": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "amount": {
             "type": "integer",
@@ -872,7 +916,8 @@
           },
           "created": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "minLength": 1
           }
         }
       },
