@@ -1,4 +1,7 @@
-﻿import { useState } from 'react';
+﻿import {useEffect, useState} from 'react';
+import {transactionClient} from "../../../../core/api-clients.ts";
+import type {BaseTransactionResponse} from "../../../../core/ServerAPI.ts";
+import {SieveQueryBuilder} from "ts-sieve-query-builder";
 
 export interface Transaction {
     id: string;
@@ -17,38 +20,13 @@ export const useUserTransactions = () => {
     const itemsPerPage = 10;
 
     // SLET DENNE DATA NÅR BACKEND ER CONNECTED
-    const [transactions] = useState<Transaction[]>([
-        {
-            id: '1',
-            amount: 100,
-            mobilePayId: '12345678901',
-            timestamp: '2025-12-08T10:30:00',
-            status: 'pending'
-        },
-        {
-            id: '2',
-            amount: 200,
-            mobilePayId: '98765432109',
-            timestamp: '2025-12-07T14:20:00',
-            status: 'approved'
-        },
-        {
-            id: '3',
-            amount: 50,
-            mobilePayId: '11122233344',
-            timestamp: '2025-12-06T09:15:00',
-            status: 'approved'
-        },
-        {
-            id: '4',
-            amount: 150,
-            mobilePayId: '55566677788',
-            timestamp: '2025-12-05T16:45:00',
-            status: 'rejected',
-            rejectionReason: 'MobilePay ID matcher ikke overførsel eller dublikeret overførsel'
-        }
-    ]);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
 
+    useEffect(() => {
+        getTransactions().then(res => setTransactions(res))
+    }, []);
+
+    // filtrerer på den nuværende liste ig
     const filteredTransactions = filter === 'all'
         ? transactions
         : transactions.filter(t => t.status === filter);
@@ -77,3 +55,22 @@ export const useUserTransactions = () => {
         totalPages
     };
 };
+
+
+async function getTransactions(){
+    const model = SieveQueryBuilder.create<BaseTransactionResponse>().sortBy("created").buildSieveModel();
+    const res = await transactionClient.getUserTransactions(model);
+    return res.map(transaction => {
+        return mapToTransactionType(transaction);
+    });
+}
+
+function mapToTransactionType(t: BaseTransactionResponse): Transaction{
+    return {
+        id: t.id,
+        amount: t.amount,
+        mobilePayId: t.mobilePayId,
+        timestamp: t.created,
+        status: t.status == 0 ? 'pending' : t.status == 1 ? 'approved' : 'rejected',
+    };
+}

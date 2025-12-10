@@ -31,9 +31,19 @@ public class TransactionController(IServiceWithSieve<BaseTransactionResponse, Cr
     }
 
     [HttpPost(nameof(GetTransactions))]
-    [AllowAnonymous]
+    [Authorize(Roles = "Administrator")]
     public async Task<List<BaseTransactionResponse>> GetTransactions([FromBody]SieveModel model)
     {
+        return await service.Get(model);
+    }
+
+    [HttpPost(nameof(GetUserTransactions))]
+    [Authorize(Roles = "Administrator,Bruger")]
+    public async Task<List<BaseTransactionResponse>> GetUserTransactions([FromBody]SieveModel model)
+    {
+        model.Filters = "";
+        var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        model.Filters = "UserId==" + userID;
         return await service.Get(model);
     }
 
