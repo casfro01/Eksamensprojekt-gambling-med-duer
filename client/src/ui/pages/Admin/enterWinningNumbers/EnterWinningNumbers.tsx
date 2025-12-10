@@ -1,5 +1,7 @@
 import {useSetWinningNumbers, setWinningNumbers} from './useSetWinningNumbers';
 import './enterWinningNumbers.css';
+import {useNavigate} from "react-router";
+
 
 export default function EnterWinningNumbers() {
     const {
@@ -10,6 +12,8 @@ export default function EnterWinningNumbers() {
         drawDate,
         setDrawDate
     } = useSetWinningNumbers();
+    
+    const navigate = useNavigate();
 
     const toggleNumber = (num: number) => {
         if (selectedNumbers.includes(num)) {
@@ -27,7 +31,6 @@ export default function EnterWinningNumbers() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (selectedNumbers.length !== 3) {
             alert('Du skal vælge præcis 3 vindernumre!');
             return;
@@ -38,15 +41,18 @@ export default function EnterWinningNumbers() {
             week: currentWeek,
             date: drawDate
         });
-        
+
         await setWinningNumbers(selectedNumbers);
-        
+
         // Send til backend senere
         alert(`Vindernumre indsat!\n\nNumre: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\nUge: ${currentWeek}\nDato: ${drawDate}`);
-    
+
         // Reset form
         setSelectedNumbers([]);
         setCurrentWeek('');
+
+        // Navigate til showwinningpeople
+        navigate('show-winning-people');
     };
 
     return (
