@@ -25,6 +25,7 @@ export const handleSubmit = async (
             console.log('Spillebræt oprettet:', response);
         } catch (error) {
             console.error('Fejl ved oprettelse af spillebræt:', error);
+            throw error;
         };
     }
 };
