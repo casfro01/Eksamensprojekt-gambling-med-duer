@@ -321,13 +321,17 @@ export class BoardClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getBoards(): Promise<BaseBoardResponse[]> {
+    getBoards(model: SieveModel): Promise<BaseBoardResponse[]> {
         let url_ = this.baseUrl + "/api/board/GetBoards";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(model);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };

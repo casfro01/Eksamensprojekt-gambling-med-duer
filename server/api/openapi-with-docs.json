@@ -240,11 +240,23 @@
       }
     },
     "/api/board/GetBoards": {
-      "get": {
+      "post": {
         "tags": [
           "Board"
         ],
         "operationId": "Board_GetBoards",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SieveModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",

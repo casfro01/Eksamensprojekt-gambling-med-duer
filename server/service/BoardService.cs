@@ -5,17 +5,20 @@ using Microsoft.EntityFrameworkCore;
 using service.Abstractions;
 using service.Models.Request;
 using service.Models.Responses;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace service;
 
-public class BoardService(MyDbContext db): IService<BaseBoardResponse, CreateBoardDto, UpdateBoardDto>
+public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWithSieve<BaseBoardResponse, CreateBoardDto, UpdateBoardDto>
 {
-    public Task<List<BaseBoardResponse>> Get()
+    public async Task<List<BaseBoardResponse>> Get(SieveModel model)
     {
-        return db.Boards
+        IQueryable<Board> query = db.Boards
             .Include(b => b.Games)
-            .Include(b => b.User)
-            .Select(b => new BaseBoardResponse(b)).ToListAsync();
+            .Include(b => b.User);
+        query = processor.Apply(model, query);
+        return await query.Select(b => new BaseBoardResponse(b)).ToListAsync();
     }
 
     public async Task<BaseBoardResponse> Get(string id)
