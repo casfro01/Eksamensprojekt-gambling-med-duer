@@ -17,6 +17,7 @@ import PaymentHistory from "./pages/Admin/PaymentHistory/PaymentHistory.tsx";
 import UserBoards from "./pages/User/Boards/UserBoards";
 import UserTransactions from './pages/User/Transactions/UserTransaction';
 import ProtectedRoute from "./pages/Admin/ProtectedRoute.tsx";
+import ShowWinningPeople from "./pages/Admin/WinningPeople/ShowWinningPeople";
 
 export default function App() {
     return (
@@ -89,6 +90,10 @@ export default function App() {
                                 {
                                     path: "winning-numbers",
                                     element: <EnterWinningNumbers/>
+                                },
+                                {
+                                    path: "show-winning-people",
+                                    element: <ShowWinningPeople/>
                                 },
                                 {
                                     path: "history",
