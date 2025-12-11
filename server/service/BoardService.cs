@@ -42,7 +42,7 @@ public class BoardService(MyDbContext db): IService<BaseBoardResponse, CreateBoa
         
         var user = await db.Users.FirstOrDefaultAsync(u => u.Id == dto.UserId)
                    ?? throw new KeyNotFoundException("User not found");
-
+        if (!user.isActive) throw new ValidationException("User is not active, therefore the user cannot buy a board.");
         var games = await db.Games
             .Where(g => !g.IsFinished && g.StartDate.Date >= DateTime.UtcNow.Date)
             .OrderBy(g => g.StartDate)
