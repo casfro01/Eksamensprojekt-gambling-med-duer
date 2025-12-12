@@ -7,6 +7,10 @@ public interface IMoneyHandler
     Task<bool> SubtractMoney(string userID, double amount, bool allowOverdraft);
     
     Task<bool> AddMoney(string userID, double amount);
-
-    double GetBoardPrices(int numberAmount);
+    
+    public static double GetBoardPrices(int numberAmount)
+    {
+        if (numberAmount is > 8 or < 5) throw new ArgumentOutOfRangeException();
+        return (int) (0.625 * Math.Pow(2, numberAmount));
+    }
 }

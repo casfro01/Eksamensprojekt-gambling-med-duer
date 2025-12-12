@@ -18,7 +18,10 @@ public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWi
             .Include(b => b.Games)
             .Include(b => b.User);
         query = processor.Apply(model, query);
-        return await query.Select(b => new BaseBoardResponse(b)).ToListAsync();
+        List<BaseBoardResponse> list = new List<BaseBoardResponse>();
+        list.AddRange(query.Select(b => new ExtendedBoardResponse(b, b.Games.Count, b.Games.Count(g => !g.IsFinished), b.Games.Count(g => !g.IsFinished) > 0)));
+        await Task.Run( () => Console.WriteLine("Fetch")); // idk, nu kører den async el. lign.
+        return list;
     }
 
     public async Task<BaseBoardResponse> Get(string id)
@@ -63,6 +66,7 @@ public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWi
             User = user,
             Games = games,
             PlayedNumbers = dto.PlayedNumbers.OrderBy(n => n).ToList(),
+            StartDate = DateTime.UtcNow,
         };
 
         db.Boards.Add(board);

@@ -45,10 +45,4 @@ public class MoneyHandlerService(MyDbContext ctx) : IMoneyHandler
     {
         throw new NotImplementedException();
     }
-
-    public double GetBoardPrices(int numberAmount)
-    {
-        if (numberAmount is > 8 or < 5) throw new ArgumentOutOfRangeException();
-        return (int) (0.625 * Math.Pow(2, numberAmount));
-    }
 }

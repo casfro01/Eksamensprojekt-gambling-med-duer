@@ -3,7 +3,7 @@ using DataAccess.Entities;
 
 namespace service.Models.Responses;
 
-public sealed record BaseBoardResponse
+public class BaseBoardResponse
 {
     public BaseBoardResponse(Board b)
     {

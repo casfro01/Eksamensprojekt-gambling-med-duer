@@ -39,7 +39,8 @@ public class BoardController(IServiceWithSieve<BaseBoardResponse, CreateBoardDto
     public async Task<BaseBoardResponse> CreateBoard(CreateBoardDto dto)
     {
         var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        double price = moneyHandler.GetBoardPrices(dto.PlayedNumbers.Count);
+        double price = IMoneyHandler.GetBoardPrices(dto.PlayedNumbers.Count);
+        // TODO : hvis nu at createboard fejler i boardservice - så bliver brugerens penge trukket uden at de får en plade - så dette skal lige laves om
         if (await moneyHandler.SubtractMoney(userID, price, false))
         {
             return await boardService.Create(dto);

@@ -11,5 +11,7 @@ public class Board
     public virtual ICollection<Game> Games  { get; set; } = new List<Game>();
     
     public List<int> PlayedNumbers { get; set; } = new List<int>();
+    
+    public DateTime StartDate { get; set; }
 
 }
