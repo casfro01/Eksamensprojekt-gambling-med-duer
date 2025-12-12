@@ -23,7 +23,6 @@ export const useFetchUserBoards = () => {
     useEffect(() => {
         fetchBoards("").then(res => {
             setBoards(res);
-            console.log(JSON.stringify(res));
         })
     }, []);
     return{

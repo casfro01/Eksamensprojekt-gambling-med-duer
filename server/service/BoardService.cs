@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using dataaccess;
 using DataAccess.Entities;
+using dataaccess.Enums;
 using Microsoft.EntityFrameworkCore;
 using service.Abstractions;
 using service.Models.Request;
@@ -50,7 +51,7 @@ public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWi
                    ?? throw new KeyNotFoundException("User not found");
         if (!user.isActive) throw new ValidationException("User is not active, therefore the user cannot buy a board.");
         var games = await db.Games
-            .Where(g => !g.IsFinished && g.StartDate.Date >= DateTime.UtcNow.Date)
+            .Where(g => g.GameStatus == GameStatus.Pending && g.StartDate.Date >= DateTime.UtcNow.Date)
             .OrderBy(g => g.StartDate)
             .Take(dto.Weeks)
             .ToListAsync();

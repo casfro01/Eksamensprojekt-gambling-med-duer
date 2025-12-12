@@ -825,7 +825,11 @@ export interface AuthUserInfo {
 export interface BaseGameResponse {
     id?: string;
     startTime?: string;
+    gameStatus?: GameStatus;
+    winningNumbers?: number[];
 }
+
+export type GameStatus = 0 | 1 | 2;
 
 export interface CreateBoardDto {
     userId: string;

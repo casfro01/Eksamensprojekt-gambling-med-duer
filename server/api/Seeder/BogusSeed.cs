@@ -43,7 +43,23 @@ public class BogusSeed(MyDbContext context, IPasswordHasher<User> passwordHasher
         var gameFaker = new Faker<Game>()
                 .RuleFor(g => g.Id, f => Guid.NewGuid().ToString())
                 .RuleFor(g => g.StartDate, f => startDateSunday.AddDays(f.IndexFaker * 7))
-                .RuleFor(g => g.IsFinished, f => false)
+                .RuleFor(g => g.GameStatus, f =>
+                {
+                    DateTime today = DateTime.UtcNow.Date;
+
+                    int daysSinceSunday = (int)today.DayOfWeek;
+                    DateTime currentWeekSunday = today.AddDays(-daysSinceSunday);
+
+                    DateTime gameWeekSunday = startDateSunday.AddDays(f.IndexFaker * 7).Date;
+
+                    if (currentWeekSunday == gameWeekSunday)
+                        return GameStatus.InProgress;
+                    
+                    if (today > gameWeekSunday)
+                        return GameStatus.Finished;
+
+                    return GameStatus.Pending;
+                })
             ;
         
         var games = gameFaker.Generate(25);
