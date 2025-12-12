@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {boardClient} from "../../../core/api-clients.ts";
 import type {BaseBoardResponse} from "../../../core/ServerAPI.ts";
+import {SieveQueryBuilder} from "ts-sieve-query-builder";
 
 export type DeadPigeonBoard = BaseBoardResponse & { [key: string]: unknown };
 
@@ -42,5 +43,5 @@ export const useFetchBoards = () => {
 }
 
 async function fetchBoards() {
-    return await boardClient.getBoards();
+    return await boardClient.getBoards(SieveQueryBuilder.create<BaseBoardResponse>().buildSieveModel());
 }

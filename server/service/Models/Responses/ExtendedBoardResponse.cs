@@ -19,13 +19,13 @@ public class ExtendedBoardResponse : BaseBoardResponse
         StartDate = board.StartDate;
     }
     
-    public ExtendedBoardResponse(Board board, int totWeeks, int remWeeks, bool isActive) : base(board)
+    public ExtendedBoardResponse(Board board, int totWeeks, int remWeeks) : base(board)
     {
         InitialPrice = IMoneyHandler.GetBoardPrices(board.PlayedNumbers.Count);
         StartDate = board.StartDate;
         TotalWeeks = totWeeks;
         WeeksRemaining = remWeeks;
-        IsActive = isActive;
+        IsActive = remWeeks > 0; // kan man nok også regne ud i frontend ig
     }
     
 }
