@@ -2,10 +2,12 @@
 import { useSelectNumbers } from './useSelectNumbers';
 import { handleSubmit } from './handleSubmit';
 import HomeButton from '../../../components/HomeButton';import { useGetLoggedInUser } from '../../Home/useLogin';
+import { useNavigate } from 'react-router';
 
 export default function SelectNumbers() {
     const { authUser } = useGetLoggedInUser();
-
+    const navigate = useNavigate();
+    
     const {
         selectedNumbers,
         numberOfWeeks,
@@ -22,7 +24,7 @@ export default function SelectNumbers() {
             alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
             return;
         }
-        handleSubmit(selectedNumbers, numberOfWeeks, canSubmit, authUser);
+        handleSubmit(selectedNumbers, numberOfWeeks, canSubmit, authUser, navigate);
     };
 
     const handleNumberClick = (num: number) => {

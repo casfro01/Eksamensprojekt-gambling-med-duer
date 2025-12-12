@@ -838,8 +838,52 @@
           "startTime": {
             "type": "string",
             "format": "date-time"
+          },
+          "gameStatus": {
+            "$ref": "#/components/schemas/GameStatus"
+          },
+          "winningNumbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
+      },
+      "GameStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enum-names": [
+          "Finished",
+          "Pending",
+          "InProgress"
+        ],
+        "x-enum-varnames": [
+          "Finished",
+          "Pending",
+          "InProgress"
+        ],
+        "x-enumNames": [
+          "Finished",
+          "Pending",
+          "InProgress"
+        ],
+        "x-enum-descriptions": [
+          null,
+          null,
+          null
+        ],
+        "x-enumDescriptions": [
+          null,
+          null,
+          null
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
       },
       "CreateBoardDto": {
         "type": "object",

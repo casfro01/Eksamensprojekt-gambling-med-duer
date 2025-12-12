@@ -18,8 +18,8 @@ export const useSelectNumbers = () => {
         setSelectedNumbers([]);
     };
 
-    const calculatePricePerWeek = (): number => {  // <-- OMDØBT
-        const count = selectedNumbers.length;
+    const calculatePricePerWeek = (x?: number): number => {  // <-- OMDØBT
+        const count = x ? x : selectedNumbers.length;
 
         if (count === 5) return 20;
         else if (count === 6) return 40;
