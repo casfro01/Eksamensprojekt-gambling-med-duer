@@ -21,7 +21,7 @@ export const useFetchUserBoards = () => {
     const [boards, setBoards] = useState<Board[]>([]);
     const [filter, setFilter] = useState<FilterType>('active');
     useEffect(() => {
-        fetchBoards("").then(res => {
+        fetchBoards(filter).then(res => {
             setBoards(res);
         })
     }, []);
@@ -34,9 +34,9 @@ export const useFetchUserBoards = () => {
 
 async function fetchBoards(status: string): Promise<Board[]> {
     const query = SieveQueryBuilder.create<ExtendedBoardResponse>();
-    query.page(1);
-    query.pageSize(10);
-    console.log(status); // brug status
+    /*query.page(1);
+    query.pageSize(10);*/
+    console.log(status); // brug status; for lige nu man kan ikke kende forskellen, så det skal tager heroppe
     const res = await boardClient.getBoards(query.buildSieveModel());
     return res.map(board => boardResponseToBoard(board));
 }

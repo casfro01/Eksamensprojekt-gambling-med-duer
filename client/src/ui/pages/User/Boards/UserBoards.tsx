@@ -26,6 +26,7 @@ export default function UserBoards() {
         }
     };
 
+    // når en løsning er fundet, så skal dette væk ;) -> henvises til useFetchBoards
     const filteredBoards = boards.filter(board => board.status === filter);
     const activeBoards = boards.filter(b => b.status === 'active');
     const completedBoards = boards.filter(b => b.status === 'completed');
