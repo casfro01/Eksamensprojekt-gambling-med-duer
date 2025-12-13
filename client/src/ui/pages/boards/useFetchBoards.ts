@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {boardClient} from "../../../core/api-clients.ts";
-import type {BaseBoardResponse} from "../../../core/ServerAPI.ts";
+import type {ExtendedBoardResponse, BaseBoardResponse} from "../../../core/ServerAPI.ts";
 import {SieveQueryBuilder} from "ts-sieve-query-builder";
 
 export type DeadPigeonBoard = BaseBoardResponse & { [key: string]: unknown };
@@ -17,7 +17,7 @@ export const useFetchBoards = () => {
         setError(null);
         fetchBoards()
         .then(boards => {
-            const enriched = (boards ?? []).map((b) => ({ ...(b as Record<string, unknown>) })) as DeadPigeonBoard[];
+            const enriched = (boards ?? []).map((b) => ({ ...(b as ExtendedBoardResponse) })) as DeadPigeonBoard[];
             setBoards(enriched);
             setLastUpdated(new Date());
         })
