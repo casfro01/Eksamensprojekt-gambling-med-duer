@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using service.Abstractions;
@@ -48,5 +49,14 @@ public class BoardController(IServiceWithSieve<BaseBoardResponse, CreateBoardDto
         } 
         
         throw new Exception("Not enough money.");
+    }
+
+
+    [HttpPost(nameof(CancelCurrentWeeks))]
+    [Authorize(Roles = "Administrator,Bruger")]
+    public async Task<BaseBoardResponse> CancelCurrentWeeks([FromBody]UpdateBoardDto dto)
+    {
+        dto.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new ValidationException("Cannot find user to this board, try again when you are sure that you know who you are.");
+        return await boardService.Update(dto);
     }
 }

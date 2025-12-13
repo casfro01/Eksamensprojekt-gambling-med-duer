@@ -2,6 +2,8 @@
 import './userBoards.css';
 import HomeButton from '../../../components/HomeButton';
 import {useFetchUserBoards} from "./useFetchUserBoards.ts";
+import type {Board} from "./useFetchUserBoards.ts";
+import {cancelWeeks} from "./CancelWeeks.ts";
 
 export default function UserBoards() {
     const navigate = useNavigate();
@@ -13,16 +15,19 @@ export default function UserBoards() {
     } = useFetchUserBoards();
 
 
-    const handleCancelFutureWeeks = (boardId: string, boardNumbers: number[]) => {
-        const board = boards.find(b => b.id === boardId);
+    const handleCancelFutureWeeks = async (board: Board) => {
+        //const board = boards.find(b => b.id === boardId); <- nu hentes den direkte ^^
         if (!board) return;
 
-        const confirmMessage = `⚠️ Annuller fremtidige uger?\n\nBræt: ${boardNumbers.join(', ')}\nTilbageværende uger: ${board.weeksRemaining}\n\nDette vil stoppe de automatiske betalinger og plader spiller kun den aktuelle uge.\n\nEr du sikker?`;
+        const confirmMessage = `⚠️ Annuller fremtidige uger?\n\nBræt: ${board.numbers.join(', ')}\nTilbageværende uger: ${board.weeksRemaining}\n\nDette vil stoppe de automatiske betalinger og plader spiller kun den aktuelle uge.\n\nEr du sikker?`;
 
         if (confirm(confirmMessage)) {
-            console.log('Annulleret fremtidige uger for bræt:', boardId);
-            // Send til backend senere
-            alert('✓ Fremtidige uger er annulleret. Dit bræt spiller kun denne uge.');
+            console.log('Annulleret fremtidige uger for bræt:', board.id);
+            await cancelWeeks(board)
+                .then(() => alert('✓ Fremtidige uger er annulleret. Dit bræt spiller kun denne uge.'))
+                .catch(() => {
+                    alert('Kunne ikke opdatere din plade. Dine uger forbliver, prøv igen senere, eller spørg en admin.')
+                })
         }
     };
 
@@ -123,7 +128,7 @@ export default function UserBoards() {
                                 {board.status === 'active' && board.weeksRemaining > 1 && (
                                     <button
                                         className="cancel-btn"
-                                        onClick={() => handleCancelFutureWeeks(board.id, board.numbers)}
+                                        onClick={() => handleCancelFutureWeeks(board)}
                                     >
                                         🗑️ Annuller fremtidige uger
                                     </button>

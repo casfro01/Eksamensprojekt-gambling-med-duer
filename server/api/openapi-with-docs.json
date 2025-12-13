@@ -336,6 +336,38 @@
         }
       }
     },
+    "/api/board/CancelCurrentWeeks": {
+      "post": {
+        "tags": [
+          "Board"
+        ],
+        "operationId": "Board_CancelCurrentWeeks",
+        "requestBody": {
+          "x-name": "dto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBoardDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseBoardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Game/GetGames": {
       "get": {
         "tags": [
@@ -966,6 +998,24 @@
               "type": "integer",
               "format": "int32"
             }
+          }
+        }
+      },
+      "UpdateBoardDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userId",
+          "boardId"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "boardId": {
+            "type": "string",
+            "minLength": 1
           }
         }
       },
