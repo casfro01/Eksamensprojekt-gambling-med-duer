@@ -11,7 +11,9 @@ export default function UserBoards() {
     const {
         boards,
         filter,
-        setFilter
+        refresh,
+        setFilter,
+        setRefresh
     } = useFetchUserBoards();
 
 
@@ -24,7 +26,10 @@ export default function UserBoards() {
         if (confirm(confirmMessage)) {
             console.log('Annulleret fremtidige uger for bræt:', board.id);
             await cancelWeeks(board)
-                .then(() => alert('✓ Fremtidige uger er annulleret. Dit bræt spiller kun denne uge.'))
+                .then(() => {
+                    alert('✓ Fremtidige uger er annulleret. Dit bræt spiller kun denne uge.');
+                    setRefresh(refresh + 1);
+                })
                 .catch(() => {
                     alert('Kunne ikke opdatere din plade. Dine uger forbliver, prøv igen senere, eller spørg en admin.')
                 })
@@ -128,7 +133,7 @@ export default function UserBoards() {
                                 {board.status === 'active' && board.weeksRemaining > 1 && (
                                     <button
                                         className="cancel-btn"
-                                        onClick={() => handleCancelFutureWeeks(board)}
+                                        onClick={async () => await handleCancelFutureWeeks(board)}
                                     >
                                         🗑️ Annuller fremtidige uger
                                     </button>
