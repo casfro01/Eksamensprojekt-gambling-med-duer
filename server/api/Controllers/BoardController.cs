@@ -14,11 +14,12 @@ public class BoardController(IServiceWithSieve<BaseBoardResponse, CreateBoardDto
 {
     [HttpPost(nameof(GetBoards))]
     [Authorize(Roles = "Administrator,Bruger")]
-    public async Task<List<BaseBoardResponse>> GetBoards([FromBody]SieveModel model)
+    public async Task<List<ExtendedBoardResponse>> GetBoards([FromBody]SieveModel model)
     {
         var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         model.Filters = "UserId==" + userID;
-        return await boardService.Get(model);
+        List<BaseBoardResponse> res = await boardService.Get(model);
+        return res.First() is ExtendedBoardResponse ? res.Cast<ExtendedBoardResponse>().ToList() : ([]);
     }
     
     

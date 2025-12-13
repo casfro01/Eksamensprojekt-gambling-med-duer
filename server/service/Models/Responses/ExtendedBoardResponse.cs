@@ -9,9 +9,10 @@ public class ExtendedBoardResponse : BaseBoardResponse
     [Required] public double InitialPrice { get; set; } = 20;
     [Required] public int TotalWeeks { get; set; } = 0;
     [Required] public int WeeksRemaining { get; set; } = 0;
-    [Required] public DateTime StartDate { get; set; } = new DateTime(2000, 1, 1);
+    [Required] public DateTime StartDate { get; set; }
     
-    [Required] public bool IsActive { get; set; } = false;
+    [Required] public int WeeksRemaning { get; set; } = 0;
+    
     
     public ExtendedBoardResponse(Board board) : base(board)
     {
@@ -19,13 +20,12 @@ public class ExtendedBoardResponse : BaseBoardResponse
         StartDate = board.StartDate;
     }
     
-    public ExtendedBoardResponse(Board board, int totWeeks, int remWeeks) : base(board)
+    public ExtendedBoardResponse(Board board, int weeksRem) : base(board)
     {
         InitialPrice = IMoneyHandler.GetBoardPrices(board.PlayedNumbers.Count);
         StartDate = board.StartDate;
-        TotalWeeks = totWeeks;
-        WeeksRemaining = remWeeks;
-        IsActive = remWeeks > 0; // kan man nok også regne ud i frontend ig
+        
+        WeeksRemaining =  weeksRem;
     }
     
 }

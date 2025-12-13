@@ -321,7 +321,7 @@ export class BoardClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getBoards(model: SieveModel): Promise<BaseBoardResponse[]> {
+    getBoards(model: SieveModel): Promise<ExtendedBoardResponse[]> {
         let url_ = this.baseUrl + "/api/board/GetBoards";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -341,13 +341,13 @@ export class BoardClient {
         });
     }
 
-    protected processGetBoards(response: Response): Promise<BaseBoardResponse[]> {
+    protected processGetBoards(response: Response): Promise<ExtendedBoardResponse[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseBoardResponse[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ExtendedBoardResponse[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -355,7 +355,7 @@ export class BoardClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BaseBoardResponse[]>(null as any);
+        return Promise.resolve<ExtendedBoardResponse[]>(null as any);
     }
 
     getBoard(id: string | undefined): Promise<BaseBoardResponse> {
@@ -811,8 +811,16 @@ export interface ChangePasswordRequest {
 export interface BaseBoardResponse {
     id?: string;
     user?: AuthUserInfo;
-    games?: BaseGameResponse[];
+    games: BaseGameResponse[];
     playedNumbers?: number[];
+}
+
+export interface ExtendedBoardResponse extends BaseBoardResponse {
+    initialPrice: number;
+    totalWeeks: number;
+    weeksRemaining: number;
+    startDate: string;
+    weeksRemaning: number;
 }
 
 export interface AuthUserInfo {

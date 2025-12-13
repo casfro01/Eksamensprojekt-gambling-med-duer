@@ -19,8 +19,8 @@ public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWi
             .Include(b => b.Games)
             .Include(b => b.User);
         query = processor.Apply(model, query);
-        List<BaseBoardResponse> list = new List<BaseBoardResponse>();
-        list.AddRange(query.Select(b => new ExtendedBoardResponse(b, b.Games.Count, b.Games.Count(g => g.GameStatus != GameStatus.Finished))));
+        List<BaseBoardResponse> list = [];
+        list.AddRange(query.Select(b => new ExtendedBoardResponse(b, b.Games.Count(g => g.GameStatus != GameStatus.Finished))));
         await Task.Run( () => Console.WriteLine("Fetch")); // idk, nu kører den async el. lign.
         return list;
     }

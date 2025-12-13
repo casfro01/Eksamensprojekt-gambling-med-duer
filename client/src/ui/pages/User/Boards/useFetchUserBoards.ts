@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {boardClient} from "../../../../core/api-clients.ts";
 import {SieveQueryBuilder} from "ts-sieve-query-builder";
-import type {BaseBoardResponse} from "../../../../core/ServerAPI.ts";
+import type {ExtendedBoardResponse} from "../../../../core/ServerAPI.ts";
 
 export interface Board {
     id: string;
@@ -33,7 +33,7 @@ export const useFetchUserBoards = () => {
 }
 
 async function fetchBoards(status: string): Promise<Board[]> {
-    const query = SieveQueryBuilder.create<BaseBoardResponse>();
+    const query = SieveQueryBuilder.create<ExtendedBoardResponse>();
     query.page(1);
     query.pageSize(10);
     console.log(status); // brug status
@@ -41,15 +41,15 @@ async function fetchBoards(status: string): Promise<Board[]> {
     return res.map(board => boardResponseToBoard(board));
 }
 
-function boardResponseToBoard(board: BaseBoardResponse): Board {
+function boardResponseToBoard(board: ExtendedBoardResponse): Board {
     return {
         id: board.id,
         numbers: board.playedNumbers,
-        weeksTotal: 4000, // replace lig
-        weeksRemaining: 1000, // place
-        pricePerWeek: 10000, // replace
-        totalPrice: 10000, // replace
-        startDate: "00000", // replace
-        status: 'active',
+        weeksTotal: board.games.length,
+        weeksRemaining: board.weeksRemaining,
+        pricePerWeek: board.initialPrice,
+        totalPrice: board.games.length * board.initialPrice,
+        startDate: board.startDate.toString(),
+        status: board.weeksRemaining > 0 ? 'active' : "completed",
     } as Board;
 }

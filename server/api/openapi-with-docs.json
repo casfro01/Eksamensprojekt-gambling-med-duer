@@ -265,7 +265,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BaseBoardResponse"
+                    "$ref": "#/components/schemas/ExtendedBoardResponse"
                   }
                 }
               }
@@ -797,9 +797,53 @@
           }
         }
       },
+      "ExtendedBoardResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseBoardResponse"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "initialPrice",
+              "totalWeeks",
+              "weeksRemaining",
+              "startDate",
+              "weeksRemaning"
+            ],
+            "properties": {
+              "initialPrice": {
+                "type": "number",
+                "format": "double"
+              },
+              "totalWeeks": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "weeksRemaining": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "startDate": {
+                "type": "string",
+                "format": "date-time",
+                "minLength": 1
+              },
+              "weeksRemaning": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
       "BaseBoardResponse": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "games"
+        ],
         "properties": {
           "id": {
             "type": "string"
