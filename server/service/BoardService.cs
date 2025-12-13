@@ -1,21 +1,28 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using dataaccess;
 using DataAccess.Entities;
+using dataaccess.Enums;
 using Microsoft.EntityFrameworkCore;
 using service.Abstractions;
 using service.Models.Request;
 using service.Models.Responses;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace service;
 
-public class BoardService(MyDbContext db): IService<BaseBoardResponse, CreateBoardDto, UpdateBoardDto>
+public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWithSieve<BaseBoardResponse, CreateBoardDto, UpdateBoardDto>
 {
-    public Task<List<BaseBoardResponse>> Get()
+    public async Task<List<BaseBoardResponse>> Get(SieveModel model)
     {
-        return db.Boards
+        IQueryable<Board> query = db.Boards
             .Include(b => b.Games)
-            .Include(b => b.User)
-            .Select(b => new BaseBoardResponse(b)).ToListAsync();
+            .Include(b => b.User);
+        query = processor.Apply(model, query);
+        List<BaseBoardResponse> list = [];
+        list.AddRange(query.Select(b => new ExtendedBoardResponse(b, b.Games.Count(g => g.GameStatus != GameStatus.Finished))));
+        await Task.Run( () => Console.WriteLine("Fetch")); // idk, nu kører den async el. lign.
+        return list;
     }
 
     public async Task<BaseBoardResponse> Get(string id)
@@ -42,9 +49,9 @@ public class BoardService(MyDbContext db): IService<BaseBoardResponse, CreateBoa
         
         var user = await db.Users.FirstOrDefaultAsync(u => u.Id == dto.UserId)
                    ?? throw new KeyNotFoundException("User not found");
-
+        if (!user.isActive) throw new ValidationException("User is not active, therefore the user cannot buy a board.");
         var games = await db.Games
-            .Where(g => !g.IsFinished && g.StartDate.Date >= DateTime.UtcNow.Date)
+            .Where(g => g.GameStatus == GameStatus.Pending && g.StartDate.Date >= DateTime.UtcNow.Date)
             .OrderBy(g => g.StartDate)
             .Take(dto.Weeks)
             .ToListAsync();
@@ -60,6 +67,7 @@ public class BoardService(MyDbContext db): IService<BaseBoardResponse, CreateBoa
             User = user,
             Games = games,
             PlayedNumbers = dto.PlayedNumbers.OrderBy(n => n).ToList(),
+            StartDate = DateTime.UtcNow,
         };
 
         db.Boards.Add(board);

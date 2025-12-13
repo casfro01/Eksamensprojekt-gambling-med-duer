@@ -240,11 +240,23 @@
       }
     },
     "/api/board/GetBoards": {
-      "get": {
+      "post": {
         "tags": [
           "Board"
         ],
         "operationId": "Board_GetBoards",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SieveModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -253,7 +265,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BaseBoardResponse"
+                    "$ref": "#/components/schemas/ExtendedBoardResponse"
                   }
                 }
               }
@@ -785,9 +797,53 @@
           }
         }
       },
+      "ExtendedBoardResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseBoardResponse"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "initialPrice",
+              "totalWeeks",
+              "weeksRemaining",
+              "startDate",
+              "weeksRemaning"
+            ],
+            "properties": {
+              "initialPrice": {
+                "type": "number",
+                "format": "double"
+              },
+              "totalWeeks": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "weeksRemaining": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "startDate": {
+                "type": "string",
+                "format": "date-time",
+                "minLength": 1
+              },
+              "weeksRemaning": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
       "BaseBoardResponse": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "games"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -838,8 +894,52 @@
           "startTime": {
             "type": "string",
             "format": "date-time"
+          },
+          "gameStatus": {
+            "$ref": "#/components/schemas/GameStatus"
+          },
+          "winningNumbers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         }
+      },
+      "GameStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enum-names": [
+          "Finished",
+          "Pending",
+          "InProgress"
+        ],
+        "x-enum-varnames": [
+          "Finished",
+          "Pending",
+          "InProgress"
+        ],
+        "x-enumNames": [
+          "Finished",
+          "Pending",
+          "InProgress"
+        ],
+        "x-enum-descriptions": [
+          null,
+          null,
+          null
+        ],
+        "x-enumDescriptions": [
+          null,
+          null,
+          null
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
       },
       "CreateBoardDto": {
         "type": "object",

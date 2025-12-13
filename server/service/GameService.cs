@@ -1,4 +1,5 @@
 ﻿using dataaccess;
+using dataaccess.Enums;
 using Microsoft.EntityFrameworkCore;
 using service.Abstractions;
 using service.Models.Responses;
@@ -30,8 +31,8 @@ public class GameService(MyDbContext db) : IGameService
             .Include(g => g.Boards)
             .Include(g => g.WinningNumbers)
             .OrderBy(g => g.StartDate)
-            .First(g => !g.IsFinished);
-        activeGame.IsFinished = true;
+            .First(g => g.GameStatus != GameStatus.Finished);
+        activeGame.GameStatus = GameStatus.Finished;
         activeGame.WinningNumbers = winningNumbers.numbers;
         await db.SaveChangesAsync();
         return new BaseGameResponse(activeGame);

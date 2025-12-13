@@ -10,7 +10,7 @@ export function useFetchPayments(){
     const [allTransactionsNumber, setAllTransactionsNumber] = useState<number>(0);
     useEffect(() => {
         async function fetch() {
-            const query = SieveQueryBuilder.create<BaseTransactionResponse>().sortBy("created").page(page).pageSize(20).buildSieveModel();
+            const query = SieveQueryBuilder.create<BaseTransactionResponse>().sortByDescending("created").page(page).pageSize(20).buildSieveModel();
             const num = await transactionClient.getAmountOfTransactions();
             const list = await transactionClient.getTransactions(query);
             return {
