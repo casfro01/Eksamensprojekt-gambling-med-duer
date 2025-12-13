@@ -1,4 +1,4 @@
-﻿import './showwinningpeople.css';
+﻿import './showWinningPeople.css';
 
 // Dummy data
 
