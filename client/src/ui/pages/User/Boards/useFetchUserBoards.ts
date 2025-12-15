@@ -20,15 +20,18 @@ export type FilterType = 'active' | 'completed';
 export const useFetchUserBoards = () => {
     const [boards, setBoards] = useState<Board[]>([]);
     const [filter, setFilter] = useState<FilterType>('active');
+    const [refresh, setRefresh] = useState<number>(0);
     useEffect(() => {
         fetchBoards(filter).then(res => {
             setBoards(res);
         })
-    }, []);
+    }, [refresh, filter]);
     return{
         boards,
         filter,
+        refresh,
         setFilter,
+        setRefresh,
     }
 }
 

@@ -36,9 +36,26 @@ public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWi
         throw new NotImplementedException();
     }
 
-    public Task<BaseBoardResponse> Update(UpdateBoardDto dto)
+    // for nu opdaterer den kun de nuværende uger - hvis der skal ske andet,
+    // så hav lige dette i tankerne, for så skal controlleren også ændre
+    // - eller man kunne flytte det ind på gameservice,
+    // men der ved jeg ikke helt hvordan det skal fungere
+    public async Task<BaseBoardResponse> Update(UpdateBoardDto dto)
     {
-        throw new NotImplementedException();
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
+        
+        var board = db.Boards
+            .Include(b => b.User)
+            .Include(b => b.Games)
+            .First(b => b.Id == dto.BoardId && b.User.Id == dto.UserId);
+
+        List<Game> games = new List<Game>(board.Games);
+        games.RemoveAll(g => g.GameStatus == GameStatus.Pending);
+        board.Games.Clear();
+        board.Games = games;
+
+        await db.SaveChangesAsync();
+        return new BaseBoardResponse(board);
     }
 
     public async Task<BaseBoardResponse> Create(CreateBoardDto dto)
@@ -51,7 +68,8 @@ public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWi
                    ?? throw new KeyNotFoundException("User not found");
         if (!user.isActive) throw new ValidationException("User is not active, therefore the user cannot buy a board.");
         var games = await db.Games
-            .Where(g => g.GameStatus == GameStatus.Pending && g.StartDate.Date >= DateTime.UtcNow.Date)
+                // TODO : tilføj så man ikke kan købe på en søndag eller lørdag alt efter hvilken dag de trækker
+            .Where(g => g.GameStatus != GameStatus.Finished && g.StartDate.Date.AddDays(7) >= DateTime.UtcNow.Date)
             .OrderBy(g => g.StartDate)
             .Take(dto.Weeks)
             .ToListAsync();
