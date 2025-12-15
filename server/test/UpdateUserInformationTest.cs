@@ -100,13 +100,122 @@ public class UpdateUserInformationTest(MyDbContext ctx, IPasswordHasher<User> ha
 
     }
     
-    public async Task UpdateUserInformation_password_NoErrors()
+    [Theory]
+    [InlineData("New Password")]
+    public async Task UpdateUserInformation_password_NoErrors(string newPassword)
     {
+        var userId = Guid.NewGuid().ToString();
+        var User = new User
+        {
+            Id = userId,
+            FullName = "John Doe",
+            Email = "John@Doe.dong",
+            isActive = true,
+            Role = Role.Bruger,
+            PhoneNumber = "70202020"
+        };
+        User.PasswordHash = hasher.HashPassword(User, "Password");
+        ctx.Users.Add(User);
+        await ctx.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var dto = new ChangePasswordRequest
+        {
+            NewPassword = newPassword,
+            PreviousPassword = "Password",
+            userID = userId
+
+        };
+        var result = await service.ChangePassword(dto);
+        
+        // at det lykkes
+        Assert.True(result);
+        
+        // at passwordet ikke er det samme
+        Assert.Equal(PasswordVerificationResult.Failed, hasher.VerifyHashedPassword(User, User.PasswordHash, "Password"));
+    }
+    
+    
+    [Theory]
+    [InlineData("oldpass",   null)]        // NewPassword is null
+    [InlineData("",          "newpass")]   // PreviousPassword empty
+    [InlineData("oldpass",   "")]          // NewPassword empty
+    [InlineData("123",       "newpass")]   // PreviousPassword too short
+    [InlineData("oldpass",   "123")]       // NewPassword too short
+    [InlineData("     ",     "newpass")]   // PreviousPassword whitespace (passes Required, but < 6 non-useful chars)
+    [InlineData("oldpass",   "     ")]     // NewPassword whitespace
+    [InlineData("password123", "password123")] // Same password
+    [InlineData("abcdef",      "abcdef")]      // Same, minimum length
+    [InlineData("WrongPass123", "           ")] // white space = no go
+    public async Task UpdateUserInformation_password_FailWithValidationException(string originalPassword, string newPassword)
+    {
+        var userId = Guid.NewGuid().ToString();
+        var User = new User
+        {
+            Id = userId,
+            FullName = "John Doe",
+            Email = "John@Doe.dong",
+            isActive = true,
+            Role = Role.Bruger,
+            PhoneNumber = "70202020"
+        };
+        User.PasswordHash = hasher.HashPassword(User, originalPassword);
+        ctx.Users.Add(User);
+        await ctx.SaveChangesAsync(TestContext.Current.CancellationToken);
+        
+        var dto = new ChangePasswordRequest
+        {
+            NewPassword = newPassword,
+            PreviousPassword = originalPassword,
+            userID = userId
+
+        };
+        try
+        {
+            var res = await service.ChangePassword(dto);
+            Assert.False(res);
+        }
+        catch (ValidationException ex)
+        {
+            Assert.NotNull(ex);
+        }
+        catch (ArgumentNullException ex)
+        {
+            Assert.NotNull(ex);
+        }
+        // andre u-forventede fejl
+        catch (Exception anotherFail)
+        {
+            Assert.Fail();
+        }
         
     }
     
-    public async Task UpdateUserInformation_name_phone_email_FailWithValidationException()
+    
+    [Fact]
+    public async Task UpdateUserInformation_password_WrongTypedInPassword()
     {
+        var userId = Guid.NewGuid().ToString();
+        var User = new User
+        {
+            Id = userId,
+            FullName = "John Doe",
+            Email = "John@Doe.dong",
+            isActive = true,
+            Role = Role.Bruger,
+            PhoneNumber = "70202020"
+        };
+        User.PasswordHash = hasher.HashPassword(User, "Password");
+        ctx.Users.Add(User);
+        await ctx.SaveChangesAsync(TestContext.Current.CancellationToken);
         
+        var dto = new ChangePasswordRequest
+        {
+            NewPassword = "This is a new password",
+            PreviousPassword = "This was not the original password",
+            userID = userId
+
+        };
+
+        await Assert.ThrowsAnyAsync<ValidationException>(async () => await service.ChangePassword(dto));
     }
 }
