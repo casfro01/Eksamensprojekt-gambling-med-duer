@@ -62,6 +62,10 @@ public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWi
     {
         Validator.ValidateObject(dto, new ValidationContext(dto), true);
         
+        // tjekker om det er valide numre som bliver spillet
+        if (dto.PlayedNumbers.Any(n => n is < 1 or > 16))
+            throw new ValidationException("All numbers must be between 1 and 16.");
+        
         var id = Guid.NewGuid().ToString();
         
         var user = await db.Users.FirstOrDefaultAsync(u => u.Id == dto.UserId)

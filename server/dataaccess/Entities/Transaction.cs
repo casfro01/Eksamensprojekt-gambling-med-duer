@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using dataaccess.Enums;
 using Sieve.Attributes;
 
@@ -13,6 +14,11 @@ public class Transaction
     [Required]
     [Sieve(CanFilter = true, CanSort = true)]
     public User User { get; set; } = null!;
+    
+    [ForeignKey(nameof(User))]
+    [Sieve(CanFilter = true, CanSort = true)]   
+    [MaxLength(100)]
+    public string UserId { get; set; } = null!;
 
     [Sieve(CanFilter = true, CanSort = true)]
     [Required] public string MobilePayId { get; set; } = null!;

@@ -792,11 +792,13 @@
           },
           "email": {
             "type": "string",
-            "format": "email"
+            "format": "email",
+            "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
           },
           "fullName": {
             "type": "string",
-            "minLength": 5
+            "minLength": 5,
+            "pattern": ".*\\S.*"
           },
           "phoneNumber": {
             "type": "string",
@@ -825,7 +827,8 @@
           },
           "newPassword": {
             "type": "string",
-            "minLength": 6
+            "minLength": 6,
+            "pattern": ".*\\S.*"
           }
         }
       },

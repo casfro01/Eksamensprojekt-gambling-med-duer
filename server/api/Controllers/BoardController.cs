@@ -17,6 +17,7 @@ public class BoardController(IServiceWithSieve<BaseBoardResponse, CreateBoardDto
     [Authorize(Roles = "Administrator,Bruger")]
     public async Task<List<ExtendedBoardResponse>> GetBoards([FromBody]SieveModel model)
     {
+        model.Filters = "";
         var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         model.Filters = "UserId==" + userID;
         List<BaseBoardResponse> res = await boardService.Get(model);

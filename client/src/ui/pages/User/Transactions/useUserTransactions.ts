@@ -19,7 +19,7 @@ export const useUserTransactions = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 10;
 
-    // SLET DENNE DATA NÅR BACKEND ER CONNECTED
+    // SLET DENNE DATA NÅR BACKEND ER CONNECTED ; ordenligt - for der skal lige findes en bedre løsning med pagination
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
     useEffect(() => {
@@ -58,7 +58,7 @@ export const useUserTransactions = () => {
 
 
 async function getTransactions(){
-    const model = SieveQueryBuilder.create<BaseTransactionResponse>().sortBy("created").buildSieveModel();
+    const model = SieveQueryBuilder.create<BaseTransactionResponse>().sortByDescending("created").buildSieveModel();
     const res = await transactionClient.getUserTransactions(model);
     return res.map(transaction => {
         return mapToTransactionType(transaction);
