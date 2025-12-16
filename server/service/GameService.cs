@@ -1,4 +1,5 @@
-﻿using dataaccess;
+﻿using System.ComponentModel.DataAnnotations;
+using dataaccess;
 using DataAccess.Entities;
 using dataaccess.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +29,15 @@ public class GameService(MyDbContext db, IMoneyHandler moneyHandler) : IGameServ
 
     public async Task<BaseGameResponse> SetWinningNumbers(WinningNumbers winningNumbers)
     {
+        Validator.ValidateObject(winningNumbers, new ValidationContext(winningNumbers), true);
         var activeGame = GetCurrentGame();
         activeGame.GameStatus = GameStatus.Finished;
         activeGame.WinningNumbers = winningNumbers.numbers.ToList();
+        
+        await db.SaveChangesAsync();
+        // activate the next game
+        var nextActiveGame = GetCurrentGame();
+        nextActiveGame.GameStatus = GameStatus.InProgress;
         await db.SaveChangesAsync();
         await TakeMoneyFromPeople(GetCurrentGame().Id); // hvis denne fejler så er det gg ig
         return new BaseGameResponse(activeGame);
@@ -48,14 +55,18 @@ public class GameService(MyDbContext db, IMoneyHandler moneyHandler) : IGameServ
     // todo : dette system skal nok laves om - der skal nok en boolean med board og games tabellen, hvor der står om spillet er betalt for - når / hvis det manuelle skema bliver lavet - så kan dette inkluderes
     private async Task TakeMoneyFromPeople(string gameId)
     {
-        Game game = await db.Games.Include(g => g.Boards).FirstAsync(g => g.Id == gameId);
+        Game game = await db.Games
+            .Include(g => g.Boards)
+            .ThenInclude(b => b.Games)
+            .FirstAsync(g => g.Id == gameId);
 
-        foreach (var b in game.Boards)
+        foreach (var b in game.Boards.ToList())
         {
             var res = await moneyHandler.SubtractMoney(b.UserId, IMoneyHandler.GetBoardPrices(b.PlayedNumbers.Count), false);
             if (res) continue;
-            var finishedGames = b.Games.Where(g => g.GameStatus == GameStatus.Finished).ToList();
-            b.Games = finishedGames;
+            var notFinishedGames = b.Games.Where(g => g.GameStatus != GameStatus.Finished).ToList();
+            foreach (var NFgame in notFinishedGames)
+                b.Games.Remove(NFgame);
         }
         
         await db.SaveChangesAsync();
