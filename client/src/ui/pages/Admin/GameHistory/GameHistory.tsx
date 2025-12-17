@@ -1,5 +1,5 @@
 import './gameHistory.css';
-import {useFetchGames, type WinningBoard} from "./fetchGames.ts";
+import {useFetchGames} from "./fetchGames.ts";
 import {useGameInformation} from "./useGameInformation.ts";
 
 export default function GameHistory() {
@@ -9,15 +9,17 @@ export default function GameHistory() {
     const {
         expandedGame,
         setExpandedGame,
+        winningBoards,
     } = useGameInformation();
 
     // SLET LINJE 62-75 NÅR BACKEND ER CONNECTED
+    /*
     const getWinningBoards = async (gameId: string): Promise<WinningBoard[]> => {
         if (gameId != null) {
             return await getWinningBoards(gameId);
         }
         return [];
-    };
+    };*/
 
     const toggleGameDetails = (gameId: string) => {
         setExpandedGame(expandedGame === gameId ? null : gameId);
@@ -46,7 +48,8 @@ export default function GameHistory() {
 
             <div className="games-list">
                 {games.map((game) => {
-                    const winningBoards = getWinningBoards(game.id);
+                    //const winningBoards = getWinningBoards(game.id);
+                    //const winningBoards = winningBoards;
                     const isExpanded = expandedGame === game.id;
 
                     return (
