@@ -3,7 +3,7 @@ using dataaccess.Enums;
 
 namespace service.Models.Responses;
 
-public sealed record BaseGameResponse
+public record BaseGameResponse
 {
     public BaseGameResponse(Game game)
     {

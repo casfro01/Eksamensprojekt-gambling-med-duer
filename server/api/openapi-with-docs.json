@@ -368,6 +368,29 @@
         }
       }
     },
+    "/api/Game/GetFinishedGames": {
+      "get": {
+        "tags": [
+          "Game"
+        ],
+        "operationId": "Game_GetFinishedGames",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExtendedGameResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Game/GetGames": {
       "get": {
         "tags": [
@@ -1021,6 +1044,41 @@
             "minLength": 1
           }
         }
+      },
+      "ExtendedGameResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseGameResponse"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "totalRevenue",
+              "totalBoardsOnGame",
+              "totalWinningBoards",
+              "weekNumber"
+            ],
+            "properties": {
+              "totalRevenue": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "totalBoardsOnGame": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "totalWinningBoards": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "weekNumber": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
       },
       "WinningNumbers": {
         "type": "object",

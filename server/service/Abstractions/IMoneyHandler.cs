@@ -1,4 +1,6 @@
-﻿namespace service.Abstractions;
+﻿using DataAccess.Entities;
+
+namespace service.Abstractions;
 
 public interface IMoneyHandler
 {
@@ -12,5 +14,10 @@ public interface IMoneyHandler
     {
         if (numberAmount is > 8 or < 5) throw new ArgumentOutOfRangeException();
         return (int) (0.625 * Math.Pow(2, numberAmount));
+    }
+
+    public static int GetTotalRevenue(Board[] boards)
+    {
+        return boards.Sum(board => (int)GetBoardPrices(board.PlayedNumbers.Count));
     }
 }
