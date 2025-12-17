@@ -5,6 +5,7 @@ namespace DataAccess.Entities;
 
 public class Game
 {
+    [Sieve(CanFilter = true, CanSort = true)]
     public string Id { get; set; } = null!;
     
     [Sieve(CanFilter = true, CanSort = true)]

@@ -23,6 +23,20 @@ public class GameController(IGameService gameService) : ControllerBase
         return await gameService.Get(model);
     }
     
+    [HttpGet(nameof(GetFinishedGames))]
+    [Authorize(Roles = "Administrator")]
+    public async Task<GameWithBoardResponse> GetBoardsOfGame(string gameId)
+    {
+        SieveModel model = new SieveModel
+        {
+            Filters = "Id=="+gameId,
+        };
+        var res = await gameService.Get(gameId);
+        if (res is GameWithBoardResponse g)
+            return g;
+        throw new NotImplementedException("Not implemented correctly");
+    }
+    
     [HttpGet(nameof(GetGames))]
     [Authorize(Roles = "Administrator")]
     public async Task<List<BaseGameResponse>> GetGames()
