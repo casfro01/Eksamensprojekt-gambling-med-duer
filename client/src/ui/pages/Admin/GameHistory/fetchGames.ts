@@ -1,4 +1,7 @@
 import {useEffect, useState} from "react";
+import {gameClient} from "../../../../core/api-clients.ts";
+import type {ExtendedGameResponse} from "../../../../core/ServerAPI.ts";
+import {convertDateStringToPrettyString} from "../../../../utils/DateConverter.ts";
 
 export interface Game {
     id: string;
@@ -30,39 +33,20 @@ export function useFetchGames(){
 }
 
 async function fetchGames(): Promise<Game[]> {
-    return [
-        {
-            id: '1',
-            weekNumber: 'Uge 46',
-            drawDate: '2025-11-15',
-            winningNumbers: [3, 7, 12],
-            totalBoards: 15,
-            winningBoards: 3,
-            totalRevenue: 800,
-            prizePool: 560,
-            status: 'completed'
-        },
-        {
-            id: '2',
-            weekNumber: 'Uge 45',
-            drawDate: '2025-11-08',
-            winningNumbers: [1, 9, 14],
-            totalBoards: 12,
-            winningBoards: 2,
-            totalRevenue: 640,
-            prizePool: 448,
-            status: 'completed'
-        },
-        {
-            id: '3',
-            weekNumber: 'Uge 44',
-            drawDate: '2025-11-01',
-            winningNumbers: [5, 8, 16],
-            totalBoards: 18,
-            winningBoards: 0,
-            totalRevenue: 920,
-            prizePool: 644,
-            status: 'completed'
-        }
-    ];
+    const res = await gameClient.getFinishedGames();
+    return res.map(g => mapToGame(g));
+}
+
+function mapToGame(game: ExtendedGameResponse): Game{
+    return {
+        id: game.id,
+        weekNumber: "Uge " + game.weekNumber,
+        drawDate: convertDateStringToPrettyString(game.startTime),
+        winningNumbers: game.winningNumbers,
+        totalBoards: game.totalBoardsOnGame,
+        winningBoards: game.totalWinningBoards,
+        totalRevenue: game.totalRevenue,
+        prizePool: game.totalRevenue * 0.7,
+        status: 'completed',
+    };
 }

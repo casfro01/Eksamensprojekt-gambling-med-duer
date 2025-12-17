@@ -945,13 +945,21 @@
       "BaseGameResponse": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "id",
+          "startTime",
+          "gameStatus",
+          "winningNumbers"
+        ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "startTime": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "minLength": 1
           },
           "gameStatus": {
             "$ref": "#/components/schemas/GameStatus"

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using DataAccess.Entities;
 using dataaccess.Enums;
 
@@ -13,11 +14,11 @@ public record BaseGameResponse
         WinningNumbers = game.WinningNumbers;
     }
 
-    public string Id { get; set; } = null!;
+    [Required] public string Id { get; set; } = null!;
     
-    public DateTime StartTime { get; set; } = DateTime.MinValue;
+    [Required] public DateTime StartTime { get; set; } = DateTime.MinValue;
     
-    public GameStatus GameStatus { get; set; }
-    
-    public ICollection<int> WinningNumbers { get; set; }
+    [Required] public GameStatus GameStatus { get; set; }
+
+    [Required] public ICollection<int> WinningNumbers { get; set; } = new List<int>();
 }

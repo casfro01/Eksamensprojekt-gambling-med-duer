@@ -17,7 +17,8 @@ public class GameController(IGameService gameService) : ControllerBase
     {
         SieveModel model = new SieveModel
         {
-            Filters = "GameStatus==0"
+            Filters = "gamestatus==0",
+            Sorts = "-startdate",
         };
         return await gameService.Get(model);
     }
