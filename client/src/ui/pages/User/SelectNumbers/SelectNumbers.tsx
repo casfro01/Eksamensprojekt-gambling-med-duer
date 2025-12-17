@@ -2,9 +2,11 @@
 import { useSelectNumbers } from './useSelectNumbers';
 import { handleSubmit } from './handleSubmit';
 import HomeButton from '../../../components/HomeButton';import { useGetLoggedInUser } from '../../Home/useLogin';
+import {useNavigate} from "react-router";
 
 export default function SelectNumbers() {
     const { authUser } = useGetLoggedInUser();
+    const navigate = useNavigate();
 
     const {
         selectedNumbers,
@@ -17,12 +19,15 @@ export default function SelectNumbers() {
         canSubmit
     } = useSelectNumbers();
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if (authUser == null || !authUser.isActive) {
             alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
             return;
         }
-        handleSubmit(selectedNumbers, numberOfWeeks, canSubmit, authUser);
+        await handleSubmit(selectedNumbers, numberOfWeeks, canSubmit, authUser, navigate)
+            .then(() => {alert(`Du har betalt og oprettet din plade`); /*navigate("/") <- TODO : den navigere også inde i funktionen - vi skal vælge ét sted*/})
+            .catch(() => alert(`Uha, det ser ud til at der er sket en fejl; dobbelt tjek at du har nok penge og/eller at du har en aktiv konto.`));
+
     };
 
     const handleNumberClick = (num: number) => {

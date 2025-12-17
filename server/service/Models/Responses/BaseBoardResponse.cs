@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using DataAccess.Entities;
 
 namespace service.Models.Responses;
 
-public sealed record BaseBoardResponse
+public class BaseBoardResponse
 {
     public BaseBoardResponse(Board b)
     {
@@ -17,6 +18,6 @@ public sealed record BaseBoardResponse
     
     public AuthUserInfo User { get; set; } = null!;
     
-    public IReadOnlyList<BaseGameResponse> Games { get; set; } = new List<BaseGameResponse>();
+    [Required] public IReadOnlyList<BaseGameResponse> Games { get; set; } = new List<BaseGameResponse>();
     public IReadOnlyList<int> PlayedNumbers { get; set; } = new List<int>();
 }

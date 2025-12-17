@@ -1,5 +1,5 @@
 import './gameHistory.css';
-import {useFetchGames, type WinningBoard} from "./fetchGames.ts";
+import {useFetchGames} from "./fetchGames.ts";
 import {useGameInformation} from "./useGameInformation.ts";
 
 export default function GameHistory() {
@@ -9,24 +9,17 @@ export default function GameHistory() {
     const {
         expandedGame,
         setExpandedGame,
+        winningBoards,
     } = useGameInformation();
 
     // SLET LINJE 62-75 NÅR BACKEND ER CONNECTED
-    const getWinningBoards = (gameId: string): WinningBoard[] => {
-        if (gameId === '1') {
-            return [
-                { playerName: 'Peter Jensen', numbers: [3, 7, 12, 15, 16], pricePerWeek: 20 },
-                { playerName: 'Anna Nielsen', numbers: [1, 3, 7, 12, 14], pricePerWeek: 20 },
-                { playerName: 'Lars Larsen', numbers: [3, 5, 7, 11, 12, 13, 16], pricePerWeek: 80 }
-            ];
-        } else if (gameId === '2') {
-            return [
-                { playerName: 'Maria Andersen', numbers: [1, 2, 9, 14, 15], pricePerWeek: 20 },
-                { playerName: 'Jens Olsen', numbers: [1, 4, 6, 9, 10, 14], pricePerWeek: 40 }
-            ];
+    /*
+    const getWinningBoards = async (gameId: string): Promise<WinningBoard[]> => {
+        if (gameId != null) {
+            return await getWinningBoards(gameId);
         }
         return [];
-    };
+    };*/
 
     const toggleGameDetails = (gameId: string) => {
         setExpandedGame(expandedGame === gameId ? null : gameId);
@@ -55,7 +48,8 @@ export default function GameHistory() {
 
             <div className="games-list">
                 {games.map((game) => {
-                    const winningBoards = getWinningBoards(game.id);
+                    //const winningBoards = getWinningBoards(game.id);
+                    //const winningBoards = winningBoards;
                     const isExpanded = expandedGame === game.id;
 
                     return (

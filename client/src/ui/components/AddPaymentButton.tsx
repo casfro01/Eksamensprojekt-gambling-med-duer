@@ -11,7 +11,7 @@ export default function AddPaymentButton() {
             className="floating-payment-btn"
             onClick={() => {
                 if (!isValidLogin) navigate('/login');
-                else navigate('/add-payment');
+                else navigate('/user/deposit');
             }}
             title="Indsæt penge"
         >

@@ -1,0 +1,231 @@
+﻿.show-winning-people-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+}
+
+.show-winning-people-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 40px;
+}
+
+/* Header */
+.winners-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.page-title {
+    font-size: 3rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Vindernumre */
+.winning-numbers-section {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.winning-numbers-display {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: nowrap !important;
+}
+
+.winning-number-ball {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #333;
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Vindere liste */
+.winners-list-section {
+    margin-bottom: 50px;
+}
+
+.winners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.winner-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.winner-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(235, 87, 87, 0.2);
+}
+
+.winner-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.winner-icon {
+    font-size: 2.5rem;
+}
+
+.winner-info {
+    flex: 1;
+}
+
+.winner-name {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.winner-prize {
+    font-size: 1.1rem;
+    color: #EB5757;
+    font-weight: bold;
+}
+
+/* Numre display */
+.winner-numbers {
+    margin-top: 15px;
+}
+
+.numbers-label {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.numbers-display {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.number-chip {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #ecf0f1;
+    color: #2c3e50;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.number-chip.winning {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #333;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+/* Tilbage knap */
+.back-to-home {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.back-button {
+    background: white;
+    color: #EB5757;
+    border: 2px solid #EB5757;
+    padding: 15px 40px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: #EB5757;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Floating profil knap */
+.floating-profile-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #EB5757;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-profile-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(235, 87, 87, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .winners-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .winning-number-ball {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+}

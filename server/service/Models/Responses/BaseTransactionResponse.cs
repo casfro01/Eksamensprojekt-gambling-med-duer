@@ -1,16 +1,17 @@
-﻿using DataAccess.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using DataAccess.Entities;
 using dataaccess.Enums;
 
 namespace service.Models.Responses;
 
 public class BaseTransactionResponse
 {
-    public string Id { get; set; } = null!;
-    public string MobilePayId { get; set; } = null!;
-    public int Amount { get; set; } = 0;
+    [Required] public string Id { get; set; } = null!;
+    [Required] public string MobilePayId { get; set; } = null!;
+    [Required] public int Amount { get; set; } = 0;
     public UserData User { get; set; } = null!;
-    public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
-    public DateTime Created { get; set; }
+    [Required] public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
+    [Required] public DateTime Created { get; set; }
 
     public BaseTransactionResponse(Transaction transaction)
     {

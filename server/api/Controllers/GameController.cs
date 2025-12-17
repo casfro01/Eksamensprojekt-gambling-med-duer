@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using service;
 using service.Models.Responses;
+using Sieve.Models;
 
 namespace api.Controllers;
 
@@ -9,15 +10,43 @@ namespace api.Controllers;
 [Route("api/[Controller]")]
 public class GameController(IGameService gameService) : ControllerBase
 {
+
+    [HttpPost(nameof(GetFinishedGames))]
+    [Authorize(Roles = "Administrator")]
+    public async Task<List<ExtendedGameResponse>> GetFinishedGames(SieveModel model)
+    {
+        /*
+        SieveModel model = new SieveModel
+        {
+            Filters = "gamestatus==0",
+            Sorts = "-startdate",
+        };*/
+        return await gameService.Get(model);
+    }
+    
+    [HttpPost(nameof(GetBoardsOfGame))]
+    [Authorize(Roles = "Administrator")]
+    public async Task<GameWithBoardResponse> GetBoardsOfGame(string gameId)
+    {
+        SieveModel model = new SieveModel
+        {
+            Filters = "Id=="+gameId,
+        };
+        var res = await gameService.Get(gameId);
+        if (res is GameWithBoardResponse g)
+            return g;
+        throw new NotImplementedException("Not implemented correctly");
+    }
+    
     [HttpGet(nameof(GetGames))]
-    [AllowAnonymous]
+    [Authorize(Roles = "Administrator")]
     public async Task<List<BaseGameResponse>> GetGames()
     {
         return await gameService.Get();
     }
     
-    [HttpGet(nameof(GetGame))]
-    [AllowAnonymous]
+    [HttpPost(nameof(GetGame))]
+    [Authorize(Roles = "Administrator")]
     public async Task<BaseGameResponse> GetGame(string id)
     {
         return await gameService.Get(id);

@@ -321,13 +321,17 @@ export class BoardClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getBoards(): Promise<BaseBoardResponse[]> {
+    getBoards(model: SieveModel): Promise<ExtendedBoardResponse[]> {
         let url_ = this.baseUrl + "/api/board/GetBoards";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(model);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -337,13 +341,13 @@ export class BoardClient {
         });
     }
 
-    protected processGetBoards(response: Response): Promise<BaseBoardResponse[]> {
+    protected processGetBoards(response: Response): Promise<ExtendedBoardResponse[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseBoardResponse[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ExtendedBoardResponse[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -351,7 +355,7 @@ export class BoardClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BaseBoardResponse[]>(null as any);
+        return Promise.resolve<ExtendedBoardResponse[]>(null as any);
     }
 
     getBoard(id: string | undefined): Promise<BaseBoardResponse> {
@@ -427,6 +431,43 @@ export class BoardClient {
         }
         return Promise.resolve<BaseBoardResponse>(null as any);
     }
+
+    cancelCurrentWeeks(dto: UpdateBoardDto): Promise<BaseBoardResponse> {
+        let url_ = this.baseUrl + "/api/board/CancelCurrentWeeks";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCancelCurrentWeeks(_response);
+        });
+    }
+
+    protected processCancelCurrentWeeks(response: Response): Promise<BaseBoardResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseBoardResponse;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseBoardResponse>(null as any);
+    }
 }
 
 export class GameClient {
@@ -437,6 +478,80 @@ export class GameClient {
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    getFinishedGames(model: SieveModel): Promise<ExtendedGameResponse[]> {
+        let url_ = this.baseUrl + "/api/Game/GetFinishedGames";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(model);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetFinishedGames(_response);
+        });
+    }
+
+    protected processGetFinishedGames(response: Response): Promise<ExtendedGameResponse[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ExtendedGameResponse[];
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ExtendedGameResponse[]>(null as any);
+    }
+
+    getBoardsOfGame(gameId: string | undefined): Promise<GameWithBoardResponse> {
+        let url_ = this.baseUrl + "/api/Game/GetBoardsOfGame?";
+        if (gameId === null)
+            throw new globalThis.Error("The parameter 'gameId' cannot be null.");
+        else if (gameId !== undefined)
+            url_ += "gameId=" + encodeURIComponent("" + gameId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "POST",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetBoardsOfGame(_response);
+        });
+    }
+
+    protected processGetBoardsOfGame(response: Response): Promise<GameWithBoardResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GameWithBoardResponse;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GameWithBoardResponse>(null as any);
     }
 
     getGames(): Promise<BaseGameResponse[]> {
@@ -481,7 +596,7 @@ export class GameClient {
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Accept": "application/json"
             }
@@ -668,6 +783,43 @@ export class TransactionClient {
         return Promise.resolve<BaseTransactionResponse[]>(null as any);
     }
 
+    getUserTransactions(model: SieveModel): Promise<BaseTransactionResponse[]> {
+        let url_ = this.baseUrl + "/api/Transaction/GetUserTransactions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(model);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetUserTransactions(_response);
+        });
+    }
+
+    protected processGetUserTransactions(response: Response): Promise<BaseTransactionResponse[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BaseTransactionResponse[];
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BaseTransactionResponse[]>(null as any);
+    }
+
     getAmountOfTransactions(): Promise<number> {
         let url_ = this.baseUrl + "/api/Transaction/GetAmountOfTransactions";
         url_ = url_.replace(/[?&]$/, "");
@@ -770,8 +922,16 @@ export interface ChangePasswordRequest {
 export interface BaseBoardResponse {
     id?: string;
     user?: AuthUserInfo;
-    games?: BaseGameResponse[];
+    games: BaseGameResponse[];
     playedNumbers?: number[];
+}
+
+export interface ExtendedBoardResponse extends BaseBoardResponse {
+    initialPrice: number;
+    totalWeeks: number;
+    weeksRemaining: number;
+    startDate: string;
+    weeksRemaning: number;
 }
 
 export interface AuthUserInfo {
@@ -782,9 +942,13 @@ export interface AuthUserInfo {
 }
 
 export interface BaseGameResponse {
-    id?: string;
-    startTime?: string;
+    id: string;
+    startDate: string;
+    gameStatus: GameStatus;
+    winningNumbers: number[];
 }
+
+export type GameStatus = 0 | 1 | 2;
 
 export interface CreateBoardDto {
     userId: string;
@@ -792,17 +956,33 @@ export interface CreateBoardDto {
     playedNumbers?: number[];
 }
 
+export interface UpdateBoardDto {
+    userId: string;
+    boardId: string;
+}
+
+export interface ExtendedGameResponse extends BaseGameResponse {
+    totalRevenue: number;
+    totalBoardsOnGame: number;
+    totalWinningBoards: number;
+    weekNumber: number;
+}
+
+export interface GameWithBoardResponse extends BaseGameResponse {
+    boards: BaseBoardResponse[];
+}
+
 export interface WinningNumbers {
     numbers: number[];
 }
 
 export interface BaseTransactionResponse {
-    id?: string;
-    mobilePayId?: string;
-    amount?: number;
+    id: string;
+    mobilePayId: string;
+    amount: number;
     user?: UserData;
-    status?: PaymentStatus;
-    created?: string;
+    status: PaymentStatus;
+    created: string;
 }
 
 export type PaymentStatus = 0 | 1 | 2;

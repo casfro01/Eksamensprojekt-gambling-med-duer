@@ -118,7 +118,7 @@ export function UserProfile(){
                         <span className="balance-label">Din saldo</span>
                         <span className="balance-amount">{userData.balance} DKK</span>
                     </div>
-                    <button className="topup-btn" onClick={() => navigate('/add-payment')}>
+                    <button className="topup-btn" onClick={() => navigate('/user/deposit')}>
                         💰 Indbetal
                     </button>
                 </div>

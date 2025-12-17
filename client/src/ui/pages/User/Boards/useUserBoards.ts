@@ -7,6 +7,7 @@ interface MenuItem {
     icon: string;
 }
 
+// TODO : hvorfor er denne inde i use user boards ? huh - flyt til UserPanel mappen - og måske rename, for dette giver absolut ingen mening
 export const useUserPanel = () => {
     const [isOpen, setIsOpen] = useState(true);
     const navigate = useNavigate();

@@ -60,8 +60,8 @@ export default function PaymentHistory() {
                         <th>Telefon</th>
                         <th>MobilePay ID</th>
                         <th>Beløb</th>
-                        <th>Oprettet</th>
                         <th>Status</th>
+                        <th>Oprettet</th>
                     </tr>
                     </thead>
                     <tbody>
