@@ -34,7 +34,7 @@ function getWeekNumber(date: Date): number {
 const getWeekLabel = (board: DeadPigeonBoard): string => {
     const games = board.games ?? [];
     const weeks = games
-        .map((game) => (game.startTime ? getWeekNumber(new Date(game.startTime)) : null))
+        .map((game) => (game.startDate ? getWeekNumber(new Date(game.startDate)) : null))
         .filter((w): w is number => w !== null);
 
     return "Uge - " + weeks.join(" ");
@@ -44,7 +44,7 @@ const getWeekLabel = (board: DeadPigeonBoard): string => {
 const getStatusVariant = (board: DeadPigeonBoard): 'active' | 'ended' => {
     const games = board.games ?? [];
     const weeks = games
-        .map((game) => (game.startTime ? getWeekNumber(new Date(game.startTime)) : null))
+        .map((game) => (game.startDate ? getWeekNumber(new Date(game.startDate)) : null))
         .filter((w): w is number => w !== null);
 
     const currentWeek = getWeekNumber(new Date());

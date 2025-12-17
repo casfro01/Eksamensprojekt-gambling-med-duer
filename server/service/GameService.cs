@@ -5,10 +5,12 @@ using dataaccess.Enums;
 using Microsoft.EntityFrameworkCore;
 using service.Abstractions;
 using service.Models.Responses;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace service;
 
-public class GameService(MyDbContext db, IMoneyHandler moneyHandler) : IGameService
+public class GameService(MyDbContext db, IMoneyHandler moneyHandler, ISieveProcessor processor) : IGameService
 {
     public Task<List<BaseGameResponse>> Get()
     {
@@ -18,13 +20,37 @@ public class GameService(MyDbContext db, IMoneyHandler moneyHandler) : IGameServ
             .Select(g => new BaseGameResponse(g)).ToListAsync();
     }
 
+    public async Task<List<ExtendedGameResponse>> Get(SieveModel sieveModel)
+    {
+        IQueryable<Game> query = db.Games
+            .Include(g => g.Boards);
+        
+        query = processor.Apply(sieveModel, query);
+        var games = await query.ToListAsync();
+        List<ExtendedGameResponse> list = [];
+        list.AddRange(games.Select(g => new ExtendedGameResponse(
+            g, 
+            IMoneyHandler.GetTotalRevenue(g.Boards.ToArray()),
+            g.Boards.Count,
+            g.Boards.Count(b => ContainsWinningNumbers(g.WinningNumbers.ToList(), b.PlayedNumbers))
+            ))
+        );
+        return list;
+    }
+
+    private bool ContainsWinningNumbers(List<int> winningNums, List<int> boardNums)
+    {
+        return winningNums.All(boardNums.Contains);
+    }
+
     public async Task<BaseGameResponse> Get(string id)
     {
         var game = await db.Games
             .Include(g => g.Boards)
-            .Include(g => g.WinningNumbers)
+            .ThenInclude(b => b.User)
+            //.Include(g => g.WinningNumbers)
             .FirstOrDefaultAsync(g => g.Id == id);
-        return game == null ? throw new KeyNotFoundException("Game not found") : new BaseGameResponse(game);
+        return game == null ? throw new KeyNotFoundException("Game not found") : new GameWithBoardResponse(game);
     }
 
     public async Task<BaseGameResponse> SetWinningNumbers(WinningNumbers winningNumbers)
