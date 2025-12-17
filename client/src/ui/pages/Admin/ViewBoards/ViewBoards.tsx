@@ -1,5 +1,5 @@
 ﻿import './viewBoards.css';
-import {useFetchBoards} from "./useFetchBoards.ts";
+import { useFetchBoards } from '../../boards/useFetchBoards';
 
 export default function ViewBoards() {
 

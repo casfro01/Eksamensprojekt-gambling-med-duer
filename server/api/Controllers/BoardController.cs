@@ -19,7 +19,16 @@ public class BoardController(IServiceWithSieve<BaseBoardResponse, CreateBoardDto
     {
         model.Filters = "";
         var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        model.Filters = "UserId==" + userID;
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+        if (userRole != "Administrator")
+        {
+            model.Filters = "UserId==" + userID;
+        }
+        else
+        {
+            model.Filters = null;
+        }
+        
         List<BaseBoardResponse> res = await boardService.Get(model);
         return res.First() is ExtendedBoardResponse ? res.Cast<ExtendedBoardResponse>().ToList() : ([]);
     }

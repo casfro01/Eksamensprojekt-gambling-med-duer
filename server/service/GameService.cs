@@ -14,7 +14,7 @@ public class GameService(MyDbContext db, IMoneyHandler moneyHandler) : IGameServ
     {
         return db.Games
             .Include(g => g.Boards)
-            .Include(g => g.WinningNumbers)
+            //.Include(g => g.WinningNumbers)
             .Select(g => new BaseGameResponse(g)).ToListAsync();
     }
 
@@ -22,7 +22,7 @@ public class GameService(MyDbContext db, IMoneyHandler moneyHandler) : IGameServ
     {
         var game = await db.Games
             .Include(g => g.Boards)
-            .Include(g => g.WinningNumbers)
+            //.Include(g => g.WinningNumbers)
             .FirstOrDefaultAsync(g => g.Id == id);
         return game == null ? throw new KeyNotFoundException("Game not found") : new BaseGameResponse(game);
     }

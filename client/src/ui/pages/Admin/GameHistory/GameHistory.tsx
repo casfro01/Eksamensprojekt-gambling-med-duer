@@ -1,5 +1,4 @@
 import './gameHistory.css';
-import {useFetchGames, type WinningBoard} from "./fetchGames.ts";
 import {useGameInformation} from "./useGameInformation.ts";
 
 export default function GameHistory() {
