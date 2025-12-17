@@ -15,12 +15,6 @@ export interface Game {
     status: 'completed' | 'active';
 }
 
-export interface WinningBoard {
-    playerName: string;
-    numbers: number[];
-    pricePerWeek: number;
-}
-
 
 export function useFetchGames(){
     const [games, setGames] = useState<Game[]>([]);

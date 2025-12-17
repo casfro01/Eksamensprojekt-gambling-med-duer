@@ -23,7 +23,7 @@ public class GameController(IGameService gameService) : ControllerBase
         return await gameService.Get(model);
     }
     
-    [HttpGet(nameof(GetFinishedGames))]
+    [HttpPost(nameof(GetBoardsOfGame))]
     [Authorize(Roles = "Administrator")]
     public async Task<GameWithBoardResponse> GetBoardsOfGame(string gameId)
     {
@@ -44,7 +44,7 @@ public class GameController(IGameService gameService) : ControllerBase
         return await gameService.Get();
     }
     
-    [HttpGet(nameof(GetGame))]
+    [HttpPost(nameof(GetGame))]
     [Authorize(Roles = "Administrator")]
     public async Task<BaseGameResponse> GetGame(string id)
     {

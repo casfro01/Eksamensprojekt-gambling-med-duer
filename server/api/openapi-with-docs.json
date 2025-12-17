@@ -391,6 +391,36 @@
         }
       }
     },
+    "/api/Game/GetBoardsOfGame": {
+      "post": {
+        "tags": [
+          "Game"
+        ],
+        "operationId": "Game_GetBoardsOfGame",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameWithBoardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Game/GetGames": {
       "get": {
         "tags": [
@@ -415,7 +445,7 @@
       }
     },
     "/api/Game/GetGame": {
-      "get": {
+      "post": {
         "tags": [
           "Game"
         ],
@@ -1083,6 +1113,28 @@
               "weekNumber": {
                 "type": "integer",
                 "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "GameWithBoardResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseGameResponse"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "boards"
+            ],
+            "properties": {
+              "boards": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BaseBoardResponse"
+                }
               }
             }
           }
