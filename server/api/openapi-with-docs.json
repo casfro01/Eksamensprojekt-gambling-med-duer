@@ -369,11 +369,23 @@
       }
     },
     "/api/Game/GetFinishedGames": {
-      "get": {
+      "post": {
         "tags": [
           "Game"
         ],
         "operationId": "Game_GetFinishedGames",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SieveModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -977,7 +989,7 @@
         "additionalProperties": false,
         "required": [
           "id",
-          "startTime",
+          "startDate",
           "gameStatus",
           "winningNumbers"
         ],
@@ -986,7 +998,7 @@
             "type": "string",
             "minLength": 1
           },
-          "startTime": {
+          "startDate": {
             "type": "string",
             "format": "date-time",
             "minLength": 1

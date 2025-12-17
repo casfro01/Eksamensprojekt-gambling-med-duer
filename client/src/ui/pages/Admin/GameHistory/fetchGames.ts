@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import {gameClient} from "../../../../core/api-clients.ts";
-import type {ExtendedGameResponse} from "../../../../core/ServerAPI.ts";
+import type {BaseGameResponse, ExtendedGameResponse} from "../../../../core/ServerAPI.ts";
 import {convertDateStringToPrettyString} from "../../../../utils/DateConverter.ts";
+import {SieveQueryBuilder} from "ts-sieve-query-builder";
 
 export interface Game {
     id: string;
@@ -27,7 +28,13 @@ export function useFetchGames(){
 }
 
 async function fetchGames(): Promise<Game[]> {
-    const res = await gameClient.getFinishedGames();
+    const sieve = SieveQueryBuilder.create<BaseGameResponse>()
+        .filterEquals("gameStatus", 0)
+        .sortByDescending("startDate")
+        .page(1)
+        .pageSize(10)
+        .buildSieveModel(); // henter de 10 seneste spil
+    const res = await gameClient.getFinishedGames(sieve);
     return res.map(g => mapToGame(g));
 }
 
@@ -35,7 +42,7 @@ function mapToGame(game: ExtendedGameResponse): Game{
     return {
         id: game.id,
         weekNumber: "Uge " + game.weekNumber,
-        drawDate: convertDateStringToPrettyString(game.startTime),
+        drawDate: convertDateStringToPrettyString(game.startDate),
         winningNumbers: game.winningNumbers,
         totalBoards: game.totalBoardsOnGame,
         winningBoards: game.totalWinningBoards,

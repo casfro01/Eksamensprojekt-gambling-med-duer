@@ -10,16 +10,17 @@ namespace api.Controllers;
 [Route("api/[Controller]")]
 public class GameController(IGameService gameService) : ControllerBase
 {
-    // TODO : bruge sieve og pagination, men for nu er det godt nok ig
-    [HttpGet(nameof(GetFinishedGames))]
+
+    [HttpPost(nameof(GetFinishedGames))]
     [Authorize(Roles = "Administrator")]
-    public async Task<List<ExtendedGameResponse>> GetFinishedGames()
+    public async Task<List<ExtendedGameResponse>> GetFinishedGames(SieveModel model)
     {
+        /*
         SieveModel model = new SieveModel
         {
             Filters = "gamestatus==0",
             Sorts = "-startdate",
-        };
+        };*/
         return await gameService.Get(model);
     }
     

@@ -480,13 +480,17 @@ export class GameClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getFinishedGames(): Promise<ExtendedGameResponse[]> {
+    getFinishedGames(model: SieveModel): Promise<ExtendedGameResponse[]> {
         let url_ = this.baseUrl + "/api/Game/GetFinishedGames";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(model);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -939,7 +943,7 @@ export interface AuthUserInfo {
 
 export interface BaseGameResponse {
     id: string;
-    startTime: string;
+    startDate: string;
     gameStatus: GameStatus;
     winningNumbers: number[];
 }

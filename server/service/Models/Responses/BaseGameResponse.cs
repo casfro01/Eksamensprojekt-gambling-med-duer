@@ -9,14 +9,14 @@ public record BaseGameResponse
     public BaseGameResponse(Game game)
     {
         Id = game.Id;
-        StartTime = game.StartDate;
+        StartDate = game.StartDate;
         GameStatus = game.GameStatus;
         WinningNumbers = game.WinningNumbers;
     }
 
     [Required] public string Id { get; set; } = null!;
     
-    [Required] public DateTime StartTime { get; set; } = DateTime.MinValue;
+    [Required] public DateTime StartDate { get; set; } = DateTime.MinValue;
     
     [Required] public GameStatus GameStatus { get; set; }
 
