@@ -51,7 +51,7 @@ Administratorer kan:
   - Spilhistorik
   - Betalingshistorik
  
-**Login til begge roller:**
+## Login til begge roller:
 
  ### Bruger Login
 - **Email:** `Bruger@gmail.com`
@@ -99,7 +99,7 @@ Administratorer kan:
    - Spilhistorik viser tidligere spil
    - Betalingshistorik viser alle transaktioner
 
-   **Forbedringer:**
+ ## Forbedringer:
 
    - Sørge for at det ikke er muligt at afslutte et igangværende spil når man vil - som admin.
    - Forbedring af ændring af password - dette kan kun gøre, lige nu, hvis du kender dit nuværende password - hvilket ikke er særlig godt, hvis man kommer til at glemme det.
