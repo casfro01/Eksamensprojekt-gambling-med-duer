@@ -109,8 +109,8 @@ export default function Boards() {
             return (
                 <div className="boards-empty-state">
                     <div className="empty-icon">🕊️</div>
-                    <h3>Ingen brætter endnu</h3>
-                    <p>Der er endnu ikke nogen registrerede brætter. Prøv at opdatere eller kom tilbage senere.</p>
+                    <h3>Ingen plader endnu</h3>
+                    <p>Der er endnu ikke nogen registrerede plader. Prøv at opdatere eller kom tilbage senere.</p>
                 </div>
             );
         }
@@ -169,7 +169,7 @@ export default function Boards() {
                     <div className="hero-icon">🕊️</div>
                     <div className="hero-copy">
                         <h1>Dead Pigeons Boards</h1>
-                        <p>Få det fulde overblik over spillebrætter.</p>
+                        <p>Få det fulde overblik over spilleplader.</p>
                         {lastUpdated && (
                             <span className="hero-updated">Opdateret {lastUpdated.toLocaleTimeString('da-DK')}</span>
                         )}

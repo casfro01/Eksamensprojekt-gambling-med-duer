@@ -84,7 +84,7 @@ export default function GameHistory() {
                                 <div className="game-stats">
                                     <div className="stat-box">
                                         <span className="stat-number">{game.totalBoards}</span>
-                                        <span className="stat-text">Brætter</span>
+                                        <span className="stat-text">Plader</span>
                                     </div>
                                     <div className="stat-box winning">
                                         <span className="stat-number">{game.winningBoards}</span>
@@ -103,7 +103,7 @@ export default function GameHistory() {
 
                             {isExpanded && (
                                 <div className="game-details">
-                                    <h4>Vindende spillebrætter</h4>
+                                    <h4>Vindende spilleplader</h4>
                                     {winningBoards.length > 0 ? (
                                         <div className="winning-boards-list">
                                             {winningBoards.map((board, idx) => (

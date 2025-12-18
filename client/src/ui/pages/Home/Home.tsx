@@ -50,7 +50,7 @@ export default function Home() {
                         <div className="rule-card">
                             <div className="rule-number">1</div>
                             <h3>Vælg dine tal</h3>
-                            <p>Vælg mellem 5-8 tal fra 1-16 på dit spillebræt. Jo flere tal, jo højere præmie!</p>
+                            <p>Vælg mellem 5-8 tal fra 1-16 på din spilleplade. Jo flere tal, jo højere præmie!</p>
                         </div>
 
                         <div className="rule-card">
@@ -62,7 +62,7 @@ export default function Home() {
                         <div className="rule-card">
                             <div className="rule-number">3</div>
                             <h3>Tjek om du vandt</h3>
-                            <p>Har dit spillebræt alle 3 vindernumre? Så er du med i præmiepuljen! Rækkefølgen er ligegyldig.</p>
+                            <p>Har din spilleplade alle 3 vindernumre? Så er du med i præmiepuljen! Rækkefølgen er ligegyldig.</p>
                         </div>
 
                         <div className="rule-card">
@@ -75,7 +75,7 @@ export default function Home() {
 
                 {/* Priser sektion */}
                 <section className="pricing-section">
-                    <h2 className="pricing-title">Priser per spillebræt</h2>
+                    <h2 className="pricing-title">Priser per spilleplade</h2>
                     <div className="pricing-grid">
                         <div className="price-card">
                             <div className="price-fields">5 tal</div>
@@ -104,7 +104,7 @@ export default function Home() {
                         <p>Indbetal til din saldo via MobilePay, og spil så længe du har balance. Alle transaktioner godkendes af admin.</p>
                     </div>
                     <div className="info-box">
-                        <h3>🔄 Gentag dine brætter</h3>
+                        <h3>🔄 Gentag dine plader</h3>
                         <p>Spil de samme tal i op til 10 uger i træk. Du kan altid stoppe når du vil.</p>
                     </div>
                 </section>
