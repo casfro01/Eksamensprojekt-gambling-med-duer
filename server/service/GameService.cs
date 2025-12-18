@@ -16,7 +16,7 @@ public class GameService(MyDbContext db, IMoneyHandler moneyHandler, ISieveProce
     {
         return db.Games
             .Include(g => g.Boards)
-            .Include(g => g.WinningNumbers)
+            //.Include(g => g.WinningNumbers)
             .Select(g => new BaseGameResponse(g)).ToListAsync();
     }
 
