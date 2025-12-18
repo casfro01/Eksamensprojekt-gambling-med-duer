@@ -111,5 +111,35 @@ Administratorer kan:
    - (Kode) Desuden er der et par ting, som mangler ordenligt pagination - hvor alt hentes og web-appen sorterer/sideinddeler det.
 
 
-     **Udviklet af:** [Casper, Mia, Lucas]  
+## 📜 Environment, Configuration and Linting.
+
+### Linting
+Der bruges det standard linting systemt, esling. Herudover bruges en "custom" regel også; altså ingen use- state, effect, ref osv. i .tsx filer, dog er custom hooks undtaget. Dette er gjort for at holde business logic væk fra markup / ui - så man har en ren seperation.
+
+### Configuration
+For at køre applicationen skal man udfylde disse parameter i appsettings.json eller appsettings.Development.json filen (eller hvad man nu bruger).
+#### For database forbindelse:
+```
+  "AppOptions": {
+    "DbConnectionString" : "Din forbindelses streng"
+  }
+ ```
+ Hvis man ønsker at oprette en lokal database, så er der lavet et lille shell-script ``localDB.sh`` som ligger i rodmappen. Den opretter en lokal database med docker, og den kan man så frit bruge. Hvis man bruger det script, som er angivet, så kan man frit også bruge ``appsettings.Development.json`` som allerede er konfigureret efter dette.
+ *Desuden har den også allerede en jwt nøgle som man frit kan bruge*.
+#### JWT
+Dette skal også indsættes i appsettings.json eller appsettings.Development.json filen (eller hvad man nu bruger).
+```
+"JwtKey": "Din nøgle"
+```
+Her er et eksempel for hvordan den kan se ud (obs. den skal være minimum 320 bits lang (tror jeg; eller 520 idk)):
+```
+MTIzNDU2Nzg5MTAxMjM0NTY3ODkzNzEwMDk4NzY1NDM0NTY3ODk4NzY1NDM0NTY3MTIzNDU2Nzg5MDk4NzY1NDMyMzQ1Njc4OTA5ODc2NTQzMjEyMzQ1Njc4OTAyMzQ1Njc4OTg3NjU0NTY3NjU2Nzg5ODc2NTQzMjM0NTY3NjU0NTY0MzIyMzQ1Njc2NTQzMjM0NTY3ODk4NzY1NDMyMzQ1Njc4NjU0NTY3ODkwOTg3NjU0MzIyMTMyMzQ1Njc4OTg3NjU0NTY3ODkwOTg5MDk4NzY3NjU0MzQzMjEyMzQ1NDM0NTY3OA==
+```
+
+
+*Denne JWT nøgle bliver IKKE brugt af os - kun under udviklingsfasen - så du kan frit bruge den, hvis du vil.*
+
+
+
+**Udviklet af:** [Casper, Mia, Lucas]  
 **Sidste opdatering:** December 2025
