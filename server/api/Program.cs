@@ -120,7 +120,7 @@ public class Program
         app.UseAuthorization();
         app.MapControllers();
         
-        app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(x => true));
+        //app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(x => true));
 
         // config færdig her
         //app.GenerateApiClientsFromOpenApi("/../../client/src/core/ServerAPI.ts").GetAwaiter().GetResult();
