@@ -52,7 +52,7 @@ export default function EnterWinningNumbers() {
         setCurrentWeek('');
 
         // Navigate til showwinningpeople
-        navigate('show-winning-people');
+        navigate('/admin/show-winning-people');
     };
 
     return (

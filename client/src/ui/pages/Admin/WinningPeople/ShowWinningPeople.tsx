@@ -1,6 +1,7 @@
-﻿import { useFetchBoards } from '../../boards/useFetchBoards';
+﻿import { useFetchBoards } from '../ViewBoards/useFetchBoards.ts';
 import './showWinningPeople.css';
 import { useFetchGames } from './useFetchGames';
+import {contains3Numbers} from "../../../../utils/CalculateWinningBoard.ts";
 
 
 export default function ShowWinningPeople() {
@@ -10,7 +11,7 @@ export default function ShowWinningPeople() {
     console.log('Games:', games);
     console.log('Boards:', boards);
 
-    const currentGame = games.find(g => g.gameStatus === 2);
+    const currentGame = games;
 
     if (!currentGame || !currentGame.winningNumbers || currentGame.winningNumbers.length === 0) {
         return (
@@ -25,7 +26,7 @@ export default function ShowWinningPeople() {
                     </header>
                     {(gamesLoading || boardsLoading) && <p>Henter data...</p>}
                     {gamesError && <p className="error-message">Fejl ved hentning af spil: {gamesError}</p>}
-                    {boardsError && <p className="error-message">Fejl ved hentning af brætter: {boardsError}</p>}
+                    {boardsError && <p className="error-message">Fejl ved hentning af plader: {boardsError}</p>}
                 </div>
             </div>
         );
@@ -33,21 +34,20 @@ export default function ShowWinningPeople() {
 
     const winningNumbers = currentGame.winningNumbers;
     
-    const boardsLinkedToGame = boards.filter(b => b.games.some(g => g.id === currentGame.id));
-    console.log('Boards linked to current game:', boardsLinkedToGame);
-    const winners = boardsLinkedToGame.filter(b => {
-        if (!b.playedNumbers || b.playedNumbers.length === 0) return false;
-        return b.playedNumbers.every(num => winningNumbers.includes(num));
-    });
+    //const boardsLinkedToGame = boards.filter(b => b.games.some(g => g.id === currentGame.id));
+    //console.log('Boards linked to current game:', /*boardsLinkedToGame*/);
+    // ville dette ikke altid være false da hver nummer skal være i listen - da der skal være 5 numre? huh?
+    /*const winners = boards.filter(b => {
+        if (!b.numbers || b.numbers.length === 0) return false;
+        console.log(winningNumbers);
+        return b.numbers.every(num => winningNumbers.includes(num));
+    });*/
+    const winners = boards.filter(b => contains3Numbers(b.numbers, winningNumbers));
 
     console.log('Winners:', winners);
 
     return (
         <div className="show-winning-people-container">
-            {/* Floating profil knap */}
-            <button className="floating-profile-btn">
-                👤
-            </button>
 
             <div className="show-winning-people-content">
                 {/* Header */}
@@ -56,9 +56,9 @@ export default function ShowWinningPeople() {
                     <p className="page-subtitle">Tillykke til alle vinderne! 🎉</p>
                 </header>
 
-                {(gamesLoading || boardsLoading) && <p>Henter data...</p>}
+                {(gamesLoading /*|| boardsLoading*/) && <p>Henter data...</p>}
                 {gamesError && <p className="error-message">Fejl ved hentning af spil: {gamesError}</p>}
-                {boardsError && <p className="error-message">Fejl ved hentning af brætter: {boardsError}</p>}
+                {boardsError && <p className="error-message">Fejl ved hentning af plader: {boardsError}</p>}
 
                 {/* Vindernumre sektion */}
                 <section className="winning-numbers-section">
@@ -85,15 +85,15 @@ export default function ShowWinningPeople() {
                                     <div className="winner-header">
                                         <div className="winner-icon">🏆</div>
                                         <div className="winner-info">
-                                            <h3 className="winner-name">{winner.user?.fullName || 'Ukendt spiller'}</h3>
-                                            <p className="winner-board-id">Bræt ID: {winner.id}</p>
+                                            <h3 className="winner-name">{winner.playerName || 'Ukendt spiller'}</h3>
+                                            <p className="winner-board-id">Plade ID: {winner.id}</p>
                                         </div>
                                     </div>
 
                                     <div className="winner-numbers">
                                         <p className="numbers-label">Valgte numre:</p>
                                         <div className="numbers-display">
-                                            {winner.playedNumbers?.map((num, idx) => (
+                                            {winner.numbers?.map((num, idx) => (
                                                 <span
                                                     key={idx}
                                                     className={`number-chip ${winningNumbers.includes(num) ? 'winning' : ''}`}

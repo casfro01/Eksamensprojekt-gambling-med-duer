@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
-import type {BaseGameResponse} from "../../../../core/ServerAPI.ts";
+import type {BaseGameResponse, ExtendedGameResponse} from "../../../../core/ServerAPI.ts";
 import { gameClient } from "../../../../core/api-clients.ts";
+import {SieveQueryBuilder} from "ts-sieve-query-builder";
 
 
 export const useFetchGames = () => {
-    const [games, setGames] = useState<BaseGameResponse[]>([]);
+    const [games, setGames] = useState<ExtendedGameResponse>();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -12,13 +13,13 @@ export const useFetchGames = () => {
         setLoading(true);
         setError(null);
         fetchGames()
-        .then(games => {
-            console.log('Fetched games:', games);
-            setGames(games ?? []);
+        .then(game => {
+            console.log('Fetched games:', game);
+            setGames(game[0]);
         })
         .catch(e => {
             console.error('Error fetching games:', e);
-            let errorMessage = 'Kunne ikke hente spil lige nu. Prøv igen om et øjeblik.';
+            const errorMessage = 'Kunne ikke hente spil lige nu. Prøv igen om et øjeblik.';
 
             setError(errorMessage);
         })
@@ -35,5 +36,5 @@ export const useFetchGames = () => {
 }
 
 async function fetchGames() {
-    return await gameClient.getGames();
+    return await gameClient.getFinishedGames(SieveQueryBuilder.create<BaseGameResponse>().page(1).pageSize(1).sortByDescending("startDate").filterEquals("gameStatus", 0).buildSieveModel());
 }
