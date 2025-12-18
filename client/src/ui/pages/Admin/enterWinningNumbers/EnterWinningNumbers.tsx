@@ -154,7 +154,7 @@ export default function EnterWinningNumbers() {
                 {/* Info box */}
                 <div className="info-box">
                     <strong>💡 Vigtigt:</strong>
-                    <p>Efter du har gemt vindernumrene, vil systemet automatisk beregne hvilke spillebrætter der har vundet. Husk at rækkefølgen af numrene er ligegyldig.</p>
+                    <p>Efter du har gemt vindernumrene, vil systemet automatisk beregne hvilke spilleplader der har vundet. Husk at rækkefølgen af numrene er ligegyldig.</p>
                 </div>
             </form>
         </div>

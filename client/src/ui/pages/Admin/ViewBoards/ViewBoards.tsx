@@ -41,7 +41,7 @@ export default function ViewBoards() {
                 </div>
                 {/*
                 <div className="stat-card winning">
-                    <span className="stat-label">Vindende brætter</span>
+                    <span className="stat-label">Vindende plader</span>
                     <span className="stat-value">{boards.filter(b => b.isWinning).length}</span>
                 </div>*/}
                 <div className="stat-card">

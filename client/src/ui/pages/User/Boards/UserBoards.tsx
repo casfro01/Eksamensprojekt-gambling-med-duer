@@ -150,7 +150,7 @@ export default function UserBoards() {
                     </h2>
                     <p>
                         {filter === 'active'
-                            ? 'Køb et nyt spillebræt for at komme i gang!'
+                            ? 'Køb en ny spilleplade for at komme i gang!'
                             : 'Dine afsluttede plader vises her når de er færdige.'}
                     </p>
                     {filter === 'active' && (
@@ -158,7 +158,7 @@ export default function UserBoards() {
                             className="new-board-btn"
                             onClick={() => navigate('/user/new-board')}
                         >
-                            🎲 Køb nyt bræt
+                            🎲 Køb ny plade
                         </button>
                     )}
                 </div>
