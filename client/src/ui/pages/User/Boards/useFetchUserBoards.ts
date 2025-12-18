@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
 import {boardClient} from "../../../../core/api-clients.ts";
 import {SieveQueryBuilder} from "ts-sieve-query-builder";
-import type {ExtendedBoardResponse} from "../../../../core/ServerAPI.ts";
+import type {BaseGameResponse, ExtendedBoardResponse} from "../../../../core/ServerAPI.ts";
 
 export interface Board {
     id: string;
+    games: BaseGameResponse[];
     numbers: number[];
     weeksTotal: number;
     weeksRemaining: number;
@@ -47,6 +48,7 @@ async function fetchBoards(status: string): Promise<Board[]> {
 function boardResponseToBoard(board: ExtendedBoardResponse): Board {
     return {
         id: board.id,
+        games: board.games,
         numbers: board.playedNumbers,
         weeksTotal: board.games.length,
         weeksRemaining: board.weeksRemaining,

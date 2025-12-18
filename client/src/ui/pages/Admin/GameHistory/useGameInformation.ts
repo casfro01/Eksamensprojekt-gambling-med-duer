@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {gameClient} from "../../../../core/api-clients.ts";
 import type {BaseBoardResponse} from "../../../../core/ServerAPI.ts";
 import {calculatePrice} from "../../../../utils/CalculatePrice.ts";
+import {contains3Numbers} from "../../../../utils/CalculateWinningBoard.ts";
 
 
 export interface WinningBoard {
@@ -37,9 +38,4 @@ function mapToWinningBoard(board: BaseBoardResponse): WinningBoard{
         numbers: board.playedNumbers == undefined ? [] : board.playedNumbers,
         pricePerWeek: calculatePrice(board.playedNumbers?.length == undefined ? 0 : board.playedNumbers?.length),
     }
-}
-
-function contains3Numbers(num1: number[], num2: number[]): boolean{
-    const res = num1.filter(n => n === num2[0] || n === num2[1] || n === num2[2]);
-    return res.length === 3;
 }

@@ -34,7 +34,7 @@ public class AuthController(IAuthService service, ITokenService tokenService) : 
 
     [HttpPost]
     [Route("register")]
-    [AllowAnonymous]
+    [Authorize(Roles = "Administrator")]
     public async Task<RegisterResponse> Register([FromBody] RegisterRequest request)
     {
         var userInfo = await service.Register(request);
