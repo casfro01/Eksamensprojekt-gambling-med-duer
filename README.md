@@ -59,7 +59,7 @@ Administratorer kan:
 
 ### Admin Login
 - **Email:** `Admin@gmail.com`
-- **Password:** `Password`
+- **Password:** `ErDetteEtSikkertPassword?`
 
 
 ## 🎮 Sådan Bruges Systemet
