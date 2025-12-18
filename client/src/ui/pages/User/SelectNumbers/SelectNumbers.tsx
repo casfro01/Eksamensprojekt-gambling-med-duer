@@ -59,7 +59,7 @@ export default function SelectNumbers() {
     };
 
     const handleRemoveRepeat = () => {
-        if (confirm(`⚠️ Fjern gentagelse?\n\nDit bræt spiller nu ${numberOfWeeks} uger i træk.\nHvis du fjerner gentagelsen, spiller det kun denne uge.\n\nVil du fjerne gentagelsen?`)) {
+        if (confirm(`⚠️ Fjern gentagelse?\n\nDin plade spiller nu ${numberOfWeeks} uger i træk.\nHvis du fjerner gentagelsen, spiller det kun denne uge.\n\nVil du fjerne gentagelsen?`)) {
             setNumberOfWeeks(1);
         }
     };
@@ -210,7 +210,7 @@ export default function SelectNumbers() {
                         onClick={onSubmit}
                         disabled={!canSubmit()}
                     >
-                        Køb spillebræt ({calculatePricePerWeek()} DKK)
+                        Køb spilleplade ({calculatePricePerWeek()} DKK)
                     </button>
                 </div>
 

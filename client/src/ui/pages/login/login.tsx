@@ -26,15 +26,26 @@ export default function Login(){
 
     const onSubmit = (e: React.FormEvent) => {
         handleLogin(e, email, password, setError, setLoading, setJwt)
-            .then( token => {
-                const role = getRoleFromJwt(token)
-                if (role === "Administrator"){
-                    navigate('/admin/create-user');
+            .then(token => {
+                if (!token) {
+                    setError("Email eller password er forkert");
+                    setLoading(false);
+                    return;
                 }
-                else navigate("/");
-            }
-            );
+                const role = getRoleFromJwt(token)
+                if (role === "Administrator") {
+                    navigate('/admin/create-user');
+                } else {
+                    navigate('/');
+                }
+            })
+            .catch(() => {
+                setError("Brugernavn eller password er forkert");
+                setLoading(false);
+            });
     };
+            
+    
     return (
         <div className="login-container">
             <div className="login-box">

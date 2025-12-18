@@ -10,7 +10,7 @@ export default function EnterWinningNumbers() {
         currentWeek,
         setCurrentWeek,
         drawDate,
-        setDrawDate
+        //setDrawDate
     } = useSetWinningNumbers();
     
     const navigate = useNavigate();
@@ -45,14 +45,14 @@ export default function EnterWinningNumbers() {
         await setWinningNumbers(selectedNumbers);
 
         // Send til backend senere
-        alert(`Vindernumre indsat!\n\nNumre: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\nUge: ${currentWeek}\nDato: ${drawDate}`);
+        alert(`Vindernumre indsat!\n\nNumre: ${selectedNumbers.sort((a, b) => a - b).join(', ')}\nUge: ${currentWeek} + Nuværende uge\nDato: ${drawDate}`);
 
         // Reset form
         setSelectedNumbers([]);
         setCurrentWeek('');
 
         // Navigate til showwinningpeople
-        navigate('show-winning-people');
+        navigate('/admin/show-winning-people');
     };
 
     return (
@@ -62,6 +62,7 @@ export default function EnterWinningNumbers() {
 
             <form onSubmit={async event => {await handleSubmit(event)}} className="winning-form">
                 {/* Week info */}
+                {/*
                 <div className="info-section">
                     <div className="form-group">
                         <label htmlFor="week">Uge nummer</label>
@@ -85,6 +86,7 @@ export default function EnterWinningNumbers() {
                         />
                     </div>
                 </div>
+                */}
 
                 {/* Selection status */}
                 <div className="selection-status">
@@ -145,7 +147,7 @@ export default function EnterWinningNumbers() {
                     <button
                         type="submit"
                         className="submit-btn"
-                        disabled={selectedNumbers.length !== 3 || !currentWeek}
+                        disabled={selectedNumbers.length !== 3 /*|| !currentWeek*/}
                     >
                         Gem vindernumre
                     </button>
@@ -154,7 +156,7 @@ export default function EnterWinningNumbers() {
                 {/* Info box */}
                 <div className="info-box">
                     <strong>💡 Vigtigt:</strong>
-                    <p>Efter du har gemt vindernumrene, vil systemet automatisk beregne hvilke spillebrætter der har vundet. Husk at rækkefølgen af numrene er ligegyldig.</p>
+                    <p>Efter du har gemt vindernumrene, vil systemet automatisk beregne hvilke spilleplader der har vundet. Husk at rækkefølgen af numrene er ligegyldig.</p>
                 </div>
             </form>
         </div>
