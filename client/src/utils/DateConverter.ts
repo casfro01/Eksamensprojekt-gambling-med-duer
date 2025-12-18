@@ -1,6 +1,6 @@
-export function convertDateStringToPrettyString(date: string | null): string{
+export function convertDateStringToPrettyString(date: string | undefined): string{
     console.log(date)
-    const dat = new Date(date != null ? date : "");
+    const dat = new Date(date != undefined ? date : "1999-01-01");
 
     return new Intl.DateTimeFormat('da-DK', {
         year: "numeric",

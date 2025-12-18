@@ -1,12 +1,17 @@
 ﻿import './viewBoards.css';
 import {useFetchBoards} from "./useFetchBoards.ts";
+import {convertDateStringToPrettyString} from "../../../../utils/DateConverter.ts";
+import {getWeekOfDate} from "../../../../utils/GetWeekOfDate.ts";
 
 export default function ViewBoards() {
 
     const {
         boards,
-        currentWeekWinningNumbers
+        currentGame
+        //currentWeekWinningNumbers
     } = useFetchBoards();
+
+    const date: Date = new Date(currentGame?.startDate == undefined ? "1999-01-01" : currentGame.startDate);
 
 
 
@@ -14,9 +19,11 @@ export default function ViewBoards() {
         <div className="view-boards-container">
             <div className="boards-header">
                 <div>
-                    <h1>Spillebrætter</h1>
-                    <p className="subtitle">Oversigt over alle aktive spillebrætter</p>
+                    <h1>{"Spilleplader for uge: " + getWeekOfDate(date.getFullYear(), date.getMonth() + 1, date.getDate())}</h1>
+                    <p className="subtitle">Oversigt over alle ugens aktive spilleplader</p>
+                    <p className="subtitle">Start dato: {convertDateStringToPrettyString(currentGame?.startDate)}</p>
                 </div>
+                {/*
                 <div className="winning-numbers-display">
                     <span className="label">Denne uges vindernumre:</span>
                     <div className="winning-numbers">
@@ -24,18 +31,19 @@ export default function ViewBoards() {
                             <span key={num} className="winning-number">{num}</span>
                         ))}
                     </div>
-                </div>
+                </div> */}
             </div>
 
             <div className="stats-row">
                 <div className="stat-card">
-                    <span className="stat-label">Total brætter</span>
+                    <span className="stat-label">Total plader</span>
                     <span className="stat-value">{boards.length}</span>
                 </div>
+                {/*
                 <div className="stat-card winning">
                     <span className="stat-label">Vindende brætter</span>
                     <span className="stat-value">{boards.filter(b => b.isWinning).length}</span>
-                </div>
+                </div>*/}
                 <div className="stat-card">
                     <span className="stat-label">Total omsætning</span>
                     <span className="stat-value">{boards.reduce((sum, b) => sum + b.totalPrice, 0)} DKK</span>
@@ -58,7 +66,7 @@ export default function ViewBoards() {
                             {board.numbers.map(num => (
                                 <span
                                     key={num}
-                                    className={`board-number ${currentWeekWinningNumbers.includes(num) ? 'match' : ''}`}
+                                    className={`board-number ${/*currentWeekWinningNumbers.includes(num) ? 'match' :*/ ''}`}
                                 >
                   {num}
                 </span>

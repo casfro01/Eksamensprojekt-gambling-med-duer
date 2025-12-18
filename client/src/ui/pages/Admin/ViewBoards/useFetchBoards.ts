@@ -1,4 +1,9 @@
 import {useEffect, useState} from "react";
+import {gameClient} from "../../../../core/api-clients.ts";
+import {SieveQueryBuilder} from "ts-sieve-query-builder";
+import type {BaseBoardResponse, BaseGameResponse} from "../../../../core/ServerAPI.ts";
+import {calculatePrice} from "../../../../utils/CalculatePrice.ts";
+import {convertDateStringToPrettyString} from "../../../../utils/DateConverter.ts";
 
 export interface Board {
     id: string;
@@ -8,45 +13,58 @@ export interface Board {
     pricePerWeek: number;
     totalPrice: number;
     createdDate: string;
+    gameId: string;
     isWinning: boolean;
+}
+
+interface MyPackage{
+    boards: Board[];
+    game: BaseGameResponse;
 }
 
 
 export const useFetchBoards = () => {
     const [boards, setBoards] = useState<Board[]>([]);
     const [currentWeekWinningNumbers] = useState<number[]>([2, 8, 13]); // måske hentes fra databasen / indtaster et ugenummer osv
+    const [currentGame, setCurrentGame] = useState<BaseGameResponse>();
     useEffect(() => {
         fetchBoards().then((res) => {
-            setBoards(res);
+            setBoards(res.boards);
+            setCurrentGame(res.game);
         });
     }, []);
     return {
         boards,
+        currentGame,
         currentWeekWinningNumbers
     };
 }
 
 async function fetchBoards() {
-    return await [
-        {
-            id: '1',
-            playerName: 'Peter Jensen',
-            numbers: [1, 5, 7, 12, 15],
-            weeks: 3,
-            pricePerWeek: 20,
-            totalPrice: 60,
-            createdDate: '2025-01-20',
-            isWinning: false
-        },
-        {
-            id: '2',
-            playerName: 'Anna Nielsen',
-            numbers: [2, 4, 8, 10, 13, 14, 16],
-            weeks: 1,
-            pricePerWeek: 80,
-            totalPrice: 80,
-            createdDate: '2025-01-21',
-            isWinning: true
-        }
-    ];
+    const si = SieveQueryBuilder.create<BaseGameResponse>()
+        .sortByDescending("startDate")
+        .filterEquals("gameStatus", 2)
+        .page(1)
+        .pageSize(1)
+        .buildSieveModel();
+    const res = await gameClient.getFinishedGames(si);
+    const id = res[0].id;
+    const boards = await gameClient.getBoardsOfGame(id);
+    return {
+        boards: boards.boards.map(board => mapToBoard(board)),
+        game: res[0] as BaseGameResponse,
+    } as MyPackage;
+}
+
+function mapToBoard(b: BaseBoardResponse): Board {
+    return {
+        id: b.id,
+        playerName: b.user?.fullName,
+        numbers: b.playedNumbers,
+        weeks: 1, // hardcoded for now
+        pricePerWeek: calculatePrice(b.playedNumbers?.length == undefined ? 1 : b.playedNumbers?.length),
+        totalPrice: calculatePrice(b.playedNumbers?.length == undefined ? 1 : b.playedNumbers?.length),
+        createdDate: convertDateStringToPrettyString(b.createdOn),
+        isWinning: false
+    } as Board
 }
