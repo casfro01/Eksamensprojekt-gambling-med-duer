@@ -942,7 +942,8 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "games"
+          "games",
+          "createdOn"
         ],
         "properties": {
           "id": {
@@ -963,6 +964,11 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
           }
         }
       },

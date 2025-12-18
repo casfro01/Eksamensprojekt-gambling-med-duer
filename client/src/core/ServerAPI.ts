@@ -924,6 +924,7 @@ export interface BaseBoardResponse {
     user?: AuthUserInfo;
     games: BaseGameResponse[];
     playedNumbers?: number[];
+    createdOn: string;
 }
 
 export interface ExtendedBoardResponse extends BaseBoardResponse {
