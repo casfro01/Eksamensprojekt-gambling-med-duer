@@ -12,7 +12,7 @@ export default function UserPanel() {
     const menuItems = [
         { path: '/user/profile', label: 'Bruger Information', icon: '👤' },
         { path: '/user/deposit', label: 'Indbetaling', icon: '💰' },
-        { path: '/user/new-board', label: 'Nyt Bræt', icon: '🎲' },
+        { path: '/user/new-board', label: 'Ny plade', icon: '🎲' },
         { path: '/user/boards', label: 'Mine Plader', icon: '📋' },
         { path: '/user/transactions', label: 'Transaktionshistorik', icon: '💳' }
     ];

@@ -14,8 +14,8 @@ export default function ViewBoards() {
         <div className="view-boards-container">
             <div className="boards-header">
                 <div>
-                    <h1>Spillebrætter</h1>
-                    <p className="subtitle">Oversigt over alle aktive spillebrætter</p>
+                    <h1>Spilleplader</h1>
+                    <p className="subtitle">Oversigt over alle aktive spilleplader</p>
                 </div>
                 <div className="winning-numbers-display">
                     <span className="label">Denne uges vindernumre:</span>
@@ -29,11 +29,11 @@ export default function ViewBoards() {
 
             <div className="stats-row">
                 <div className="stat-card">
-                    <span className="stat-label">Total brætter</span>
+                    <span className="stat-label">Total plader</span>
                     <span className="stat-value">{boards.length}</span>
                 </div>
                 <div className="stat-card winning">
-                    <span className="stat-label">Vindende brætter</span>
+                    <span className="stat-label">Vindende plader</span>
                     <span className="stat-value">{boards.filter(b => b.isWinning).length}</span>
                 </div>
                 <div className="stat-card">
