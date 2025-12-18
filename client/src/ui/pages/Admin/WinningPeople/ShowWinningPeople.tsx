@@ -33,15 +33,7 @@ export default function ShowWinningPeople() {
     }
 
     const winningNumbers = currentGame.winningNumbers;
-    
-    //const boardsLinkedToGame = boards.filter(b => b.games.some(g => g.id === currentGame.id));
-    //console.log('Boards linked to current game:', /*boardsLinkedToGame*/);
-    // ville dette ikke altid være false da hver nummer skal være i listen - da der skal være 5 numre? huh?
-    /*const winners = boards.filter(b => {
-        if (!b.numbers || b.numbers.length === 0) return false;
-        console.log(winningNumbers);
-        return b.numbers.every(num => winningNumbers.includes(num));
-    });*/
+
     const winners = boards.filter(b => contains3Numbers(b.numbers, winningNumbers));
 
     console.log('Winners:', winners);
