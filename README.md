@@ -1,4 +1,4 @@
-# Døde Duer - Lotteri Platform
+# Døde Duer - Lotteriplatform
 
 Et moderne lotteri-system bygget med React, TypeScript og .NET backend.
 
@@ -13,21 +13,23 @@ Døde Duer er en webbaseret lotteri-platform hvor brugere kan:
 
 Administratorer kan:
 - Oprette og administrere brugere
-- Se alle spillere og deres brætter
+- Se alle spillere og deres plader
 - Godkende indbetalinger
 - Indtaste vindernumre
 - Se spil- og betalingshistorik
 
 ## Status
 
-**Nuværende version:** Frontend prototype med dummy data
+**Nuværende version:** Frontend (beta-version)
 
 ### Færdige Features
-- **Bruger System:**
+- **Brugersystem:**
   - Login/logout funktionalitet
   - Brugerpanel med sidebar navigation
   - Profilside med brugeroplysninger
   - Responsive design (desktop & mobil)
+  - Opdatering af bruger oplysninger (navn, email og mobilnummer)
+  - Ændre password (semi)
 
 - **Spillefunktioner:**
   - Nummervælger (vælg 5-8 numre fra 1-16)
@@ -42,7 +44,8 @@ Administratorer kan:
 
 - **Admin Panel:**
   - Opret nye brugere
-  - Se alle spillere og brætter
+  - Se alle spillere
+  - Se alle plader for den nuværende uge
   - Godkend/afvis indbetalinger
   - Indtast vindernumre
   - Spilhistorik
@@ -65,7 +68,7 @@ Administratorer kan:
 
 1. **Log ind** med bruger credentials
 2. **Vælg numre:**
-   - Gå til "Nyt Bræt"
+   - Gå til "Ny Plade" 
    - Vælg 5-8 numre
    - Vælg antal uger (1-10)
    - Køb spillebræt
@@ -74,10 +77,10 @@ Administratorer kan:
    - Overfør på MobilePay til: 28 44 29 23
    - Indtast beløb og MobilePay transaktions-ID
 4. **Se dine brætter:**
-   - "Mine Brætter" viser aktive og afsluttede spil
+   - "Mine Plader" viser aktive og afsluttede spil
    - Annuller fremtidige uger hvis nødvendigt
 5. **Tjek transaktioner:**
-   - Se status på dine indbetalinger (afventer/godkendt/afvist)
+   - Se status på dine indbetalinger (afventer/godkendt/afvist) i "Transaktionshistorik"
 
 ### Som Admin:
 
@@ -99,6 +102,11 @@ Administratorer kan:
    **Forbedringer:**
 
    - Sørge for at det ikke er muligt at afslutte et igangværende spil når man vil - som admin
+   - Forbedring af ændring af password - dette kan kun gøre, lige nu, hvis du kender dit nuværende password - hvilket ikke er særlig godt, hvis man kommer til at glemme det
+   - Lave en reel knap som fører til login siden, da det nuværende godt kan virke forvirrende
+   - Ændre den måde som transaktionshistorikken er displayed på; den nuværende viser 00000000 som mobilepayid når man køber en plade; her kunne man ændre det til en enum kolonne i stedet / sætte den til null i databasen i stedet - da det så nemt ville kunne læses -> når man gør dette, så kan man f.eks. display overførsel hvis den har et mobileplayid og køb hvis man køber en plade osv.
+   - (Kode) Lige nu er der nogle custom klasser til vores entities fra api'en - men de skal om-mappes i ui - da ui bruger en anden/sin egen entity (dog kunne det godt argumenteres at det sikre ui mod ændringer)
+   - (Kode) Lige nu ligger der mange "use[noget].ts" i ui mappen, hvilket er lidt specielt, dog burde man flytte dem ud til hooks mappen i utils mappen, hvis nu man skal genbruge nogle af de fetchs som der er. Desuden, så kan disse filer også opdeles, da de indeholder normale fetch metoder/funktioner som klader på en api, disse kan også flyttes ud i en fil for sig; desuden bryder man en af SOLID principperne.
 
 
      **Udviklet af:** [Casper, Mia, Lucas]  
