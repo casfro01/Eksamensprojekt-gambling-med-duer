@@ -1,5 +1,5 @@
 import {useState} from "react";
-import type {BaseBoardResponse, BaseGameResponse} from "../../../../core/ServerAPI.ts";
+import type {BaseBoardResponse} from "../../../../core/ServerAPI.ts";
 import {calculatePrice} from "../../../../utils/CalculatePrice.ts";
 import {convertDateStringToPrettyString} from "../../../../utils/DateConverter.ts";
 import {useFetchBoards} from "../../../../utils/Hooks/useFetchBoards.ts";
