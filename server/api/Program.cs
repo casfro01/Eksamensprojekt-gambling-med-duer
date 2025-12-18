@@ -114,8 +114,8 @@ public class Program
             db.Database.EnsureCreated();
         }*/
         
-        app.UseOpenApi();
-        app.UseSwaggerUi();
+        //app.UseOpenApi();
+        //app.UseSwaggerUi();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
