@@ -1,5 +1,5 @@
 ﻿import './viewBoards.css';
-import {useFetchBoards} from "./useFetchBoards.ts";
+import {useFetchBoardsAdaptor} from "./useFetchBoardsAdaptor.ts";
 import {convertDateStringToPrettyString} from "../../../../utils/DateConverter.ts";
 import {getWeekOfDate} from "../../../../utils/GetWeekOfDate.ts";
 
@@ -9,7 +9,7 @@ export default function ViewBoards() {
         boards,
         currentGame
         //currentWeekWinningNumbers
-    } = useFetchBoards();
+    } = useFetchBoardsAdaptor();
 
     const date: Date = new Date(currentGame?.startDate == undefined ? "1999-01-01" : currentGame.startDate);
 

@@ -1,7 +1,7 @@
-﻿import { useFetchBoards } from '../ViewBoards/useFetchBoards.ts';
-import './showWinningPeople.css';
+﻿import './showWinningPeople.css';
 import { useFetchGames } from './useFetchGames';
 import {contains3Numbers} from "../../../../utils/CalculateWinningBoard.ts";
+import {useFetchBoards} from "../../../../utils/Hooks/useFetchBoards.ts";
 
 
 export default function ShowWinningPeople() {
@@ -34,7 +34,7 @@ export default function ShowWinningPeople() {
 
     const winningNumbers = currentGame.winningNumbers;
 
-    const winners = boards.filter(b => contains3Numbers(b.numbers, winningNumbers));
+    const winners = boards.filter(b => contains3Numbers(b.playedNumbers ?? [], winningNumbers));
 
     console.log('Winners:', winners);
 
@@ -77,7 +77,7 @@ export default function ShowWinningPeople() {
                                     <div className="winner-header">
                                         <div className="winner-icon">🏆</div>
                                         <div className="winner-info">
-                                            <h3 className="winner-name">{winner.playerName || 'Ukendt spiller'}</h3>
+                                            <h3 className="winner-name">{winner.user?.fullName || 'Ukendt spiller'}</h3>
                                             <p className="winner-board-id">Plade ID: {winner.id}</p>
                                         </div>
                                     </div>
@@ -85,7 +85,7 @@ export default function ShowWinningPeople() {
                                     <div className="winner-numbers">
                                         <p className="numbers-label">Valgte numre:</p>
                                         <div className="numbers-display">
-                                            {winner.numbers?.map((num, idx) => (
+                                            {winner.playedNumbers?.map((num, idx) => (
                                                 <span
                                                     key={idx}
                                                     className={`number-chip ${winningNumbers.includes(num) ? 'winning' : ''}`}
