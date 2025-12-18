@@ -368,6 +368,71 @@
         }
       }
     },
+    "/api/Game/GetFinishedGames": {
+      "post": {
+        "tags": [
+          "Game"
+        ],
+        "operationId": "Game_GetFinishedGames",
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SieveModel"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExtendedGameResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Game/GetBoardsOfGame": {
+      "post": {
+        "tags": [
+          "Game"
+        ],
+        "operationId": "Game_GetBoardsOfGame",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameWithBoardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Game/GetGames": {
       "get": {
         "tags": [
@@ -392,7 +457,7 @@
       }
     },
     "/api/Game/GetGame": {
-      "get": {
+      "post": {
         "tags": [
           "Game"
         ],
@@ -922,13 +987,21 @@
       "BaseGameResponse": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "id",
+          "startDate",
+          "gameStatus",
+          "winningNumbers"
+        ],
         "properties": {
           "id": {
-            "type": "string"
-          },
-          "startTime": {
             "type": "string",
-            "format": "date-time"
+            "minLength": 1
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "minLength": 1
           },
           "gameStatus": {
             "$ref": "#/components/schemas/GameStatus"
@@ -1021,6 +1094,63 @@
             "minLength": 1
           }
         }
+      },
+      "ExtendedGameResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseGameResponse"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "totalRevenue",
+              "totalBoardsOnGame",
+              "totalWinningBoards",
+              "weekNumber"
+            ],
+            "properties": {
+              "totalRevenue": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "totalBoardsOnGame": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "totalWinningBoards": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "weekNumber": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "GameWithBoardResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseGameResponse"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "boards"
+            ],
+            "properties": {
+              "boards": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BaseBoardResponse"
+                }
+              }
+            }
+          }
+        ]
       },
       "WinningNumbers": {
         "type": "object",
