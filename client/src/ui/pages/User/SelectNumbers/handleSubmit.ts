@@ -76,13 +76,21 @@ export const handleSubmit = async (
             success: true,
             message: successMessage
         };
-    } catch (error: any) {
-        console.error('Fejl ved oprettelse af spillebræt:', error.message);
-        
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error('Fejl ved oprettelse af spillebræt:', error.message);
+
+            return {
+                success: false,
+                message: "Fejl",
+                error: error.message
+            };
+        }
         return {
             success: false,
             message: "Fejl",
-            error: error.message
+            error: "Ukendt fejl"
         };
+
     }
 };
