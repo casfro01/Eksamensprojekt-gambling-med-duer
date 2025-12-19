@@ -1,12 +1,15 @@
 ﻿import './selectNumbers.css';
 import { useSelectNumbers } from './useSelectNumbers';
 import { handleSubmit } from './handleSubmit';
-import HomeButton from '../../../components/HomeButton';import { useGetLoggedInUser } from '../../Home/useLogin';
-import {useNavigate} from "react-router";
+import HomeButton from '../../../components/HomeButton';
+import { useGetLoggedInUser } from '../../Home/useLogin';
+import { useNavigate } from "react-router";
+import {useSubmit} from "./useSubmit.ts";
 
 export default function SelectNumbers() {
     const { authUser } = useGetLoggedInUser();
     const navigate = useNavigate();
+    const {isSubmitting, setIsSubmitting} = useSubmit();
 
     const {
         selectedNumbers,
@@ -19,28 +22,56 @@ export default function SelectNumbers() {
         canSubmit
     } = useSelectNumbers();
 
+    const isUserActive = (): boolean => {
+        return authUser !== null && authUser.isActive === true;
+    };
+
+    const showInactiveAlert = () => {
+        alert('⚠️ Din konto er inaktiv!\n\nKontakt admin for at aktivere din konto.');
+    };
+
     const onSubmit = async () => {
-        if (authUser == null || !authUser.isActive) {
-            alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+        if (!isUserActive()) {
+            showInactiveAlert();
             return;
         }
-        await handleSubmit(selectedNumbers, numberOfWeeks, canSubmit, authUser, navigate)
-            .then(() => {alert(`Du har betalt og oprettet din plade`); /*navigate("/") <- TODO : den navigere også inde i funktionen - vi skal vælge ét sted*/})
-            .catch(() => alert(`Uha, det ser ud til at der er sket en fejl; dobbelt tjek at du har nok penge og/eller at du har en aktiv konto.`));
 
+        if (isSubmitting) {
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            const result = await handleSubmit(selectedNumbers, numberOfWeeks, canSubmit, authUser);
+            
+            if (result.success) {
+                alert(result.message);
+                setTimeout(() => {
+                    navigate('/user/boards/');
+                }, 100);
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error('Uventet fejl:', error);
+            alert('❌ Der opstod en uventet fejl.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleNumberClick = (num: number) => {
-        if (authUser == null || !authUser.isActive) {
-            alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+        if (!isUserActive()) {
+            showInactiveAlert();
             return;
         }
         toggleNumber(num);
     };
 
     const handleWeekChange = (action: 'increment' | 'decrement') => {
-        if (authUser == null || !authUser.isActive) {
-            alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+        if (!isUserActive()) {
+            showInactiveAlert();
             return;
         }
         if (action === 'increment') {
@@ -51,8 +82,8 @@ export default function SelectNumbers() {
     };
 
     const handleClearClick = () => {
-        if (authUser == null || !authUser.isActive) {
-            alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+        if (!isUserActive()) {
+            showInactiveAlert();
             return;
         }
         clearSelection();
@@ -73,7 +104,7 @@ export default function SelectNumbers() {
                     <p>Vælg mellem 5-8 numre fra 1-16</p>
                 </header>
 
-                {(authUser == null || !authUser.isActive) && (
+                {!isUserActive() && (
                     <div className="inactive-warning">
                         ⚠️ Din konto er inaktiv. Du skal betale medlemskab for at kunne spille. Kontakt admin.
                     </div>
@@ -96,7 +127,7 @@ export default function SelectNumbers() {
                             key={num}
                             className={`number-button ${selectedNumbers.includes(num) ? 'selected' : ''} ${
                                 selectedNumbers.length >= 8 && !selectedNumbers.includes(num) ? 'disabled' : ''
-                            } ${authUser == null || !authUser.isActive ? 'inactive-disabled' : ''}`}
+                            } ${!isUserActive() ? 'inactive-disabled' : ''}`}
                             onClick={() => handleNumberClick(num)}
                         >
                             {num}
@@ -133,8 +164,8 @@ export default function SelectNumbers() {
                             max="10"
                             value={numberOfWeeks}
                             onChange={(e) => {
-                                if (authUser == null || !authUser.isActive) {
-                                    alert('⚠️ Din konto er inaktiv!\n\nDu skal betale medlemskab for at kunne spille.\n\nKontakt admin for at aktivere din konto.');
+                                if (!isUserActive()) {
+                                    showInactiveAlert();
                                     return;
                                 }
                                 setNumberOfWeeks(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)));
@@ -150,7 +181,6 @@ export default function SelectNumbers() {
                     </div>
                     <p className="weeks-hint">Spil de samme tal i op til 10 uger</p>
 
-                    {/* FJERN GENTAGELSE KNAP*/}
                     {numberOfWeeks > 1 && (
                         <button
                             className="remove-repeat-button"
@@ -208,9 +238,9 @@ export default function SelectNumbers() {
                     <button
                         className="submit-button"
                         onClick={onSubmit}
-                        disabled={!canSubmit()}
+                        disabled={!canSubmit() || isSubmitting || !isUserActive()}
                     >
-                        Køb spilleplade ({calculatePricePerWeek()} DKK)
+                        {isSubmitting ? 'Opretter plade...' : `Køb spilleplade (${calculatePricePerWeek()} DKK)`}
                     </button>
                 </div>
 

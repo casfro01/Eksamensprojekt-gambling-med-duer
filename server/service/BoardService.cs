@@ -70,6 +70,13 @@ public class BoardService(MyDbContext db, ISieveProcessor processor): IServiceWi
         
         var user = await db.Users.FirstOrDefaultAsync(u => u.Id == dto.UserId)
                    ?? throw new KeyNotFoundException("User not found");
+
+        var today = DateTime.UtcNow.DayOfWeek;
+        if (today == DayOfWeek.Saturday || today == DayOfWeek.Sunday)
+        {
+            throw new ValidationException("Boards cannot be purchased during the weekend");
+        }
+        
         if (!user.isActive) throw new ValidationException("User is not active, therefore the user cannot buy a board.");
         var games = await db.Games
                 // TODO : tilføj så man ikke kan købe på en søndag eller lørdag alt efter hvilken dag de trækker
