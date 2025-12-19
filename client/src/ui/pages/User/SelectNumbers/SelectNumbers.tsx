@@ -1,15 +1,15 @@
 ﻿import './selectNumbers.css';
-import { useState } from 'react';
 import { useSelectNumbers } from './useSelectNumbers';
 import { handleSubmit } from './handleSubmit';
 import HomeButton from '../../../components/HomeButton';
 import { useGetLoggedInUser } from '../../Home/useLogin';
 import { useNavigate } from "react-router";
+import {useSubmit} from "./useSubmit.ts";
 
 export default function SelectNumbers() {
     const { authUser } = useGetLoggedInUser();
     const navigate = useNavigate();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const {isSubmitting, setIsSubmitting} = useSubmit();
 
     const {
         selectedNumbers,
